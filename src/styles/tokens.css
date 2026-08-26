@@ -1,0 +1,137 @@
+/**
+ * @file tokens.css
+ * @description Design tokens for Muebles Bellagio Design System.
+ * Supports Dark (default) and Light theme modes.
+ */
+
+:root {
+  /* Typography Scale */
+  --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-accent: 'Montserrat', 'Public Sans', sans-serif;
+
+  /* Gold Palette (Brand Signature) */
+  --gold-100: #FAF5E6;
+  --gold-200: #F2E2B8;
+  --gold-300: #E5C97A;
+  --gold-400: #D8B24B;
+  --gold-500: #C5A55A; /* Primary Brand Gold */
+  --gold-600: #AA8638;
+  --gold-700: #886722;
+  --gold-800: #664B13;
+  --gold-900: #443008;
+
+  /* Gradients */
+  --gradient-gold: linear-gradient(135deg, #F5E5C0 0%, #C5A55A 50%, #9E7D32 100%);
+  --gradient-gold-hover: linear-gradient(135deg, #FFF0D0 0%, #D8B466 50%, #B59042 100%);
+  --gradient-gold-border: linear-gradient(135deg, rgba(245, 229, 192, 0.6) 0%, rgba(197, 165, 90, 0.2) 50%, rgba(158, 125, 50, 0.5) 100%);
+  --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
+  --gradient-card-dark: linear-gradient(180deg, rgba(28, 28, 30, 0.8) 0%, rgba(18, 18, 20, 0.95) 100%);
+  --gradient-card-light: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 246, 240, 0.9) 100%);
+
+  /* Spacing Scale (8px/4px standard) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+  --space-16: 4rem;    /* 64px */
+  --space-20: 5rem;    /* 80px */
+  --space-24: 6rem;    /* 96px */
+  --space-32: 8rem;    /* 128px */
+
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-xl: 22px;
+  --radius-full: 9999px;
+
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* Container */
+  --container-max-width: 1280px;
+}
+
+/* ==========================================================================
+   Dark Theme (Default)
+   ========================================================================== */
+:root,
+[data-theme="dark"] {
+  --color-bg-main: #0B0B0C;
+  --color-bg-surface: #131315;
+  --color-bg-surface-elevated: #1B1B1E;
+  --color-bg-card: rgba(22, 22, 25, 0.75);
+  --color-bg-input: rgba(15, 15, 17, 0.85);
+
+  --color-text-primary: #F9F9FB;
+  --color-text-secondary: #B4B4BC;
+  --color-text-muted: #737380;
+  --color-text-inverse: #0B0B0C;
+
+  --color-border: rgba(197, 165, 90, 0.18);
+  --color-border-subtle: rgba(255, 255, 255, 0.07);
+  --color-border-focus: var(--gold-400);
+
+  --nav-bg: rgba(11, 11, 12, 0.82);
+  --nav-border: rgba(197, 165, 90, 0.15);
+
+  --card-bg-gradient: var(--gradient-card-dark);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.7);
+  --shadow-gold: 0 8px 30px rgba(197, 165, 90, 0.22);
+  --shadow-gold-hover: 0 12px 40px rgba(197, 165, 90, 0.4);
+
+  --badge-bg: rgba(197, 165, 90, 0.12);
+  --badge-text: var(--gold-300);
+  --badge-border: rgba(197, 165, 90, 0.25);
+
+  --whatsapp-color: #25D366;
+  --whatsapp-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+}
+
+/* ==========================================================================
+   Light Theme Mode
+   ========================================================================== */
+[data-theme="light"] {
+  --color-bg-main: #FBF9F4;
+  --color-bg-surface: #F3EFE6;
+  --color-bg-surface-elevated: #FFFFFF;
+  --color-bg-card: rgba(255, 255, 255, 0.85);
+  --color-bg-input: #FFFFFF;
+
+  --color-text-primary: #1A1A1C;
+  --color-text-secondary: #585860;
+  --color-text-muted: #8C8C96;
+  --color-text-inverse: #FFFFFF;
+
+  --color-border: rgba(170, 134, 56, 0.28);
+  --color-border-subtle: rgba(0, 0, 0, 0.08);
+  --color-border-focus: var(--gold-600);
+
+  --nav-bg: rgba(251, 249, 244, 0.88);
+  --nav-border: rgba(170, 134, 56, 0.2);
+
+  --card-bg-gradient: var(--gradient-card-light);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 24px rgba(70, 50, 10, 0.08);
+  --shadow-lg: 0 16px 40px rgba(70, 50, 10, 0.12);
+  --shadow-gold: 0 8px 25px rgba(170, 134, 56, 0.18);
+  --shadow-gold-hover: 0 12px 35px rgba(170, 134, 56, 0.3);
+
+  --badge-bg: rgba(197, 165, 90, 0.16);
+  --badge-text: var(--gold-800);
+  --badge-border: rgba(170, 134, 56, 0.35);
+
+  --whatsapp-color: #20BA56;
+  --whatsapp-shadow: 0 8px 24px rgba(32, 186, 86, 0.3);
+}

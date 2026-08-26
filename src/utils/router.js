@@ -1,6 +1,7 @@
 /**
  * @file router.js
  * @description Lightweight SPA router managing seamless view switching between Home and Dedicated Catalog Page.
+ * After each route change, re-attaches IntersectionObservers for reveal animations.
  */
 
 import { renderHero } from '../components/hero.js';
@@ -9,6 +10,7 @@ import { renderStores } from '../components/stores.js';
 import { renderCatalogs, setupCatalogsEvents } from '../components/catalogs.js';
 import { renderContact, setupContactEvents } from '../components/contact.js';
 import { renderCatalogPage, setupCatalogPageEvents } from '../views/catalog-page.js';
+import { reattachRevealObservers } from '../utils/scroll.js';
 
 /**
  * Initializes hash routing listener and renders the current route.
@@ -36,6 +38,7 @@ export function handleRoute() {
     mainContent.innerHTML = renderCatalogPage();
     window.scrollTo({ top: 0, behavior: 'instant' });
     setupCatalogPageEvents();
+    reattachRevealObservers();
     document.title = 'Catálogo Exclusivo 2026 | Muebles Bellagio';
     return;
   }
@@ -43,7 +46,7 @@ export function handleRoute() {
   // Home Landing Page View
   document.title = 'Muebles Bellagio | Muebles de Lujo & Diseño en Caracas';
 
-  // If we are currently showing the catalog page, switch back to home sections
+  // Always rebuild the landing page sections when navigating to home
   const isShowingCatalog = mainContent.querySelector('.dedicated-catalog-page');
   if (isShowingCatalog || !mainContent.querySelector('#inicio')) {
     mainContent.innerHTML = `
@@ -55,6 +58,8 @@ export function handleRoute() {
     `;
     setupCatalogsEvents();
     setupContactEvents();
+    // Re-observe fresh reveal-items so animations trigger
+    reattachRevealObservers();
   }
 
   // Handle in-page anchors (tiendas, contacto, inicio)
@@ -62,8 +67,10 @@ export function handleRoute() {
     const targetElement = document.getElementById(normalizedHash);
     if (targetElement) {
       setTimeout(() => {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-      }, 50);
+        const navHeight = document.querySelector('.navbar')?.offsetHeight || 70;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
+        window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+      }, 80);
     }
   } else if (!rawHash || rawHash === '#/' || rawHash === '#') {
     window.scrollTo({ top: 0, behavior: 'smooth' });

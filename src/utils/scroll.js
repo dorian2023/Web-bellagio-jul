@@ -1,15 +1,18 @@
 /**
  * @file scroll.js
  * @description Smooth scrolling, sticky header state, section spy, and floating scroll-to-top button.
+ * Re-observable after SPA route changes via `reattachRevealObservers()`.
  */
+
+/** @type {IntersectionObserver|null} */
+let revealObserver = null;
 
 /**
  * Initializes navbar sticky state, scroll-to-top button, and active section highlighting.
+ * Called once on app bootstrap.
  */
 export function initScrollEffects() {
   const navbar = document.querySelector('.navbar');
-  const sections = document.querySelectorAll('section[id]');
-  const navLinks = document.querySelectorAll('.nav-link, .mobile-nav-link');
   const scrollTopBtn = document.getElementById('scrollTopBtn');
   const progressCircle = document.getElementById('scrollProgressCircle');
 
@@ -58,54 +61,8 @@ export function initScrollEffects() {
     });
   });
 
-  // Smooth scroll for internal anchor navigation links
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function(e) {
-      const targetId = this.getAttribute('href');
-      if (targetId && targetId.length > 1) {
-        const targetElement = document.querySelector(targetId);
-        if (targetElement) {
-          e.preventDefault();
-          const navHeight = navbar?.offsetHeight || 70;
-          const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navHeight;
-          
-          window.scrollTo({
-            top: targetPosition,
-            behavior: 'smooth'
-          });
-          
-          // Update URL hash cleanly
-          history.pushState(null, '', targetId);
-        }
-      }
-    });
-  });
-
-  // Section Observer for active menu highlighting
-  const sectionObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        const id = entry.target.getAttribute('id');
-        navLinks.forEach(link => {
-          const href = link.getAttribute('href');
-          if (href === `#${id}`) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
-        });
-      }
-    });
-  }, {
-    rootMargin: '-20% 0px -70% 0px',
-    threshold: 0
-  });
-
-  sections.forEach(section => sectionObserver.observe(section));
-
-  // Reveal animation observer for content elements
-  const revealItems = document.querySelectorAll('.reveal-item');
-  const revealObserver = new IntersectionObserver((entries, observer) => {
+  // Create the shared reveal observer instance
+  revealObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         entry.target.classList.add('revealed');
@@ -117,9 +74,24 @@ export function initScrollEffects() {
     rootMargin: '0px 0px -30px 0px'
   });
 
-  revealItems.forEach(item => revealObserver.observe(item));
+  // Initial reveal + counter setup
+  reattachRevealObservers();
+}
 
-  // Initialize counter animations
+/**
+ * Re-observes all `.reveal-item` elements that haven't been revealed yet,
+ * and re-initializes counter animations. Must be called after any route change
+ * that injects new DOM content into `#mainContent`.
+ */
+export function reattachRevealObservers() {
+  if (!revealObserver) return;
+
+  // Observe new reveal-items that haven't been revealed yet
+  document.querySelectorAll('.reveal-item:not(.revealed)').forEach(item => {
+    revealObserver.observe(item);
+  });
+
+  // Re-initialize counter animations for freshly injected stat elements
   initCounterAnimations();
 }
 

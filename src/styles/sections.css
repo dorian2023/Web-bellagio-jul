@@ -302,41 +302,29 @@
   100% { transform: translateX(50%); }
 }
 
-/* Emblem Badge */
-.hero-emblem-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-3);
-  margin-bottom: var(--space-4);
+/* Hero Circular Logo */
+.hero-logo-wrapper {
+  margin-bottom: var(--space-5);
 }
 
-.emblem-icon-ring {
-  width: 44px;
-  height: 44px;
-  border-radius: var(--radius-full);
-  border: 1.5px solid var(--gold-400);
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, rgba(0, 0, 0, 0.4) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 15px rgba(212, 175, 55, 0.35);
+.hero-logo-circle {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--gold-400);
+  box-shadow: 
+    0 0 20px rgba(212, 175, 55, 0.5),
+    0 0 40px rgba(212, 175, 55, 0.2);
+  display: block;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
 }
 
-.emblem-letter {
-  font-family: var(--font-display);
-  font-size: 1.35rem;
-  font-weight: 700;
-  color: var(--gold-300);
-  line-height: 1;
-}
-
-.emblem-brand-name {
-  font-family: var(--font-accent);
-  font-size: 0.95rem;
-  font-weight: 700;
-  letter-spacing: 0.25em;
-  color: var(--color-text-primary);
-  text-transform: uppercase;
+.hero-logo-circle:hover {
+  transform: scale(1.06);
+  box-shadow: 
+    0 0 28px rgba(212, 175, 55, 0.7),
+    0 0 50px rgba(212, 175, 55, 0.3);
 }
 
 .hero-kicker-tag {

@@ -28,12 +28,16 @@ export function renderHero() {
         <!-- Floating Glassmorphism Centerpiece Card -->
         <div class="hero-glass-card reveal-item">
           
-          <!-- Bellagio Emblem Badge -->
-          <div class="hero-emblem-badge">
-            <div class="emblem-icon-ring">
-              <span class="emblem-letter">B</span>
-            </div>
-            <span class="emblem-brand-name">BELLAGIO</span>
+          <!-- Bellagio Logo -->
+          <div class="hero-logo-wrapper">
+            <img 
+              src="/logo.jpg" 
+              alt="Muebles Bellagio" 
+              class="hero-logo-circle"
+              width="90"
+              height="90"
+              loading="eager"
+            />
           </div>
 
           <!-- Main Headlines -->

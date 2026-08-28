@@ -1,99 +1,100 @@
 /**
  * @file hero.js
- * @description Hero section presentation component with luxury typography and action buttons.
+ * @description Hero Option 3: Cinematic Fullscreen Video Background with Luxury Glassmorphism Floating Centerpiece.
  */
 
 export function renderHero() {
   return `
-    <section id="inicio" class="hero-section" aria-label="Inicio">
-      <div class="hero-background-art"></div>
-      
-      <div class="container">
-        <div class="hero-grid">
-          <!-- Hero Text Content -->
-          <div class="hero-content reveal-item">
-            <div class="hero-badge">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
+    <section id="inicio" class="hero-cinematic-section" aria-label="Inicio - Muebles Bellagio">
+      <!-- Fullscreen Video & Poster Background -->
+      <div class="hero-video-wrapper">
+        <video 
+          class="hero-video-bg" 
+          autoplay 
+          loop 
+          muted 
+          playsinline 
+          preload="auto"
+          poster="/images/hero-poster.jpg"
+          aria-hidden="true"
+        >
+          <source src="/videos/tienda-principal.mp4" type="video/mp4" />
+        </video>
+        <div class="hero-video-overlay"></div>
+        <div class="hero-particles-glow"></div>
+      </div>
+
+      <div class="container hero-cinematic-container">
+        <!-- Floating Glassmorphism Centerpiece Card -->
+        <div class="hero-glass-card reveal-item">
+          
+          <!-- Bellagio Emblem Badge -->
+          <div class="hero-emblem-badge">
+            <div class="emblem-icon-ring">
+              <span class="emblem-letter">B</span>
+            </div>
+            <span class="emblem-brand-name">BELLAGIO</span>
+          </div>
+
+          <!-- Main Headlines -->
+          <span class="hero-kicker-tag">Colección Exclusiva 2026</span>
+          
+          <h1 class="hero-cinematic-title">
+            Alta Ebanistería <br />
+            <span class="gold-text-glow">&amp; Diseño de Autor</span>
+          </h1>
+
+          <p class="hero-cinematic-subtitle">
+            Desde Caracas para hogares de distinción. Piezas exclusivas de alta gama fabricadas con mármol noble, maderas selectas y tapicería europea contemporánea.
+          </p>
+
+          <!-- Action Buttons Group -->
+          <div class="hero-cinematic-cta-group">
+            <a href="#/catalogo" class="btn btn-primary btn-lg hero-main-cta">
+              <span>Explorar Colecciones 2026</span>
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="5" y1="12" x2="19" y2="12"></line>
+                <polyline points="12 5 19 12 12 19"></polyline>
               </svg>
-              <span>Colección Exclusiva 2026</span>
+            </a>
+
+            <a href="#tiendas" class="btn btn-glass btn-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+              </svg>
+              <span>Nuestras 3 Tiendas</span>
+            </a>
+          </div>
+
+          <!-- Quick Highlights Bar -->
+          <div class="hero-stats-strip">
+            <div class="strip-stat-item">
+              <strong class="gold-text">+2,500</strong>
+              <span>Espacios Amoblados</span>
             </div>
-
-            <h1 class="hero-title">
-              Elegancia que <br />
-              <span class="gold-text">Transforma Espacios</span>
-            </h1>
-
-
-
-            <div class="hero-cta-group">
-              <a href="#/catalogo" class="btn btn-primary">
-                <span>Explorar Catálogos</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="5" y1="12" x2="19" y2="12"></line>
-                  <polyline points="12 5 19 12 12 19"></polyline>
-                </svg>
-              </a>
-
-              <a href="#tiendas" class="btn btn-secondary">
-                <span>Visitar Nuestras Tiendas</span>
-              </a>
+            <div class="strip-separator"></div>
+            <div class="strip-stat-item">
+              <strong class="gold-text">17</strong>
+              <span>Categorías de Autor</span>
             </div>
-
-            <!-- Trust Badges -->
-            <div class="hero-trust-badges">
-              <div class="trust-item">
-                <div class="trust-icon-box">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                    <polyline points="2 17 12 22 22 17"></polyline>
-                    <polyline points="2 12 12 17 22 12"></polyline>
-                  </svg>
-                </div>
-                <div class="trust-text">
-                  <h4>Alta Ebanistería</h4>
-                  <p>Maderas nobles y mármol</p>
-                </div>
-              </div>
-
-              <div class="trust-item">
-                <div class="trust-icon-box">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                  </svg>
-                </div>
-                <div class="trust-text">
-                  <h4>Garantía Bellagio</h4>
-                  <p>Calidad de exportación</p>
-                </div>
-              </div>
+            <div class="strip-separator"></div>
+            <div class="strip-stat-item">
+              <strong class="gold-text">3</strong>
+              <span>Showrooms en Caracas</span>
             </div>
           </div>
 
-          <!-- Hero Visual Showcase -->
-          <div class="hero-visual reveal-item reveal-delay-2">
-            <div class="hero-visual-card">
-              <img 
-                src="https://images.unsplash.com/photo-1617806118233-18e1de247200?auto=format&fit=crop&w=1200&q=80" 
-                alt="Comedor Extensible J-020" 
-                class="hero-visual-img"
-                width="600"
-                height="480"
-                loading="eager"
-              />
-              <div class="hero-floating-tag">
-                <div>
-                  <h4>Comedor Extensible J-020 6 puestos</h4>
-                  <p>Muebles Bellagio</p>
-                </div>
-                <a href="#/catalogo" class="btn btn-primary btn-sm" aria-label="Ver detalles">
-                  Ver Colección
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
+
+      <!-- Animated Scroll Prompt -->
+      <a href="#sobre-nosotros" class="hero-scroll-indicator" aria-label="Desplazarse hacia abajo">
+        <span class="scroll-mouse-icon">
+          <span class="scroll-wheel"></span>
+        </span>
+        <span class="scroll-text">Descubrir</span>
+      </a>
     </section>
   `;
 }

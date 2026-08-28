@@ -4,7 +4,7 @@
  * After each route change, re-attaches IntersectionObservers for reveal animations.
  */
 
-import { renderHero } from '../components/hero.js';
+import { renderHero, setupHeroEvents } from '../components/hero.js';
 import { renderAbout } from '../components/about.js';
 import { renderStores } from '../components/stores.js';
 import { renderCatalogs, setupCatalogsEvents } from '../components/catalogs.js';
@@ -58,6 +58,7 @@ export function handleRoute() {
     `;
     setupCatalogsEvents();
     setupContactEvents();
+    setupHeroEvents();
     // Re-observe fresh reveal-items so animations trigger
     reattachRevealObservers();
   }

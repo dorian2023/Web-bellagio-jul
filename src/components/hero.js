@@ -9,13 +9,18 @@ export function renderHero() {
       <!-- Fullscreen Video & Poster Background -->
       <div class="hero-video-wrapper">
         <video 
+          id="heroBackgroundVideo"
           class="hero-video-bg" 
           autoplay 
           loop 
           muted 
           playsinline 
+          webkit-playsinline="true"
+          x5-playsinline="true"
           preload="auto"
           poster="/images/hero-poster.jpg"
+          disablepictureinpicture
+          disableremoteplayback
           aria-hidden="true"
         >
           <source src="/videos/tienda-principal.mp4" type="video/mp4" />
@@ -101,4 +106,44 @@ export function renderHero() {
       </a>
     </section>
   `;
+}
+
+/**
+ * Ensures mobile browsers play the background video immediately,
+ * handling browser energy/data-saver policies with interaction fallbacks.
+ */
+export function setupHeroEvents() {
+  const video = document.getElementById('heroBackgroundVideo');
+  if (!video) return;
+
+  video.muted = true;
+  video.defaultMuted = true;
+
+  const tryPlay = () => {
+    const playPromise = video.play();
+    if (playPromise !== undefined) {
+      playPromise.catch(() => {
+        // Fallback: trigger playback on first user touch/scroll
+        const triggerOnFirstInteraction = () => {
+          video.play().catch(() => {});
+          window.removeEventListener('touchstart', triggerOnFirstInteraction);
+          window.removeEventListener('scroll', triggerOnFirstInteraction);
+          window.removeEventListener('click', triggerOnFirstInteraction);
+        };
+        window.addEventListener('touchstart', triggerOnFirstInteraction, { once: true, passive: true });
+        window.addEventListener('scroll', triggerOnFirstInteraction, { once: true, passive: true });
+        window.addEventListener('click', triggerOnFirstInteraction, { once: true, passive: true });
+      });
+    }
+  };
+
+  // Immediate attempt
+  tryPlay();
+
+  // Retry when video data is ready
+  if (video.readyState >= 2) {
+    tryPlay();
+  } else {
+    video.addEventListener('loadeddata', tryPlay, { once: true });
+  }
 }

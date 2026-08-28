@@ -15,7 +15,7 @@ export const STORES_DATA = [
     phone: '+58 212-0000000',
     mobile: '+58 414-1536516',
     whatsapp: '584141536516',
-    schedule: 'Lunes a Sábado: 9:00 AM - 6:30 PM',
+    schedule: 'Lunes a Sábado: 9:00 AM - 5:00 PM',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Av+Comercio+Caracas+Venezuela',
     features: ['Showroom de Exhibición', 'Estacionamiento Privado', 'Asesoría de Interiorismo In-Situ']
   },
@@ -30,7 +30,7 @@ export const STORES_DATA = [
     phone: '+58 212-0000001',
     mobile: '+58 414-1536516',
     whatsapp: '584141536516',
-    schedule: 'Lunes a Sábado: 9:30 AM - 6:00 PM',
+    schedule: 'Lunes a Sábado: 9:00 AM - 5:00 PM',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Centro+Comercial+Davinci+La+Yaguara+Caracas',
     features: ['Colecciones Importadas', 'Zona de Tapicería Premium', 'Atención Personalizada']
   },

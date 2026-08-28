@@ -13,13 +13,14 @@ export function renderStores() {
     const videoHTML = store.videoUrl ? `
       <div class="store-video-container">
         <video 
-          src="${escapeHTML(store.videoUrl)}" 
-          class="store-video-media" 
-          autoplay 
+          data-src="${escapeHTML(store.videoUrl)}" 
+          poster="${escapeHTML(store.posterUrl || '/images/hero-poster.jpg')}"
+          class="store-video-media lazy-video" 
           loop 
           muted 
           playsinline 
-          preload="auto"
+          webkit-playsinline="true"
+          preload="none"
           aria-label="Video del showroom ${escapeHTML(store.name)}"
         ></video>
       </div>

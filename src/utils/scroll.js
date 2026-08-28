@@ -80,8 +80,8 @@ export function initScrollEffects() {
 
 /**
  * Re-observes all `.reveal-item` elements that haven't been revealed yet,
- * and re-initializes counter animations. Must be called after any route change
- * that injects new DOM content into `#mainContent`.
+ * re-initializes counter animations, and sets up lazy loading for off-screen videos.
+ * Must be called after any route change that injects new DOM content into `#mainContent`.
  */
 export function reattachRevealObservers() {
   if (!revealObserver) return;
@@ -93,6 +93,45 @@ export function reattachRevealObservers() {
 
   // Re-initialize counter animations for freshly injected stat elements
   initCounterAnimations();
+
+  // Initialize lazy-loaded store videos (saves massive initial bandwidth)
+  initLazyVideos();
+}
+
+/**
+ * Loads and plays store videos only when the user scrolls near the stores section.
+ */
+function initLazyVideos() {
+  const lazyVideos = document.querySelectorAll('video.lazy-video');
+  if (!lazyVideos.length) return;
+
+  const videoObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      const video = entry.target;
+      if (entry.isIntersecting) {
+        if (!video.src && video.dataset.src) {
+          video.src = video.dataset.src;
+          video.load();
+        }
+        video.muted = true;
+        video.defaultMuted = true;
+        const playPromise = video.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(() => {});
+        }
+      } else {
+        // Pause offscreen video to save CPU/battery/RAM
+        if (video.src) {
+          video.pause();
+        }
+      }
+    });
+  }, {
+    rootMargin: '200px 0px 200px 0px', // Pre-load slightly before entering viewport
+    threshold: 0.1
+  });
+
+  lazyVideos.forEach(v => videoObserver.observe(v));
 }
 
 /**

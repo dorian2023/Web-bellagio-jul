@@ -18,7 +18,7 @@ export function renderHero() {
           webkit-playsinline="true"
           x5-playsinline="true"
           preload="auto"
-          poster="/images/hero-poster.jpg"
+          poster="/images/hero-poster.webp"
           disablepictureinpicture
           disableremoteplayback
           aria-hidden="true"
@@ -125,7 +125,7 @@ export function setupHeroEvents() {
       playPromise.catch(() => {
         // Fallback: trigger playback on first user touch/scroll
         const triggerOnFirstInteraction = () => {
-          video.play().catch(() => {});
+          video.play().catch(() => { });
           window.removeEventListener('touchstart', triggerOnFirstInteraction);
           window.removeEventListener('scroll', triggerOnFirstInteraction);
           window.removeEventListener('click', triggerOnFirstInteraction);

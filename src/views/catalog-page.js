@@ -6,6 +6,7 @@
 import { CATEGORIES_DATA, CATALOGS_DATA } from '../data/catalogs.js';
 import { escapeHTML } from '../utils/security.js';
 import { openProductModal } from '../utils/lightbox.js';
+import { isProductSelected, toggleProductSelection } from '../utils/inquiry-cart.js';
 
 let currentFilter = 'todos';
 let currentSearch = '';
@@ -266,12 +267,13 @@ function renderProductCards(items) {
   }
 
   return items.map(item => {
+    const isSelected = isProductSelected(item.id);
     const whatsappMsg = encodeURIComponent(
       `Hola Muebles Bellagio, deseo información y cotización de la pieza: "${item.title}" (${item.categoryName}).`
     );
 
     return `
-      <article class="luxury-card product-card" data-product-id="${escapeHTML(item.id)}">
+      <article class="luxury-card product-card ${isSelected ? 'product-selected' : ''}" data-product-id="${escapeHTML(item.id)}">
         <div class="product-image-box">
           <img 
             src="${escapeHTML(item.image)}" 
@@ -282,6 +284,19 @@ function renderProductCards(items) {
             height="300"
           />
           <span class="product-category-badge">${escapeHTML(item.categoryName)}</span>
+          
+          <!-- Interactive Luxury Checkmark Selection Button -->
+          <button 
+            type="button" 
+            class="product-select-check ${isSelected ? 'checked' : ''}" 
+            data-select-id="${escapeHTML(item.id)}"
+            aria-label="${isSelected ? 'Quitar de mi selección' : 'Añadir a mi selección'}"
+            title="${isSelected ? 'Quitar de mi selección' : 'Añadir a mi selección'}"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+          </button>
         </div>
 
         <div class="product-info">
@@ -313,18 +328,19 @@ function renderProductCards(items) {
               Ver Detalles
             </button>
 
-            <a 
-              href="https://wa.me/584141536516?text=${whatsappMsg}" 
-              target="_blank" 
-              rel="noopener noreferrer" 
-              class="btn btn-whatsapp btn-sm"
-              aria-label="Cotizar ${escapeHTML(item.title)} por WhatsApp"
+            <button 
+              type="button" 
+              class="btn btn-outline-gold btn-sm toggle-select-btn" 
+              data-select-id="${escapeHTML(item.id)}"
+              aria-label="${isSelected ? 'Quitar de la consulta' : 'Añadir a la consulta'}"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <path d="M16 10a4 4 0 0 1-8 0"></path>
               </svg>
-              Cotizar
-            </a>
+              <span>${isSelected ? 'Seleccionado ✓' : 'Consultar'}</span>
+            </button>
           </div>
         </div>
       </article>
@@ -477,6 +493,27 @@ export function setupCatalogPageEvents() {
         if (searchInput) searchInput.value = '';
         if (clearSearchBtn) clearSearchBtn.style.display = 'none';
         applyFilter('todos');
+      }
+
+      // Toggle product selection (Checkmark or Consultar button)
+      const selectBtn = e.target.closest('.product-select-check, .toggle-select-btn');
+      if (selectBtn) {
+        e.preventDefault();
+        e.stopPropagation();
+        const productId = selectBtn.getAttribute('data-select-id');
+        if (productId) {
+          const isNowSelected = toggleProductSelection(productId);
+          
+          // Update the button text if it's the action button
+          const card = selectBtn.closest('.product-card');
+          if (card) {
+            const actionBtnText = card.querySelector('.toggle-select-btn span');
+            if (actionBtnText) {
+              actionBtnText.textContent = isNowSelected ? 'Seleccionado ✓' : 'Consultar';
+            }
+          }
+        }
+        return;
       }
 
       // Open details modal

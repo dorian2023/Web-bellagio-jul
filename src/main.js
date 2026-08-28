@@ -14,6 +14,7 @@ import { initTheme } from './utils/theme.js';
 import { initScrollEffects } from './utils/scroll.js';
 import { initLightbox } from './utils/lightbox.js';
 import { initRouter } from './utils/router.js';
+import { renderInquiryFAB, renderInquiryModal, setupInquiryCartEvents } from './utils/inquiry-cart.js';
 
 /**
  * Bootstraps the application.
@@ -29,6 +30,8 @@ function initApp() {
     <main id="mainContent">
       <!-- Routed views dynamically injected by router.js -->
     </main>
+    ${renderInquiryFAB()}
+    ${renderInquiryModal()}
     ${renderScrollTopButton()}
     ${renderWhatsAppWidget()}
     ${renderFooter()}
@@ -36,6 +39,9 @@ function initApp() {
 
   // Initialize lightbox modal
   initLightbox();
+
+  // Initialize WhatsApp Inquiry Cart events (Option 3)
+  setupInquiryCartEvents();
 
   // Initialize theme manager (Dark / Light)
   const themeToggleBtn = document.getElementById('themeToggleBtn');

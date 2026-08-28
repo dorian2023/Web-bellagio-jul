@@ -44,8 +44,8 @@ export function renderHero() {
           <span class="hero-kicker-tag">Colección Exclusiva 2026</span>
           
           <h1 class="hero-cinematic-title">
-            Alta Ebanistería <br />
-            <span class="gold-text-glow">&amp; Diseño de Autor</span>
+            Muebles Bellagio <br />
+            <span class="gold-text-glow">Bienvenidos a casa</span>
           </h1>
 
           <p class="hero-cinematic-subtitle">
@@ -67,7 +67,7 @@ export function renderHero() {
                 <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
                 <circle cx="12" cy="10" r="3"></circle>
               </svg>
-              <span>Nuestras 3 Tiendas</span>
+              <span>Nuestras Tiendas</span>
             </a>
           </div>
 
@@ -80,7 +80,7 @@ export function renderHero() {
             <div class="strip-separator"></div>
             <div class="strip-stat-item">
               <strong class="gold-text">17</strong>
-              <span>Categorías de Autor</span>
+              <span>Categorías</span>
             </div>
             <div class="strip-separator"></div>
             <div class="strip-stat-item">

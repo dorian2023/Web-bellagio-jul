@@ -230,9 +230,9 @@
 [data-theme="light"] .hero-video-overlay {
   background: radial-gradient(
     circle at 50% 45%, 
-    rgba(247, 246, 242, 0.25) 0%, 
-    rgba(247, 246, 242, 0.6) 55%, 
-    rgba(247, 246, 242, 0.92) 100%
+    rgba(11, 11, 13, 0.45) 0%, 
+    rgba(11, 11, 13, 0.70) 55%, 
+    rgba(11, 11, 13, 0.90) 100%
   );
 }
 
@@ -325,8 +325,8 @@
   font-size: clamp(2.2rem, 5.2vw, 3.8rem);
   line-height: 1.12;
   margin-bottom: var(--space-4);
-  color: var(--color-text-primary);
-  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  color: #FFFFFF;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
 }
 
 .gold-text-glow {
@@ -339,10 +339,11 @@
 
 .hero-cinematic-subtitle {
   font-size: clamp(0.95rem, 2vw, 1.12rem);
-  color: var(--color-text-secondary);
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.6;
   max-width: 660px;
   margin-bottom: var(--space-8);
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
 }
 
 /* CTA Group */
@@ -1689,10 +1690,10 @@
   [data-theme="light"] .hero-video-overlay {
     background: linear-gradient(
       180deg, 
-      rgba(247, 246, 242, 0.15) 0%, 
-      rgba(247, 246, 242, 0.45) 45%, 
-      rgba(247, 246, 242, 0.88) 75%, 
-      rgba(247, 246, 242, 0.98) 100%
+      rgba(11, 11, 13, 0.35) 0%, 
+      rgba(11, 11, 13, 0.60) 45%, 
+      rgba(11, 11, 13, 0.90) 75%, 
+      #0B0B0D 100%
     );
   }
 

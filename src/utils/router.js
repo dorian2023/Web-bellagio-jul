@@ -10,6 +10,9 @@ import { renderStores } from '../components/stores.js';
 import { renderCatalogs, setupCatalogsEvents } from '../components/catalogs.js';
 import { renderContact, setupContactEvents } from '../components/contact.js';
 import { renderCatalogPage, setupCatalogPageEvents } from '../views/catalog-page.js';
+import { renderAdminPage, setupAdminPageEvents } from '../views/admin-page.js';
+import { fetchPublicCatalog } from '../services/products.js';
+import { setCatalogData } from '../services/catalog-store.js';
 import { reattachRevealObservers } from '../utils/scroll.js';
 
 /**
@@ -23,7 +26,9 @@ export function initRouter() {
 /**
  * Handles route resolution based on window.location.hash.
  */
-export function handleRoute() {
+let catalogDataPromise;
+
+export async function handleRoute() {
   const mainContent = document.getElementById('mainContent');
   if (!mainContent) return;
 
@@ -32,6 +37,16 @@ export function handleRoute() {
 
   // Update active state in Navbar
   updateNavbarActiveState(rawHash);
+
+  if (normalizedHash.startsWith('admin')) {
+    mainContent.innerHTML = '<div class="admin-loading">Cargando panel...</div>';
+    mainContent.innerHTML = await renderAdminPage();
+    setupAdminPageEvents();
+    return;
+  }
+
+  if (!catalogDataPromise) catalogDataPromise = fetchPublicCatalog();
+  setCatalogData(await catalogDataPromise);
 
   // Dedicated Catalog View
   if (normalizedHash.startsWith('catalogo')) {

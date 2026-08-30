@@ -3,10 +3,12 @@
  * @description Dedicated Luxury Catalog Page view with Mega-Selector Dropdown (Option 1), quick filters, real-time search, and product modal.
  */
 
-import { CATEGORIES_DATA, CATALOGS_DATA } from '../data/catalogs.js';
+import { getCatalogCategories, getCatalogProducts } from '../services/catalog-store.js';
 import { escapeHTML } from '../utils/security.js';
-import { openProductModal } from '../utils/lightbox.js';
+import { openProductModal, openProductVideo } from '../utils/lightbox.js';
 import { isProductSelected, toggleProductSelection } from '../utils/inquiry-cart.js';
+import { getOptimizedImageUrl } from '../utils/image-optimization.js';
+import { extractYouTubeId } from '../utils/media.js';
 
 let currentFilter = 'todos';
 let currentSearch = '';
@@ -46,10 +48,12 @@ function getCategoryIcon(categoryId) {
  * @returns {string}
  */
 export function renderCatalogPage() {
-  const activeCategoryObj = CATEGORIES_DATA.find(c => c.id === currentFilter) || CATEGORIES_DATA[0];
+  const categories = getCatalogCategories();
+  const products = getCatalogProducts();
+  const activeCategoryObj = categories.find(c => c.id === currentFilter) || categories[0];
 
-  // Mega-menu category buttons (all 17 in alphabetical order + Todos)
-  const megaMenuCategoriesHTML = CATEGORIES_DATA.map(cat => {
+  // Mega-menu category buttons in alphabetical order plus Todos.
+  const megaMenuCategoriesHTML = categories.map(cat => {
     const isActive = cat.id === currentFilter ? 'active' : '';
     return `
       <button 
@@ -77,7 +81,7 @@ export function renderCatalogPage() {
   // 4 Top Quick-Access Categories (for instant 1-click filtering)
   const quickAccessList = ['todos', 'sofas', 'comedores', 'dormitorios', 'poltronas'];
   const quickAccessHTML = quickAccessList.map(catId => {
-    const cat = CATEGORIES_DATA.find(c => c.id === catId);
+    const cat = categories.find(c => c.id === catId);
     if (!cat) return '';
     const isActive = cat.id === currentFilter ? 'active' : '';
     return `
@@ -109,13 +113,12 @@ export function renderCatalogPage() {
           </nav>
 
           <div class="catalog-hero-content">
-            <span class="section-tag">Colecciones de Alta Ebanistería</span>
+            <div class="catalog-hero-brand-mark">
+              <img src="/logo.svg" alt="Muebles Bellagio" width="76" height="76">
+            </div>
             <h1 class="catalog-hero-title">
               Catálogo de <span class="gold-text">Muebles de Lujo</span>
             </h1>
-            <p class="catalog-hero-subtitle">
-              Explora nuestra selecta curaduría de piezas en 17 categorías exclusivas para residencias, oficinas de alta dirección y proyectos de interiorismo en Caracas.
-            </p>
 
             <!-- Real-time Search Box -->
             <div class="catalog-search-wrapper">
@@ -172,12 +175,12 @@ export function renderCatalogPage() {
                 </div>
               </button>
 
-              <!-- Mega Dropdown Curtain (3/4 Columns Grid of all 17 categories) -->
+              <!-- Mega Dropdown Curtain with all categories -->
               <div class="mega-dropdown-curtain" id="megaDropdownCurtain">
                 <div class="mega-dropdown-header">
                   <div class="mega-dropdown-title-group">
                     <span class="section-tag" style="margin-bottom: 2px;">Directorio de Colecciones</span>
-                    <h4>Selecciona una Categoría (17 en orden A-Z)</h4>
+                    <h4>Selecciona una Categoría</h4>
                   </div>
                   <button type="button" class="mega-dropdown-close-btn" id="closeMegaDropdownBtn" aria-label="Cerrar menú de categorías">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -203,7 +206,7 @@ export function renderCatalogPage() {
 
             <!-- Live Results Counter Badge -->
             <div class="catalog-live-count-badge">
-              <span id="catalogResultsCount" class="results-badge">Mostrando ${CATALOGS_DATA.length} piezas</span>
+              <span id="catalogResultsCount" class="results-badge">Mostrando ${products.length} piezas</span>
             </div>
 
           </div>
@@ -227,7 +230,7 @@ export function renderCatalogPage() {
  * @returns {Array}
  */
 function getFilteredCatalog() {
-  return CATALOGS_DATA.filter(item => {
+  return getCatalogProducts().filter(item => {
     const matchesCategory = currentFilter === 'todos' || item.category === currentFilter;
     const query = currentSearch.toLowerCase().trim();
     const matchesSearch = !query || 
@@ -268,6 +271,7 @@ function renderProductCards(items) {
 
   return items.map(item => {
     const isSelected = isProductSelected(item.id);
+    const hasVideo = Boolean(extractYouTubeId(item.youtubeUrl));
     const whatsappMsg = encodeURIComponent(
       `Hola Muebles Bellagio, deseo información y cotización de la pieza: "${item.title}" (${item.categoryName}).`
     );
@@ -276,7 +280,7 @@ function renderProductCards(items) {
       <article class="luxury-card product-card ${isSelected ? 'product-selected' : ''}" data-product-id="${escapeHTML(item.id)}">
         <div class="product-image-box">
           <img 
-            src="${escapeHTML(item.image)}" 
+            src="${escapeHTML(getOptimizedImageUrl(item.image, 720, 540))}"
             alt="${escapeHTML(item.title)}" 
             class="product-img"
             loading="lazy"
@@ -284,6 +288,11 @@ function renderProductCards(items) {
             height="300"
           />
           <span class="product-category-badge">${escapeHTML(item.categoryName)}</span>
+          ${hasVideo ? `
+            <button type="button" class="product-video-button" data-video-product-id="${escapeHTML(item.id)}" aria-label="Ver video de ${escapeHTML(item.title)}" title="Ver video del producto">
+              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.53.85l10.04-6.86a1.03 1.03 0 0 0 0-1.7L9.53 4.29A1 1 0 0 0 8 5.14Z"></path></svg>
+            </button>
+          ` : ''}
           
           <!-- Interactive Luxury Checkmark Selection Button -->
           <button 
@@ -380,7 +389,8 @@ export function setupCatalogPageEvents() {
   // Update UI and active states
   function applyFilter(categoryId) {
     currentFilter = categoryId;
-    const categoryObj = CATEGORIES_DATA.find(c => c.id === categoryId) || CATEGORIES_DATA[0];
+    const categories = getCatalogCategories();
+    const categoryObj = categories.find(c => c.id === categoryId) || categories[0];
 
     // Update Mega-Selector trigger text and icon
     if (currentCategoryNameEl) {
@@ -517,10 +527,17 @@ export function setupCatalogPageEvents() {
       }
 
       // Open details modal
+      const videoBtn = e.target.closest('.product-video-button');
+      if (videoBtn) {
+        const product = getCatalogProducts().find(p => p.id === videoBtn.getAttribute('data-video-product-id'));
+        if (product) openProductVideo(product);
+        return;
+      }
+
       const detailsBtn = e.target.closest('.open-details-btn');
       if (detailsBtn) {
         const productId = detailsBtn.getAttribute('data-product-id');
-        const product = CATALOGS_DATA.find(p => p.id === productId);
+        const product = getCatalogProducts().find(p => p.id === productId);
         if (product) {
           openProductModal(product);
         }

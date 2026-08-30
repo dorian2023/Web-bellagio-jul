@@ -1,15 +1,17 @@
 /**
  * @file catalogs.js
- * @description Landing page flagship catalog preview showcase with direct link to the dedicated 17-category catalog page.
+ * @description Landing page flagship catalog preview showcase with direct link to the dedicated catalog page.
  */
 
-import { CATALOGS_DATA } from '../data/catalogs.js';
+import { getCatalogCategories, getCatalogProducts } from '../services/catalog-store.js';
 import { escapeHTML } from '../utils/security.js';
 import { openCatalogModal } from '../utils/lightbox.js';
+import { getOptimizedImageUrl } from '../utils/image-optimization.js';
 
 export function renderCatalogs() {
   // Show 6 flagship highlight pieces on the landing page
-  const featuredItems = CATALOGS_DATA.slice(0, 6);
+  const featuredItems = getCatalogProducts().slice(0, 6);
+  const categoryCount = Math.max(getCatalogCategories().length - 1, 0);
 
   const catalogItemsHTML = featuredItems.map((item, idx) => {
     const delayClass = `reveal-delay-${(idx % 3) + 1}`;
@@ -17,7 +19,7 @@ export function renderCatalogs() {
       <div class="catalog-item-card reveal-item ${delayClass}">
         <div class="catalog-img-container">
           <img 
-            src="${escapeHTML(item.image)}" 
+            src="${escapeHTML(getOptimizedImageUrl(item.image, 600, 360))}"
             alt="${escapeHTML(item.title)}" 
             class="catalog-img"
             width="400"
@@ -62,7 +64,7 @@ export function renderCatalogs() {
             Nuestros <span class="gold-text">Catálogos de Lujo</span>
           </h2>
           <p class="section-subtitle">
-            Explora una muestra destacada de nuestras 17 categorías de mobiliario de autor para residencias y oficinas.
+            Explora una muestra destacada de nuestras ${categoryCount} categorías de mobiliario de autor para residencias y oficinas.
           </p>
         </header>
 
@@ -74,7 +76,7 @@ export function renderCatalogs() {
         <!-- Big CTA Button to Dedicated Catalog Page -->
         <div class="reveal-item" style="text-align: center; margin-top: var(--space-10);">
           <a href="#/catalogo" class="btn btn-primary btn-lg" style="padding: 1.1rem 2.8rem; font-size: 1rem; box-shadow: var(--shadow-gold);">
-            <span>Ver Catálogo Completo (17 Categorías A-Z)</span>
+            <span>Ver Catálogo Completo</span>
             <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <line x1="5" y1="12" x2="19" y2="12"></line>
               <polyline points="12 5 19 12 12 19"></polyline>

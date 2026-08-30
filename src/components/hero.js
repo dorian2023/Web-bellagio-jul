@@ -3,7 +3,10 @@
  * @description Hero Option 3: Cinematic Fullscreen Video Background with Luxury Glassmorphism Floating Centerpiece.
  */
 
+import { getCatalogCategories } from '../services/catalog-store.js';
+
 export function renderHero() {
+  const categoryCount = Math.max(getCatalogCategories().length - 1, 0);
   return `
     <section id="inicio" class="hero-cinematic-section" aria-label="Inicio - Muebles Bellagio">
       <!-- Fullscreen Video & Poster Background -->
@@ -39,8 +42,8 @@ export function renderHero() {
               src="/logo.jpg" 
               alt="Muebles Bellagio" 
               class="hero-logo-circle"
-              width="90"
-              height="90"
+              width="156"
+              height="156"
               loading="eager"
             />
           </div>
@@ -54,7 +57,7 @@ export function renderHero() {
           </h1>
 
           <p class="hero-cinematic-subtitle">
-            Desde Caracas para hogares de distinción. Piezas exclusivas de alta gama fabricadas con mármol noble, maderas selectas y tapicería europea contemporánea.
+            Desde Caracas para hogares de distinción. Piezas exclusivas de alta gama fabricadas con los materiales de más alto estándar en el mercado venezolano. Así como productos importados de excelente calidad.
           </p>
 
           <!-- Action Buttons Group -->
@@ -84,7 +87,7 @@ export function renderHero() {
             </div>
             <div class="strip-separator"></div>
             <div class="strip-stat-item">
-              <strong class="gold-text">17</strong>
+              <strong class="gold-text">${categoryCount}</strong>
               <span>Categorías</span>
             </div>
             <div class="strip-separator"></div>

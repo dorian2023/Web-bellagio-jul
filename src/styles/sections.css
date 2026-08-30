@@ -286,8 +286,8 @@
 }
 
 .hero-logo-circle {
-  width: 84px;
-  height: 84px;
+  width: clamp(125px, 13vw, 156px);
+  height: clamp(125px, 13vw, 156px);
   border-radius: 50%;
   object-fit: cover;
   border: 2px solid var(--gold-400);
@@ -883,10 +883,36 @@
   margin: 0 auto;
 }
 
+.catalog-hero-brand-mark {
+  width: clamp(125px, 13vw, 156px);
+  height: clamp(125px, 13vw, 156px);
+  margin: 0 auto var(--space-6);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.16));
+  transition: transform 220ms ease, filter 220ms ease;
+}
+
+.catalog-hero-brand-mark:hover {
+  transform: translateY(-3px) scale(1.04);
+  filter: drop-shadow(0 12px 20px rgba(197, 165, 90, 0.25));
+}
+
+.catalog-hero-brand-mark img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .catalog-hero-brand-mark {
+    width: 101px;
+    height: 101px;
+  }
+}
+
 .catalog-hero-title {
   font-size: clamp(2.2rem, 5vw, 3.4rem);
   font-family: var(--font-display);
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-8);
   line-height: 1.15;
 }
 
@@ -1291,6 +1317,7 @@
   display: flex;
   flex-direction: column;
   height: 100%;
+  padding: 0;
   border-radius: var(--radius-lg);
   overflow: hidden;
   border: 1px solid var(--color-border-subtle);
@@ -1310,6 +1337,40 @@
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: #000;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.product-image-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.12), transparent 42%, rgba(0, 0, 0, 0.18));
+  pointer-events: none;
+}
+
+.product-video-button {
+  position: absolute;
+  right: 14px;
+  bottom: 14px;
+  z-index: 4;
+  width: 44px;
+  height: 44px;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 50%;
+  background: rgba(22, 22, 22, 0.78);
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+  transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+}
+
+.product-video-button:hover,
+.product-video-button:focus-visible {
+  background: var(--gold-500);
+  color: #17130b;
+  transform: scale(1.08);
 }
 
 .product-img {
@@ -1338,6 +1399,7 @@
   font-weight: 700;
   letter-spacing: 0.05em;
   text-transform: uppercase;
+  z-index: 2;
 }
 
 .product-info {
@@ -1757,8 +1819,8 @@
   }
 
   .hero-logo-circle {
-    width: 58px;
-    height: 58px;
+    width: 101px;
+    height: 101px;
     border: 1.5px solid var(--gold-400);
     box-shadow: 0 0 16px rgba(212, 175, 55, 0.5);
   }

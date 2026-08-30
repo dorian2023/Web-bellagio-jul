@@ -4,8 +4,9 @@
  * Allows customers to select products of interest and send a consolidated inquiry via WhatsApp.
  */
 
-import { CATALOGS_DATA } from '../data/catalogs.js';
+import { getCatalogProducts } from '../services/catalog-store.js';
 import { escapeHTML } from '../utils/security.js';
+import { getOptimizedImageUrl } from './image-optimization.js';
 
 /** @type {Set<string>} Selected product IDs */
 const selectedProducts = new Set();
@@ -198,7 +199,7 @@ function populateModal() {
 
   if (!body) return;
 
-  const selected = CATALOGS_DATA.filter(p => selectedProducts.has(p.id));
+  const selected = getCatalogProducts().filter(p => selectedProducts.has(p.id));
 
   if (countEl) {
     countEl.textContent = `${selected.length} ${selected.length === 1 ? 'pieza seleccionada' : 'piezas seleccionadas'}`;
@@ -227,7 +228,7 @@ function populateModal() {
       ${selected.map(item => `
         <div class="inquiry-product-card" data-remove-id="${escapeHTML(item.id)}">
           <div class="inquiry-product-img-box">
-            <img src="${escapeHTML(item.image)}" alt="${escapeHTML(item.title)}" loading="lazy" width="200" height="150" />
+            <img src="${escapeHTML(getOptimizedImageUrl(item.image, 240, 180))}" alt="${escapeHTML(item.title)}" loading="lazy" width="200" height="150" />
             <button type="button" class="inquiry-remove-btn" data-remove-id="${escapeHTML(item.id)}" aria-label="Quitar ${escapeHTML(item.title)}">
               <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
@@ -257,7 +258,7 @@ function updateWhatsAppLink() {
   const customMessageEl = document.getElementById('inquiryCustomMessage');
   if (!sendBtn) return;
 
-  const selected = CATALOGS_DATA.filter(p => selectedProducts.has(p.id));
+  const selected = getCatalogProducts().filter(p => selectedProducts.has(p.id));
   const customMessage = customMessageEl?.value?.trim() || '';
 
   let message = `✨ *Consulta de Productos - Muebles Bellagio*\n\n`;

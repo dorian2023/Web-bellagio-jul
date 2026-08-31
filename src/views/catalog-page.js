@@ -287,7 +287,6 @@ function renderProductCards(items) {
             width="400"
             height="300"
           />
-          <span class="product-category-badge">${escapeHTML(item.categoryName)}</span>
           ${hasVideo ? `
             <button type="button" class="product-video-button" data-video-product-id="${escapeHTML(item.id)}" aria-label="Ver video de ${escapeHTML(item.title)}" title="Ver video del producto">
               <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.53.85l10.04-6.86a1.03 1.03 0 0 0 0-1.7L9.53 4.29A1 1 0 0 0 8 5.14Z"></path></svg>
@@ -309,20 +308,10 @@ function renderProductCards(items) {
         </div>
 
         <div class="product-info">
-          <h3 class="product-title">${escapeHTML(item.title)}</h3>
-          <p class="product-subtitle">${escapeHTML(item.subtitle)}</p>
-
-          <div class="product-specs-summary">
-            <div class="spec-row">
-              <span class="spec-label">Materiales:</span>
-              <span class="spec-value">${escapeHTML(item.materials)}</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-label">Medidas:</span>
-              <span class="spec-value">${escapeHTML(item.dimensions)}</span>
-            </div>
+          <div class="product-copy">
+            <h3 class="product-title">${escapeHTML(item.title)}</h3>
+            <p class="product-subtitle">${escapeHTML(item.subtitle)}</p>
           </div>
-
           <div class="product-card-actions">
             <button 
               type="button" 
@@ -330,11 +319,11 @@ function renderProductCards(items) {
               data-product-id="${escapeHTML(item.id)}"
               aria-label="Ver ficha técnica de ${escapeHTML(item.title)}"
             >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                <circle cx="12" cy="12" r="2.5"></circle>
               </svg>
-              Ver Detalles
+              Detalle
             </button>
 
             <button 

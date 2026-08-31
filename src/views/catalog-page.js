@@ -283,6 +283,7 @@ function renderProductCards(items) {
             src="${escapeHTML(getOptimizedImageUrl(item.image, 720, 540))}"
             alt="${escapeHTML(item.title)}" 
             class="product-img"
+            style="object-position: center 56%;"
             loading="lazy"
             width="400"
             height="300"

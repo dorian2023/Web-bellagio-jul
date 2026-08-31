@@ -1442,7 +1442,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 12%, transparent 38%, rgba(0, 0, 0, 0.92) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 12%, transparent 42%, rgba(0, 0, 0, 0.78) 100%);
   pointer-events: none;
 }
 

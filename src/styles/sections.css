@@ -549,10 +549,16 @@
 }
 
 .about-logo-img {
-  object-fit: contain;
+  width: min(100%, 420px);
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  display: block;
+  margin-inline: auto;
   padding: 0;
   background: transparent;
-  clip-path: circle(41% at 50% 50%);
+  border-radius: 50%;
+  clip-path: circle(50% at 50% 50%);
   filter: drop-shadow(0 10px 24px rgba(197, 165, 90, 0.22));
 }
 
@@ -2118,6 +2124,14 @@
   .about-img {
     height: 250px;
     border-radius: var(--radius-lg);
+  }
+
+  .about-logo-img {
+    width: min(100%, 340px);
+    height: auto;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    clip-path: circle(50% at 50% 50%);
   }
 
   .stats-grid {

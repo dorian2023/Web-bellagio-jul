@@ -10,7 +10,7 @@ export function renderCatalogs() {
         <div class="catalog-entrance reveal-item">
           <div class="catalog-entrance-mark" aria-hidden="true">
             <span></span>
-            <img src="/logo.svg" alt="" width="72" height="72">
+            <img src="/logo.png" alt="" width="72" height="72">
             <span></span>
           </div>
           <span class="section-tag">Colección Bellagio</span>

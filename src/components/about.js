@@ -22,9 +22,9 @@ export function renderAbout() {
           <!-- Image -->
           <div class="about-image-wrapper reveal-item">
             <img 
-              src="https://images.unsplash.com/photo-1616486338812-3dadae4b4ace?auto=format&fit=crop&w=1200&q=80" 
-              alt="Mobiliario de diseño Bellagio en Caracas" 
-              class="about-img"
+              src="/logo.png" 
+              alt="Logo de Muebles Bellagio" 
+              class="about-img about-logo-img"
               width="600"
               height="420"
               loading="lazy"
@@ -39,7 +39,7 @@ export function renderAbout() {
               <span class="gold-text">Distinción & Confort</span>
             </h2>
             <p style="margin-bottom: var(--space-4);">
-              En <strong>Muebles Bellagio</strong> concebimos cada pieza como una obra de arte funcional. Combinamos técnicas de ebanistería tradicional con las últimas tendencias de diseño internacional en mármol, pieles seleccionadas y maderas finas.
+              En <strong>Muebles Bellagio</strong> concebimos cada pieza como una obra de arte funcional. Combinamos técnicas de ebanistería tradicional con las últimas tendencias de diseño internacional y una selección de productos importados de excelente calidad.
             </p>
 
 

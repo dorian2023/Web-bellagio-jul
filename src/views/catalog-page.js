@@ -114,7 +114,7 @@ export function renderCatalogPage() {
 
           <div class="catalog-hero-content">
             <div class="catalog-hero-brand-mark">
-              <img src="/logo.svg" alt="Muebles Bellagio" width="76" height="76">
+              <img src="/logo.png" alt="Muebles Bellagio" width="76" height="76">
             </div>
             <h1 class="catalog-hero-title">
               Catálogo de <span class="gold-text">Muebles de Lujo</span>

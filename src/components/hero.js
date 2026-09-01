@@ -39,7 +39,7 @@ export function renderHero() {
           <!-- Bellagio Logo -->
           <div class="hero-logo-wrapper">
             <img 
-              src="/logo.jpg" 
+              src="/logo.png" 
               alt="Muebles Bellagio" 
               class="hero-logo-circle"
               width="156"

@@ -5,16 +5,16 @@
 
 export const STATS_DATA = [
   {
-    value: 15,
+    value: 17,
     suffix: '+',
     label: 'Años de Trayectoria',
-    description: 'Liderando el diseño de muebles de alta gama en Venezuela'
+    description: 'Más de 17 años creando espacios de alta gama en Venezuela'
   },
   {
     value: 100,
     suffix: '%',
     label: 'Diseño Exclusivo',
-    description: 'Showrooms y colecciones de autor para espacios únicos'
+    description: 'Diseño exclusivo y productos importados de excelente calidad'
   },
   {
     value: 10000,
@@ -26,6 +26,6 @@ export const STATS_DATA = [
     value: 100,
     suffix: '%',
     label: 'Garantía & Excelencia',
-    description: 'Materiales nobles y servicio de postventa personalizado'
+    description: 'Servicio de postventa ante novedades de fabricación, acabados o producto'
   }
 ];

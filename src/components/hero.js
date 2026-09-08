@@ -3,6 +3,8 @@
  * @description Hero Option 3: Cinematic Fullscreen Video Background with Luxury Glassmorphism Floating Centerpiece.
  */
 
+import { setupBackgroundVideo } from '../utils/background-video.js';
+
 import { getCatalogCategories } from '../services/catalog-store.js';
 
 export function renderHero() {
@@ -14,19 +16,18 @@ export function renderHero() {
         <video 
           id="heroBackgroundVideo"
           class="hero-video-bg" 
-          autoplay 
           loop 
           muted 
           playsinline 
           webkit-playsinline="true"
           x5-playsinline="true"
-          preload="auto"
-          poster="/images/hero-poster.webp"
+          preload="none"
+          data-src="/videos/tienda-principal.mp4"
+          poster="/images/hero-video-poster.webp"
           disablepictureinpicture
           disableremoteplayback
           aria-hidden="true"
         >
-          <source src="/videos/tienda-principal.mp4" type="video/mp4" />
         </video>
         <div class="hero-video-overlay"></div>
         <div class="hero-particles-glow"></div>
@@ -34,7 +35,7 @@ export function renderHero() {
 
       <div class="container hero-cinematic-container">
         <!-- Floating Glassmorphism Centerpiece Card -->
-        <div class="hero-glass-card reveal-item">
+        <div class="hero-glass-card">
           
           <!-- Bellagio Logo -->
           <div class="hero-logo-wrapper">
@@ -82,12 +83,12 @@ export function renderHero() {
           <!-- Quick Highlights Bar -->
           <div class="hero-stats-strip">
             <div class="strip-stat-item">
-              <strong class="gold-text">+2,500</strong>
+              <strong class="gold-text">+10.000</strong>
               <span>Espacios Amoblados</span>
             </div>
             <div class="strip-separator"></div>
             <div class="strip-stat-item">
-              <strong class="gold-text">${categoryCount}</strong>
+              <strong class="gold-text" id="heroCategoryCount">${categoryCount}</strong>
               <span>Categorías</span>
             </div>
             <div class="strip-separator"></div>
@@ -111,42 +112,15 @@ export function renderHero() {
   `;
 }
 
-/**
- * Ensures mobile browsers play the background video immediately,
- * handling browser energy/data-saver policies with interaction fallbacks.
- */
+let disposeHeroVideo = () => {};
+
+export function cleanupHeroEvents() {
+  disposeHeroVideo();
+  disposeHeroVideo = () => {};
+}
+
 export function setupHeroEvents() {
+  cleanupHeroEvents();
   const video = document.getElementById('heroBackgroundVideo');
-  if (!video) return;
-
-  video.muted = true;
-  video.defaultMuted = true;
-
-  const tryPlay = () => {
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Fallback: trigger playback on first user touch/scroll
-        const triggerOnFirstInteraction = () => {
-          video.play().catch(() => { });
-          window.removeEventListener('touchstart', triggerOnFirstInteraction);
-          window.removeEventListener('scroll', triggerOnFirstInteraction);
-          window.removeEventListener('click', triggerOnFirstInteraction);
-        };
-        window.addEventListener('touchstart', triggerOnFirstInteraction, { once: true, passive: true });
-        window.addEventListener('scroll', triggerOnFirstInteraction, { once: true, passive: true });
-        window.addEventListener('click', triggerOnFirstInteraction, { once: true, passive: true });
-      });
-    }
-  };
-
-  // Immediate attempt
-  tryPlay();
-
-  // Retry when video data is ready
-  if (video.readyState >= 2) {
-    tryPlay();
-  } else {
-    video.addEventListener('loadeddata', tryPlay, { once: true });
-  }
+  if (video) disposeHeroVideo = setupBackgroundVideo(video);
 }

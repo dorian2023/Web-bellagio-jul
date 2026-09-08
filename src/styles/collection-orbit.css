@@ -1,0 +1,36 @@
+/* Product cards follow a vertical arc, with the nearest card at the left. */
+.collection-showcase { display: grid; grid-template-columns: .9fr 1.1fr; align-items: center; min-height: 760px; }
+.collection-showcase .catalog-entrance { padding: 4rem 1rem 4rem 0; text-align: center; z-index: 2; }
+.collection-showcase .catalog-entrance::before { display: none; }
+.collection-showcase .catalog-entrance-mark { justify-content: center; }
+.collection-showcase .catalog-entrance-mark img { width: 100px; height: 100px; }
+.collection-showcase .catalog-entrance-mark span { width: 64px; }
+.collection-showcase .section-title { font-size: clamp(2.3rem, 3.5vw, 3.5rem); }
+.collection-showcase .section-subtitle { max-width: 440px; margin-inline: auto; }
+.collection-orbit { position: relative; height: 760px; min-width: 0; overflow: hidden; isolation: isolate; mask-image: linear-gradient(transparent, #000 12%, #000 88%, transparent); }
+.collection-orbit-card { position: absolute; top: calc(50% - 175px); left: 18px; width: 85%; height: 350px; border: 1px solid rgba(197,165,90,.28); border-radius: 22px; padding: 0; overflow: hidden; background: var(--color-bg-surface); color: var(--color-text-primary); text-align: left; cursor: pointer; box-shadow: 0 18px 45px #00000020; will-change: transform; }
+.collection-orbit-card img { width: 100%; height: 100%; object-fit: cover; }
+.collection-orbit-caption { position: absolute; inset: auto 0 0; padding: 42px 22px 22px; background: linear-gradient(transparent, #000c); color: #fff; }
+.collection-orbit-caption small { display: block; margin-bottom: 6px; font: 500 .65rem var(--font-accent); text-transform: uppercase; letter-spacing: .16em; }
+.collection-orbit-caption strong { display: block; padding-right: 25px; font: 500 1.15rem var(--font-sans); }
+.collection-orbit-caption > span { position: absolute; right: 22px; bottom: 22px; font-size: 1.5rem; }
+.collection-orbit-card:focus-visible { outline: 3px solid var(--gold-500); outline-offset: 4px; }
+.collection-orbit.is-static { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; height: auto; padding: 24px 8px; mask-image: none; }
+.collection-orbit.is-static .collection-orbit-card { position: relative; inset: auto; width: 100%; height: auto; aspect-ratio: 4/3; will-change: auto; }
+.collection-orbit.is-static .collection-orbit-caption { padding: 30px 12px 12px; }
+.collection-orbit.is-static .collection-orbit-caption strong { font-size: .85rem; }
+@media (max-width: 900px) {
+  .collection-showcase { grid-template-columns: 1fr; min-height: 0; }
+  .collection-showcase .catalog-entrance { text-align: center; padding: 3rem 0 0; }
+  .collection-showcase .catalog-entrance-mark { justify-content: center; }
+  .collection-showcase .section-subtitle { max-width: 550px; }
+  .collection-orbit { height: 560px; width: min(100%, 660px); margin-inline: auto; }
+  .collection-orbit-card { height: 285px; top: calc(50% - 142.5px); left: 10px; width: 82%; }
+}
+@media (max-width: 480px) {
+  .collection-orbit { height: 440px; }
+  .collection-orbit-card { height: 240px; top: calc(50% - 120px); border-radius: 16px; width: 88%; }
+  .collection-orbit-caption { padding: 36px 16px 16px; }
+  .collection-orbit-caption strong { font-size: .95rem; }
+  .collection-orbit.is-static { grid-template-columns: 1fr; }
+}

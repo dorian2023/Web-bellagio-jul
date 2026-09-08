@@ -16,7 +16,7 @@ export function renderAbout() {
   `).join('');
 
   return `
-    <section class="section-wrapper about-section" aria-label="Sobre Muebles Bellagio">
+    <section id="sobre-nosotros" class="section-wrapper about-section" aria-label="Sobre Muebles Bellagio">
       <div class="container">
         <div class="about-grid">
           <!-- Image -->

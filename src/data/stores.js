@@ -15,7 +15,7 @@ export const STORES_DATA = [
     phone: '+58 212-0000000',
     mobile: '+58 414-1536516',
     whatsapp: '584141536516',
-    schedule: 'Lunes a Sábado: 9:00 AM - 5:00 PM',
+    schedule: 'Lunes a sábado: 9:00 AM - 5:00 PM. Domingos: 10:00 AM - 3:00 PM',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Av+Comercio+Caracas+Venezuela',
     features: ['Showroom de Exhibición', 'Estacionamiento Privado', 'Asesoría de Interiorismo In-Situ']
   },
@@ -30,7 +30,7 @@ export const STORES_DATA = [
     phone: '+58 212-0000001',
     mobile: '+58 414-1536516',
     whatsapp: '584141536516',
-    schedule: 'Lunes a Sábado: 9:00 AM - 5:00 PM',
+    schedule: 'Lunes a sábado: 9:00 AM - 5:00 PM. Domingos: 10:00 AM - 3:00 PM',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Centro+Comercial+Davinci+La+Yaguara+Caracas',
     features: ['Colecciones Importadas', 'Zona de Tapicería Premium', 'Atención Personalizada']
   },
@@ -45,8 +45,8 @@ export const STORES_DATA = [
     phone: '+58 212-0000002',
     mobile: '+58 414-1536516',
     whatsapp: '584141536516',
-    schedule: 'Lunes a Domingo: 10:00 AM - 7:00 PM',
+    schedule: 'Lunes a sábado: 10:00 AM - 7:00 PM. Domingos: cerrado',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Casa+Mall+Los+Naranjos+Caracas',
-    features: ['Diseño de Vanguardia', 'Abierto los Domingos', 'Servicio de Proyectos 3D']
+    features: ['Diseño de Vanguardia', 'Servicio de Proyectos 3D']
   }
 ];

@@ -2,7 +2,7 @@
 <html lang="es" data-theme="dark" class="dark">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 
     <!-- SEO Meta Tags -->
@@ -30,7 +30,7 @@
     <meta name="twitter:image" content="https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&amp;fit=crop&amp;w=1200&amp;q=80" />
 
     <!-- Favicon & Icons -->
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="1024x1024" href="/favicon-round.png?v=3" />
     <link rel="apple-touch-icon" href="/logo.png" />
     <meta name="theme-color" content="#0B0B0C" />
 
@@ -43,52 +43,133 @@
 
     <!-- Schema.org JSON-LD Structured Data for LocalBusiness -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "FurnitureStore",
-        "name": "Muebles Bellagio",
-        "image": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
-        "url": "https://mueblesbellagio.com",
-        "telephone": "+584141536516",
-        "priceRange": "$$$$",
-        "address": {
-          "@type": "PostalAddress",
-          "streetAddress": "Av. Comercio",
-          "addressLocality": "Caracas",
-          "addressRegion": "Distrito Capital",
-          "addressCountry": "VE"
+{
+  "@context": "https://schema.org",
+  "@type": "FurnitureStore",
+  "name": "Muebles Bellagio",
+  "image": "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
+  "url": "https://mueblesbellagio.com",
+  "telephone": "+584141536516",
+  "priceRange": "$$$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Av. Comercio",
+    "addressLocality": "Caracas",
+    "addressRegion": "Distrito Capital",
+    "addressCountry": "VE"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "10.4806",
+    "longitude": "-66.9036"
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+      ],
+      "opens": "09:00",
+      "closes": "17:00"
+    },
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Sunday"
+      ],
+      "opens": "10:00",
+      "closes": "15:00"
+    }
+  ],
+  "department": [
+    {
+      "@type": "FurnitureStore",
+      "name": "Muebles Bellagio - Avenida Comercio",
+      "address": "Av. Comercio, Caracas, Venezuela",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "09:00",
+          "closes": "17:00"
         },
-        "geo": {
-          "@type": "GeoCoordinates",
-          "latitude": "10.4806",
-          "longitude": "-66.9036"
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Sunday"
+          ],
+          "opens": "10:00",
+          "closes": "15:00"
+        }
+      ]
+    },
+    {
+      "@type": "FurnitureStore",
+      "name": "Muebles Bellagio Mobili - C.C. Davinci",
+      "address": "Av. Comercio de Bella Vista, vía La Yaguara, C.C. Davinci, Caracas",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "09:00",
+          "closes": "17:00"
         },
-        "openingHoursSpecification": [
-          {
-            "@type": "OpeningHoursSpecification",
-            "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            "opens": "09:00",
-            "closes": "18:30"
-          }
-        ],
-        "department": [
-          {
-            "@type": "FurnitureStore",
-            "name": "Muebles Bellagio - Avenida Comercio",
-            "address": "Av. Comercio, Caracas, Venezuela"
-          },
-          {
-            "@type": "FurnitureStore",
-            "name": "Muebles Bellagio Mobili - C.C. Davinci",
-            "address": "Av. Comercio de Bella Vista, vía La Yaguara, C.C. Davinci, Caracas"
-          },
-          {
-            "@type": "FurnitureStore",
-            "name": "Bellagio Casa Mall",
-            "address": "Av. Principal de Los Naranjos, C.C. Casa Mall, Nivel Galería, local G20, Urb. El Cafetal, Caracas"
-          }
-        ]
-      }
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Sunday"
+          ],
+          "opens": "10:00",
+          "closes": "15:00"
+        }
+      ]
+    },
+    {
+      "@type": "FurnitureStore",
+      "name": "Bellagio Casa Mall",
+      "address": "Av. Principal de Los Naranjos, C.C. Casa Mall, Nivel Galería, local G20, Urb. El Cafetal, Caracas",
+      "openingHoursSpecification": [
+        {
+          "@type": "OpeningHoursSpecification",
+          "dayOfWeek": [
+            "Monday",
+            "Tuesday",
+            "Wednesday",
+            "Thursday",
+            "Friday",
+            "Saturday"
+          ],
+          "opens": "10:00",
+          "closes": "19:00"
+        }
+      ]
+    }
+  ],
+  "sameAs": [
+    "https://www.instagram.com/mueblesbellagio/",
+    "https://www.facebook.com/mueblesbellagiostore/",
+    "https://www.tiktok.com/@mueblesbellagio"
+  ]
+}
     </script>
   </head>
   <body>

@@ -2121,6 +2121,10 @@
   }
 
   /* About Section Mobile */
+  .about-content {
+    text-align: center;
+  }
+
   .about-img {
     height: 250px;
     border-radius: var(--radius-lg);

@@ -24,9 +24,9 @@ function categoryOptions(selected = '') {
   ).join('');
 }
 
-function productRows() {
-  if (!adminProducts.length) return '<p class="admin-empty">Aún no hay productos en Supabase.</p>';
-  return adminProducts.map(product => `
+function productRows(products = adminProducts) {
+  if (!products.length) return '<p class="admin-empty">No encontramos productos con esa búsqueda.</p>';
+  return products.map(product => `
     <article class="admin-product-row">
       <img src="${escapeHTML(product.image)}" alt="" class="admin-product-thumb" width="72" height="56">
       <div class="admin-product-row-info">
@@ -42,6 +42,7 @@ function productRows() {
 }
 
 function renderPanel() {
+  const editingProduct = editingProductId ? adminProducts.find(product => product.id === editingProductId) : null;
   return `
     <div class="admin-page">
       <header class="admin-page-header">
@@ -63,20 +64,22 @@ function renderPanel() {
           </div>
           <div id="adminFeedback" class="form-feedback" role="status"></div>
           <form id="adminProductForm" class="admin-form">
-            <label>Nombre<input name="title" required maxlength="120" value="${editingProductId ? escapeHTML(adminProducts.find(p => p.id === editingProductId)?.title || '') : ''}"></label>
-            <label>Categoría<select name="category" required>${categoryOptions(editingProductId ? adminProducts.find(p => p.id === editingProductId)?.category : '')}</select></label>
-            <label>Descripción<textarea name="description" rows="4">${editingProductId ? escapeHTML(adminProducts.find(p => p.id === editingProductId)?.description || '') : ''}</textarea></label>
-            <label>Materiales<input name="materials" value="${editingProductId ? escapeHTML(adminProducts.find(p => p.id === editingProductId)?.materials || '') : ''}"></label>
-            <label>Dimensiones<input name="dimensions" value="${editingProductId ? escapeHTML(adminProducts.find(p => p.id === editingProductId)?.dimensions || '') : ''}"></label>
-            <label>Colores separados por coma<input name="availableColors" value="${editingProductId ? escapeHTML((adminProducts.find(p => p.id === editingProductId)?.availableColors || []).join(', ')) : ''}"></label>
-            <label>Video de YouTube<input name="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." value="${editingProductId ? escapeHTML(adminProducts.find(p => p.id === editingProductId)?.youtubeUrl || '') : ''}"><span class="admin-field-hint">Opcional. Acepta enlaces de YouTube, Shorts y youtu.be.</span></label>
+            <label>Nombre<input name="title" required maxlength="120" value="${escapeHTML(editingProduct?.title || '')}"></label>
+            <label>Categoría<select name="category" required>${categoryOptions(editingProduct?.category || '')}</select></label>
+            <label>Descripción<textarea name="description" rows="4">${escapeHTML(editingProduct?.description || '')}</textarea></label>
+            <label>Materiales<input name="materials" value="${escapeHTML(editingProduct?.materials || '')}"></label>
+            <label>Dimensiones<input name="dimensions" value="${escapeHTML(editingProduct?.dimensions || '')}"></label>
+            <label>Colores separados por coma<input name="availableColors" value="${escapeHTML((editingProduct?.availableColors || []).join(', '))}"></label>
+            <label>Video de YouTube<input name="youtubeUrl" type="url" placeholder="https://www.youtube.com/watch?v=..." value="${escapeHTML(editingProduct?.youtubeUrl || '')}"><span class="admin-field-hint">Opcional. Acepta enlaces de YouTube, Shorts y youtu.be.</span></label>
             <label class="admin-image-field">Imagen principal<input name="imageFile" type="file" accept="image/jpeg,image/png,image/webp"><span>JPG, PNG o WebP. Máximo 15 MB originales; se comprime automáticamente a WebP.</span></label>
-            <label class="admin-check-field"><input name="published" type="checkbox" ${editingProductId && adminProducts.find(p => p.id === editingProductId)?.published ? 'checked' : ''}> Publicar en el catálogo</label>
+            <label class="admin-check-field"><input name="published" type="checkbox" ${!editingProduct || editingProduct.published ? 'checked' : ''}> Publicar en el catálogo</label>
             <button class="btn btn-primary" type="submit">${editingProductId ? 'Guardar cambios' : 'Crear producto'}</button>
           </form>
         </section>
         <section class="admin-panel" aria-labelledby="adminListTitle">
           <div class="admin-panel-heading"><div><span class="section-tag">Inventario</span><h2 id="adminListTitle">Productos</h2></div><span class="admin-count" id="adminProductsCount">${adminProducts.length}</span></div>
+          <label class="admin-search-label" for="adminProductSearch">Buscar producto</label>
+          <input id="adminProductSearch" class="admin-product-search" type="search" placeholder="Nombre, categoría o estado…" autocomplete="off">
           <div id="adminProductsList" class="admin-products-list">${productRows()}</div>
         </section>
       </div>
@@ -205,6 +208,20 @@ export function setupAdminPageEvents() {
   const titleInput = productForm?.querySelector('[name="title"]');
 
   const productsList = document.getElementById('adminProductsList');
+  const productSearch = document.getElementById('adminProductSearch');
+  const renderFilteredProducts = () => {
+    if (!productsList) return;
+    const query = productSearch?.value.trim().toLocaleLowerCase('es') || '';
+    const matchingProducts = adminProducts.filter(product => {
+      const searchable = [product.title, product.categoryName, product.published ? 'publicado' : 'borrador']
+        .filter(Boolean)
+        .join(' ')
+        .toLocaleLowerCase('es');
+      return searchable.includes(query);
+    });
+    productsList.innerHTML = productRows(matchingProducts);
+  };
+  productSearch?.addEventListener('input', renderFilteredProducts);
   productsList?.addEventListener('click', async event => {
     const editButton = event.target.closest('[data-admin-edit]');
     if (editButton) {
@@ -235,7 +252,7 @@ export function setupAdminPageEvents() {
     try {
       await deleteProduct(deleteButton.dataset.adminDelete);
       adminProducts = await fetchAdminProducts();
-      productsList.innerHTML = productRows();
+      renderFilteredProducts();
       const productsCount = document.getElementById('adminProductsCount');
       if (productsCount) productsCount.textContent = String(adminProducts.length);
       showFeedback('Producto eliminado correctamente.', 'success');

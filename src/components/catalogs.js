@@ -1,6 +1,7 @@
 import { getCatalogProducts, subscribeCatalog } from '../services/catalog-store.js';
 import { escapeHTML } from '../utils/security.js';
 import { openProductModal } from '../utils/lightbox.js';
+import { getOptimizedImageUrl } from '../utils/image-optimization.js';
 
 export function selectGalleryProducts(products) {
   const seen = new Set();
@@ -15,7 +16,7 @@ export function selectGalleryProducts(products) {
 function renderCards() {
   return selectGalleryProducts(getCatalogProducts()).map(product => `
     <button class="collection-orbit-card" type="button" data-orbit-product="${escapeHTML(String(product.id))}" aria-label="Ver ${escapeHTML(product.title)}">
-      <img src="${escapeHTML(product.image)}" alt="${escapeHTML(product.title)}" loading="lazy" decoding="async" width="640" height="480">
+      <img src="${escapeHTML(getOptimizedImageUrl(product.image, 720, 720, 85, 'contain'))}" alt="${escapeHTML(product.title)}" loading="lazy" decoding="async" width="720" height="720">
       <span class="collection-orbit-caption"><small>${escapeHTML(product.categoryName)}</small><strong>${escapeHTML(product.title)}</strong><span aria-hidden="true">↗</span></span>
     </button>`).join('');
 }

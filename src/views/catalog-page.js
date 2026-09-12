@@ -277,13 +277,12 @@ function renderProductCards(items) {
       <article class="luxury-card product-card ${isSelected ? 'product-selected' : ''}" data-product-id="${escapeHTML(item.id)}" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ver detalle de ${escapeHTML(item.title)}">
         <div class="product-image-box">
           <img 
-            src="${escapeHTML(getOptimizedImageUrl(item.image, 720, 540))}"
+            src="${escapeHTML(getOptimizedImageUrl(item.image, 720, 720, 85, 'contain'))}"
             alt="${escapeHTML(item.title)}" 
             class="product-img"
-            style="object-position: center 56%;"
             loading="lazy"
             width="400"
-            height="300"
+            height="400"
           />
         </div>
 

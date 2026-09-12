@@ -5,10 +5,9 @@
 
 import { getCatalogCategories, getCatalogProducts } from '../services/catalog-store.js';
 import { escapeHTML } from '../utils/security.js';
-import { openProductModal, openProductVideo } from '../utils/lightbox.js';
-import { isProductSelected, toggleProductSelection } from '../utils/inquiry-cart.js';
+import { openProductModal } from '../utils/lightbox.js';
+import { isProductSelected } from '../utils/inquiry-cart.js';
 import { getOptimizedImageUrl } from '../utils/image-optimization.js';
-import { extractYouTubeId } from '../utils/media.js';
 
 let currentFilter = 'todos';
 let currentSearch = '';
@@ -271,13 +270,8 @@ function renderProductCards(items) {
 
   return items.map(item => {
     const isSelected = isProductSelected(item.id);
-    const hasVideo = Boolean(extractYouTubeId(item.youtubeUrl));
-    const whatsappMsg = encodeURIComponent(
-      `Hola Muebles Bellagio, deseo información y cotización de la pieza: "${item.title}" (${item.categoryName}).`
-    );
-
     return `
-      <article class="luxury-card product-card ${isSelected ? 'product-selected' : ''}" data-product-id="${escapeHTML(item.id)}">
+      <article class="luxury-card product-card ${isSelected ? 'product-selected' : ''}" data-product-id="${escapeHTML(item.id)}" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ver detalle de ${escapeHTML(item.title)}">
         <div class="product-image-box">
           <img 
             src="${escapeHTML(getOptimizedImageUrl(item.image, 720, 540))}"
@@ -288,58 +282,12 @@ function renderProductCards(items) {
             width="400"
             height="300"
           />
-          ${hasVideo ? `
-            <button type="button" class="product-video-button" data-video-product-id="${escapeHTML(item.id)}" aria-label="Ver video de ${escapeHTML(item.title)}" title="Ver video del producto">
-              <svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.14v13.72a1 1 0 0 0 1.53.85l10.04-6.86a1.03 1.03 0 0 0 0-1.7L9.53 4.29A1 1 0 0 0 8 5.14Z"></path></svg>
-            </button>
-          ` : ''}
-          
-          <!-- Interactive Luxury Checkmark Selection Button -->
-          <button 
-            type="button" 
-            class="product-select-check ${isSelected ? 'checked' : ''}" 
-            data-select-id="${escapeHTML(item.id)}"
-            aria-label="${isSelected ? 'Quitar de mi selección' : 'Añadir a mi selección'}"
-            title="${isSelected ? 'Quitar de mi selección' : 'Añadir a mi selección'}"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </button>
         </div>
 
         <div class="product-info">
           <div class="product-copy">
             <h3 class="product-title">${escapeHTML(item.title)}</h3>
             <p class="product-subtitle">${escapeHTML(item.subtitle)}</p>
-          </div>
-          <div class="product-card-actions">
-            <button 
-              type="button" 
-              class="btn btn-secondary btn-sm open-details-btn" 
-              data-product-id="${escapeHTML(item.id)}"
-              aria-label="Ver ficha técnica de ${escapeHTML(item.title)}"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
-                <circle cx="12" cy="12" r="2.5"></circle>
-              </svg>
-              Detalle
-            </button>
-
-            <button 
-              type="button" 
-              class="btn btn-outline-gold btn-sm toggle-select-btn" 
-              data-select-id="${escapeHTML(item.id)}"
-              aria-label="${isSelected ? 'Quitar de la consulta' : 'Añadir a la consulta'}"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-              </svg>
-              <span>${isSelected ? 'Seleccionado ✓' : 'Consultar'}</span>
-            </button>
           </div>
         </div>
       </article>
@@ -495,43 +443,62 @@ export function setupCatalogPageEvents() {
         applyFilter('todos');
       }
 
-      // Toggle product selection (Checkmark or Consultar button)
-      const selectBtn = e.target.closest('.product-select-check, .toggle-select-btn');
-      if (selectBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        const productId = selectBtn.getAttribute('data-select-id');
-        if (productId) {
-          const isNowSelected = toggleProductSelection(productId);
-          
-          // Update the button text if it's the action button
-          const card = selectBtn.closest('.product-card');
-          if (card) {
-            const actionBtnText = card.querySelector('.toggle-select-btn span');
-            if (actionBtnText) {
-              actionBtnText.textContent = isNowSelected ? 'Seleccionado ✓' : 'Consultar';
-            }
-          }
-        }
-        return;
-      }
-
-      // Open details modal
-      const videoBtn = e.target.closest('.product-video-button');
-      if (videoBtn) {
-        const product = getCatalogProducts().find(p => p.id === videoBtn.getAttribute('data-video-product-id'));
-        if (product) openProductVideo(product);
-        return;
-      }
-
-      const detailsBtn = e.target.closest('.open-details-btn');
-      if (detailsBtn) {
-        const productId = detailsBtn.getAttribute('data-product-id');
-        const product = getCatalogProducts().find(p => p.id === productId);
-        if (product) {
-          openProductModal(product);
-        }
+      const card = e.target.closest('.product-card');
+      if (card) {
+        card.focus({ preventScroll: true });
+        openProductModal(card.dataset.productId);
       }
     });
+    gridContainer.addEventListener('keydown', event => {
+      const card = event.target.closest('.product-card');
+      if (card && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        if (!event.repeat) openProductModal(card.dataset.productId);
+      }
+    });
+    setupCardMotion(gridContainer);
   }
+}
+
+/** Delegate pointer motion so filtered cards need no new listeners. */
+function setupCardMotion(grid) {
+  const motion = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+  let activeCard = null;
+  let frame = 0;
+  let bounds = null;
+  let x = 0;
+  let y = 0;
+  const reset = () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
+    activeCard?.style.removeProperty('--card-rx');
+    activeCard?.style.removeProperty('--card-ry');
+    activeCard?.classList.remove('is-tilting');
+    activeCard = null;
+    bounds = null;
+  };
+  grid.addEventListener('pointermove', event => {
+    if (!motion.matches || event.pointerType === 'touch') return reset();
+    const card = event.target.closest('.product-card');
+    if (card !== activeCard) {
+      reset();
+      activeCard = card;
+      bounds = card?.getBoundingClientRect();
+    }
+    if (!card) return;
+    // Measure once on entry so rotation does not feed back into pointer coordinates.
+    const rect = bounds;
+    x = Math.max(-1, Math.min(1, (event.clientX - rect.left) / rect.width * 2 - 1));
+    y = Math.max(-1, Math.min(1, (event.clientY - rect.top) / rect.height * 2 - 1));
+    if (!frame) frame = requestAnimationFrame(() => {
+      frame = 0;
+      if (!activeCard?.isConnected) return reset();
+      activeCard.style.setProperty('--card-rx', `${-y * 3}deg`);
+      activeCard.style.setProperty('--card-ry', `${x * 3}deg`);
+      activeCard.classList.add('is-tilting');
+    });
+  });
+  grid.addEventListener('pointerleave', reset);
+  grid.addEventListener('pointercancel', reset);
+  grid.addEventListener('click', reset);
 }

@@ -8,6 +8,9 @@ import { escapeHTML } from './security.js';
 import { getOptimizedImageUrl } from './image-optimization.js';
 import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from './media.js';
 
+import { isProductSelected, toggleProductSelection } from './inquiry-cart.js';
+
+let videoReturnFocus = null;
 let modalElement = null;
 let videoModalElement = null;
 let lastFocusedElement = null;
@@ -19,7 +22,7 @@ export function initLightbox() {
   if (document.getElementById('catalogModal')) return;
 
   const modalHTML = `
-    <div id="catalogModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true">
+    <div id="catalogModal" class="modal-overlay" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="modalProductTitle">
       <div class="modal-content">
         <button type="button" class="modal-close-btn" id="modalCloseBtn" aria-label="Cerrar ventana">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -70,6 +73,18 @@ export function initLightbox() {
   });
 
   modalElement?.addEventListener('click', event => {
+    const selectButton = event.target.closest('[data-action="toggle-selection"]');
+    if (selectButton) {
+      const selected = toggleProductSelection(selectButton.dataset.productId);
+      selectButton.textContent = selected ? 'Quitar de mi selección' : 'Añadir a mi selección';
+      selectButton.setAttribute('aria-pressed', String(selected));
+      return;
+    }
+    const videoButton = event.target.closest('[data-action="product-video"]');
+    if (videoButton) {
+      openProductVideo(videoButton.dataset.productId);
+      return;
+    }
     const galleryButton = event.target.closest('[data-gallery-image]');
     if (galleryButton) {
       const image = document.getElementById('modalProductImage');
@@ -94,6 +109,21 @@ export function initLightbox() {
   });
 
   document.addEventListener('keydown', (e) => {
+    const activeDialog = videoModalElement?.classList.contains('active') ? videoModalElement
+      : modalElement?.classList.contains('active') ? modalElement : null;
+    if (e.key === 'Tab' && activeDialog) {
+      const controls = [...activeDialog.querySelectorAll('button, a[href], iframe, [tabindex="0"]')]
+        .filter(element => !element.disabled && element.getClientRects().length);
+      const first = controls[0];
+      const last = controls.at(-1);
+      if (e.shiftKey && (document.activeElement === first || !activeDialog.contains(document.activeElement))) {
+        e.preventDefault();
+        last?.focus();
+      } else if (!e.shiftKey && (document.activeElement === last || !activeDialog.contains(document.activeElement))) {
+        e.preventDefault();
+        first?.focus();
+      }
+    }
     if (e.key === 'Escape' && videoModalElement?.classList.contains('active')) {
       closeProductVideo();
     } else if (e.key === 'Escape' && modalElement?.classList.contains('active')) {
@@ -158,7 +188,7 @@ export function openCatalogModal(catalogId) {
       <div class="modal-product-details">
         <div>
           <span class="modal-product-category">${escapeHTML(item.categoryName)}</span>
-          <h3 class="modal-product-title">${escapeHTML(item.title)}</h3>
+          <h3 id="modalProductTitle" class="modal-product-title">${escapeHTML(item.title)}</h3>
           <p class="modal-product-subtitle">${escapeHTML(item.subtitle)}</p>
           <p class="modal-product-description">${escapeHTML(item.description)}</p>
           
@@ -173,6 +203,8 @@ export function openCatalogModal(catalogId) {
         </div>
 
         <div class="modal-actions">
+          <button type="button" class="btn btn-outline-gold" data-action="toggle-selection" data-product-id="${escapeHTML(item.id)}" aria-pressed="${isProductSelected(item.id)}">${isProductSelected(item.id) ? 'Quitar de mi selección' : 'Añadir a mi selección'}</button>
+          ${getYouTubeEmbedUrl(item.youtubeUrl, false) ? `<button type="button" class="btn btn-secondary" data-action="product-video" data-product-id="${escapeHTML(item.id)}">Ver video</button>` : ''}
           <a href="https://wa.me/584141536516?text=${whatsappMessage}" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp">
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
               <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
@@ -188,6 +220,7 @@ export function openCatalogModal(catalogId) {
   modalElement.classList.add('active');
   modalElement.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
+  document.getElementById('modalCloseBtn')?.focus();
 }
 
 /**
@@ -213,6 +246,7 @@ export function openProductVideo(productOrId) {
 
   const videoBody = document.getElementById('productVideoBody');
   if (!videoBody) return;
+  videoReturnFocus = document.activeElement;
   const startsPortrait = /youtube\.com\/shorts\//i.test(item.youtubeUrl || '');
   videoModalElement.classList.toggle('is-portrait', startsPortrait);
   const thumbnailUrl = getYouTubeThumbnailUrl(item.youtubeUrl);
@@ -233,10 +267,20 @@ export function openProductVideo(productOrId) {
   videoModalElement.setAttribute('aria-hidden', 'false');
   document.body.style.overflow = 'hidden';
   document.getElementById('productVideoCloseBtn')?.focus();
+  if (modalElement?.classList.contains('active')) {
+    modalElement.inert = true;
+    modalElement.setAttribute('aria-hidden', 'true');
+  }
 }
 
 export function closeProductVideo() {
   if (!videoModalElement) return;
+  if (modalElement?.classList.contains('active')) {
+    modalElement.inert = false;
+    modalElement.setAttribute('aria-hidden', 'false');
+  }
+  videoReturnFocus?.focus?.();
+  videoReturnFocus = null;
   videoModalElement.classList.remove('active');
   videoModalElement.setAttribute('aria-hidden', 'true');
   const videoBody = document.getElementById('productVideoBody');

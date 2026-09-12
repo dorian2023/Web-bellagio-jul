@@ -52,6 +52,9 @@ export async function handleRoute() {
     if (revision !== routeRevision) return;
     mainContent.innerHTML = adminHTML;
     setupAdminPageEvents();
+    // La edición renderiza el formulario al inicio; no conserves el scroll de la lista.
+    window.scrollTo({ top: 0, behavior: 'instant' });
+    document.querySelector('#adminProductForm input[name="title"]')?.focus({ preventScroll: true });
     return;
   }
 

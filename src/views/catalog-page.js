@@ -11,6 +11,8 @@ import { getOptimizedImageUrl } from '../utils/image-optimization.js';
 
 let currentFilter = 'todos';
 let currentSearch = '';
+let currentPage = 1;
+const PRODUCTS_PER_PAGE = 12;
 
 /**
  * Category SVG icon resolver.
@@ -216,8 +218,9 @@ export function renderCatalogPage() {
       <section class="catalog-products-section" aria-label="Listado de Muebles">
         <div class="container">
           <div class="dedicated-catalog-grid" id="dedicatedCatalogGrid">
-            ${renderProductCards(getFilteredCatalog())}
+            ${renderProductCards(getFilteredCatalog().slice(0, PRODUCTS_PER_PAGE))}
           </div>
+          <nav class="catalog-pagination" id="catalogPagination" aria-label="Paginación del catálogo">${renderPagination(products.length)}</nav>
         </div>
       </section>
     </div>
@@ -295,6 +298,22 @@ function renderProductCards(items) {
   }).join('');
 }
 
+function renderPagination(totalItems) {
+  const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
+  if (totalPages <= 1 || currentSearch.trim()) return '';
+  return `
+    <button type="button" class="catalog-page-btn" data-page="prev" aria-label="Página anterior" ${currentPage === 1 ? 'disabled' : ''}>←</button>
+    <span class="catalog-page-status">Página ${currentPage} de ${totalPages}</span>
+    <div class="catalog-page-numbers">
+      ${Array.from({ length: totalPages }, (_, index) => {
+        const page = index + 1;
+        return `<button type="button" class="catalog-page-btn ${page === currentPage ? 'active' : ''}" data-page="${page}" aria-label="Ir a la página ${page}" aria-current="${page === currentPage ? 'page' : 'false'}">${page}</button>`;
+      }).join('')}
+    </div>
+    <button type="button" class="catalog-page-btn" data-page="next" aria-label="Página siguiente" ${currentPage === totalPages ? 'disabled' : ''}>→</button>
+  `;
+}
+
 /**
  * Initializes interactive events for the Option 1 Mega-Selector dropdown and filters.
  */
@@ -327,6 +346,7 @@ export function setupCatalogPageEvents() {
   // Update UI and active states
   function applyFilter(categoryId) {
     currentFilter = categoryId;
+    currentPage = 1;
     const categories = getCatalogCategories();
     const categoryObj = categories.find(c => c.id === categoryId) || categories[0];
 
@@ -361,12 +381,22 @@ export function setupCatalogPageEvents() {
 
   function refreshGrid() {
     const filtered = getFilteredCatalog();
+    const showAllSearchResults = Boolean(currentSearch.trim());
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PRODUCTS_PER_PAGE));
+    if (!showAllSearchResults && currentPage > totalPages) currentPage = totalPages;
+    const visibleItems = showAllSearchResults
+      ? filtered
+      : filtered.slice((currentPage - 1) * PRODUCTS_PER_PAGE, currentPage * PRODUCTS_PER_PAGE);
     if (gridContainer) {
-      gridContainer.innerHTML = renderProductCards(filtered);
+      gridContainer.innerHTML = renderProductCards(visibleItems);
     }
     if (resultsBadge) {
-      resultsBadge.textContent = `Mostrando ${filtered.length} piezas`;
+      resultsBadge.textContent = showAllSearchResults
+        ? `Mostrando ${filtered.length} piezas encontradas`
+        : `Mostrando ${filtered.length} piezas`;
     }
+    const pagination = document.getElementById('catalogPagination');
+    if (pagination) pagination.innerHTML = renderPagination(filtered.length);
   }
 
   // Mega-selector trigger button click
@@ -415,6 +445,7 @@ export function setupCatalogPageEvents() {
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       currentSearch = e.target.value;
+      currentPage = 1;
       if (clearSearchBtn) {
         clearSearchBtn.style.display = currentSearch.length > 0 ? 'flex' : 'none';
       }
@@ -427,6 +458,7 @@ export function setupCatalogPageEvents() {
     clearSearchBtn.addEventListener('click', () => {
       searchInput.value = '';
       currentSearch = '';
+      currentPage = 1;
       clearSearchBtn.style.display = 'none';
       searchInput.focus();
       refreshGrid();
@@ -458,6 +490,20 @@ export function setupCatalogPageEvents() {
     });
     setupCardMotion(gridContainer);
   }
+
+  const pagination = document.getElementById('catalogPagination');
+  pagination?.addEventListener('click', event => {
+    const button = event.target.closest('[data-page]');
+    if (!button || button.disabled) return;
+    const filtered = getFilteredCatalog();
+    const totalPages = Math.ceil(filtered.length / PRODUCTS_PER_PAGE);
+    const target = button.dataset.page === 'prev' ? currentPage - 1
+      : button.dataset.page === 'next' ? currentPage + 1 : Number(button.dataset.page);
+    if (target < 1 || target > totalPages) return;
+    currentPage = target;
+    refreshGrid();
+    document.getElementById('megaFilterBar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 }
 
 /** Delegate pointer motion so filtered cards need no new listeners. */

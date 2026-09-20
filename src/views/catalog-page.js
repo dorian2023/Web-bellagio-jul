@@ -3,13 +3,16 @@
  * @description Dedicated Luxury Catalog Page view with Mega-Selector Dropdown (Option 1), quick filters, real-time search, and product modal.
  */
 
-import { CATEGORIES_DATA, CATALOGS_DATA } from '../data/catalogs.js';
+import { getCatalogCategories, getCatalogProducts } from '../services/catalog-store.js';
 import { escapeHTML } from '../utils/security.js';
 import { openProductModal } from '../utils/lightbox.js';
-import { isProductSelected, toggleProductSelection } from '../utils/inquiry-cart.js';
+import { isProductSelected } from '../utils/inquiry-cart.js';
+import { getOptimizedImageUrl } from '../utils/image-optimization.js';
 
 let currentFilter = 'todos';
 let currentSearch = '';
+let currentPage = 1;
+const PRODUCTS_PER_PAGE = 12;
 
 /**
  * Category SVG icon resolver.
@@ -46,10 +49,12 @@ function getCategoryIcon(categoryId) {
  * @returns {string}
  */
 export function renderCatalogPage() {
-  const activeCategoryObj = CATEGORIES_DATA.find(c => c.id === currentFilter) || CATEGORIES_DATA[0];
+  const categories = getCatalogCategories();
+  const products = getCatalogProducts();
+  const activeCategoryObj = categories.find(c => c.id === currentFilter) || categories[0];
 
-  // Mega-menu category buttons (all 17 in alphabetical order + Todos)
-  const megaMenuCategoriesHTML = CATEGORIES_DATA.map(cat => {
+  // Mega-menu category buttons in alphabetical order plus Todos.
+  const megaMenuCategoriesHTML = categories.map(cat => {
     const isActive = cat.id === currentFilter ? 'active' : '';
     return `
       <button 
@@ -77,7 +82,7 @@ export function renderCatalogPage() {
   // 4 Top Quick-Access Categories (for instant 1-click filtering)
   const quickAccessList = ['todos', 'sofas', 'comedores', 'dormitorios', 'poltronas'];
   const quickAccessHTML = quickAccessList.map(catId => {
-    const cat = CATEGORIES_DATA.find(c => c.id === catId);
+    const cat = categories.find(c => c.id === catId);
     if (!cat) return '';
     const isActive = cat.id === currentFilter ? 'active' : '';
     return `
@@ -109,13 +114,12 @@ export function renderCatalogPage() {
           </nav>
 
           <div class="catalog-hero-content">
-            <span class="section-tag">Colecciones de Alta Ebanistería</span>
+            <div class="catalog-hero-brand-mark">
+              <img src="/logo.png" alt="Muebles Bellagio" width="76" height="76">
+            </div>
             <h1 class="catalog-hero-title">
               Catálogo <span class="gold-text">Bellagio</span>
             </h1>
-            <p class="catalog-hero-subtitle">
-              Explora nuestra selecta curaduría de piezas en 17 categorías exclusivas para residencias, oficinas de alta dirección y proyectos de interiorismo en Caracas.
-            </p>
 
             <!-- Real-time Search Box -->
             <div class="catalog-search-wrapper">
@@ -172,12 +176,12 @@ export function renderCatalogPage() {
                 </div>
               </button>
 
-              <!-- Mega Dropdown Curtain (3/4 Columns Grid of all 17 categories) -->
+              <!-- Mega Dropdown Curtain with all categories -->
               <div class="mega-dropdown-curtain" id="megaDropdownCurtain">
                 <div class="mega-dropdown-header">
                   <div class="mega-dropdown-title-group">
                     <span class="section-tag" style="margin-bottom: 2px;">Directorio de Colecciones</span>
-                    <h4>Selecciona una Categoría (17 en orden A-Z)</h4>
+                    <h4>Selecciona una Categoría</h4>
                   </div>
                   <button type="button" class="mega-dropdown-close-btn" id="closeMegaDropdownBtn" aria-label="Cerrar menú de categorías">
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -203,7 +207,7 @@ export function renderCatalogPage() {
 
             <!-- Live Results Counter Badge -->
             <div class="catalog-live-count-badge">
-              <span id="catalogResultsCount" class="results-badge">Mostrando ${CATALOGS_DATA.length} piezas</span>
+              <span id="catalogResultsCount" class="results-badge">Mostrando ${products.length} piezas</span>
             </div>
 
           </div>
@@ -214,8 +218,9 @@ export function renderCatalogPage() {
       <section class="catalog-products-section" aria-label="Listado de Muebles">
         <div class="container">
           <div class="dedicated-catalog-grid" id="dedicatedCatalogGrid">
-            ${renderProductCards(getFilteredCatalog())}
+            ${renderProductCards(getFilteredCatalog().slice(0, PRODUCTS_PER_PAGE))}
           </div>
+          <nav class="catalog-pagination" id="catalogPagination" aria-label="Paginación del catálogo">${renderPagination(products.length)}</nav>
         </div>
       </section>
     </div>
@@ -227,7 +232,7 @@ export function renderCatalogPage() {
  * @returns {Array}
  */
 function getFilteredCatalog() {
-  return CATALOGS_DATA.filter(item => {
+  return getCatalogProducts().filter(item => {
     const matchesCategory = currentFilter === 'todos' || item.category === currentFilter;
     const query = currentSearch.toLowerCase().trim();
     const matchesSearch = !query || 
@@ -268,84 +273,44 @@ function renderProductCards(items) {
 
   return items.map(item => {
     const isSelected = isProductSelected(item.id);
-    const whatsappMsg = encodeURIComponent(
-      `Hola Muebles Bellagio, deseo información y cotización de la pieza: "${item.title}" (${item.categoryName}).`
-    );
-
     return `
-      <article class="luxury-card product-card ${isSelected ? 'product-selected' : ''}" data-product-id="${escapeHTML(item.id)}">
+      <article class="luxury-card product-card ${isSelected ? 'product-selected' : ''}" data-product-id="${escapeHTML(item.id)}" role="button" tabindex="0" aria-haspopup="dialog" aria-label="Ver detalle de ${escapeHTML(item.title)}">
         <div class="product-image-box">
           <img 
-            src="${escapeHTML(item.image)}" 
+            src="${escapeHTML(getOptimizedImageUrl(item.image, 720, 720, 85, 'contain'))}"
             alt="${escapeHTML(item.title)}" 
             class="product-img"
             loading="lazy"
             width="400"
-            height="300"
+            height="400"
           />
-          <span class="product-category-badge">${escapeHTML(item.categoryName)}</span>
-          
-          <!-- Interactive Luxury Checkmark Selection Button -->
-          <button 
-            type="button" 
-            class="product-select-check ${isSelected ? 'checked' : ''}" 
-            data-select-id="${escapeHTML(item.id)}"
-            aria-label="${isSelected ? 'Quitar de mi selección' : 'Añadir a mi selección'}"
-            title="${isSelected ? 'Quitar de mi selección' : 'Añadir a mi selección'}"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-              <polyline points="20 6 9 17 4 12"></polyline>
-            </svg>
-          </button>
         </div>
 
         <div class="product-info">
-          <h3 class="product-title">${escapeHTML(item.title)}</h3>
-          <p class="product-subtitle">${escapeHTML(item.subtitle)}</p>
-
-          <div class="product-specs-summary">
-            <div class="spec-row">
-              <span class="spec-label">Materiales:</span>
-              <span class="spec-value">${escapeHTML(item.materials)}</span>
-            </div>
-            <div class="spec-row">
-              <span class="spec-label">Medidas:</span>
-              <span class="spec-value">${escapeHTML(item.dimensions)}</span>
-            </div>
-          </div>
-
-          <div class="product-card-actions">
-            <button 
-              type="button" 
-              class="btn btn-secondary btn-sm open-details-btn" 
-              data-product-id="${escapeHTML(item.id)}"
-              aria-label="Ver ficha técnica de ${escapeHTML(item.title)}"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              Ver Detalles
-            </button>
-
-            <button 
-              type="button" 
-              class="btn btn-outline-gold btn-sm toggle-select-btn" 
-              data-select-id="${escapeHTML(item.id)}"
-              aria-label="${isSelected ? 'Quitar de la consulta' : 'Añadir a la consulta'}"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                <line x1="3" y1="6" x2="21" y2="6"></line>
-                <path d="M16 10a4 4 0 0 1-8 0"></path>
-              </svg>
-              <span>${isSelected ? 'Seleccionado ✓' : 'Consultar'}</span>
-            </button>
+          <div class="product-copy">
+            <h3 class="product-title">${escapeHTML(item.title)}</h3>
+            <p class="product-subtitle">${escapeHTML(item.subtitle)}</p>
           </div>
         </div>
       </article>
     `;
   }).join('');
+}
+
+function renderPagination(totalItems) {
+  const totalPages = Math.ceil(totalItems / PRODUCTS_PER_PAGE);
+  if (totalPages <= 1 || currentSearch.trim()) return '';
+  return `
+    <button type="button" class="catalog-page-btn" data-page="prev" aria-label="Página anterior" ${currentPage === 1 ? 'disabled' : ''}>←</button>
+    <span class="catalog-page-status">Página ${currentPage} de ${totalPages}</span>
+    <div class="catalog-page-numbers">
+      ${Array.from({ length: totalPages }, (_, index) => {
+        const page = index + 1;
+        return `<button type="button" class="catalog-page-btn ${page === currentPage ? 'active' : ''}" data-page="${page}" aria-label="Ir a la página ${page}" aria-current="${page === currentPage ? 'page' : 'false'}">${page}</button>`;
+      }).join('')}
+    </div>
+    <button type="button" class="catalog-page-btn" data-page="next" aria-label="Página siguiente" ${currentPage === totalPages ? 'disabled' : ''}>→</button>
+  `;
 }
 
 /**
@@ -380,7 +345,9 @@ export function setupCatalogPageEvents() {
   // Update UI and active states
   function applyFilter(categoryId) {
     currentFilter = categoryId;
-    const categoryObj = CATEGORIES_DATA.find(c => c.id === categoryId) || CATEGORIES_DATA[0];
+    currentPage = 1;
+    const categories = getCatalogCategories();
+    const categoryObj = categories.find(c => c.id === categoryId) || categories[0];
 
     // Update Mega-Selector trigger text and icon
     if (currentCategoryNameEl) {
@@ -413,12 +380,22 @@ export function setupCatalogPageEvents() {
 
   function refreshGrid() {
     const filtered = getFilteredCatalog();
+    const showAllSearchResults = Boolean(currentSearch.trim());
+    const totalPages = Math.max(1, Math.ceil(filtered.length / PRODUCTS_PER_PAGE));
+    if (!showAllSearchResults && currentPage > totalPages) currentPage = totalPages;
+    const visibleItems = showAllSearchResults
+      ? filtered
+      : filtered.slice((currentPage - 1) * PRODUCTS_PER_PAGE, currentPage * PRODUCTS_PER_PAGE);
     if (gridContainer) {
-      gridContainer.innerHTML = renderProductCards(filtered);
+      gridContainer.innerHTML = renderProductCards(visibleItems);
     }
     if (resultsBadge) {
-      resultsBadge.textContent = `Mostrando ${filtered.length} piezas`;
+      resultsBadge.textContent = showAllSearchResults
+        ? `Mostrando ${filtered.length} piezas encontradas`
+        : `Mostrando ${filtered.length} piezas`;
     }
+    const pagination = document.getElementById('catalogPagination');
+    if (pagination) pagination.innerHTML = renderPagination(filtered.length);
   }
 
   // Mega-selector trigger button click
@@ -467,6 +444,7 @@ export function setupCatalogPageEvents() {
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       currentSearch = e.target.value;
+      currentPage = 1;
       if (clearSearchBtn) {
         clearSearchBtn.style.display = currentSearch.length > 0 ? 'flex' : 'none';
       }
@@ -479,6 +457,7 @@ export function setupCatalogPageEvents() {
     clearSearchBtn.addEventListener('click', () => {
       searchInput.value = '';
       currentSearch = '';
+      currentPage = 1;
       clearSearchBtn.style.display = 'none';
       searchInput.focus();
       refreshGrid();
@@ -495,36 +474,76 @@ export function setupCatalogPageEvents() {
         applyFilter('todos');
       }
 
-      // Toggle product selection (Checkmark or Consultar button)
-      const selectBtn = e.target.closest('.product-select-check, .toggle-select-btn');
-      if (selectBtn) {
-        e.preventDefault();
-        e.stopPropagation();
-        const productId = selectBtn.getAttribute('data-select-id');
-        if (productId) {
-          const isNowSelected = toggleProductSelection(productId);
-          
-          // Update the button text if it's the action button
-          const card = selectBtn.closest('.product-card');
-          if (card) {
-            const actionBtnText = card.querySelector('.toggle-select-btn span');
-            if (actionBtnText) {
-              actionBtnText.textContent = isNowSelected ? 'Seleccionado ✓' : 'Consultar';
-            }
-          }
-        }
-        return;
-      }
-
-      // Open details modal
-      const detailsBtn = e.target.closest('.open-details-btn');
-      if (detailsBtn) {
-        const productId = detailsBtn.getAttribute('data-product-id');
-        const product = CATALOGS_DATA.find(p => p.id === productId);
-        if (product) {
-          openProductModal(product);
-        }
+      const card = e.target.closest('.product-card');
+      if (card) {
+        card.focus({ preventScroll: true });
+        openProductModal(card.dataset.productId);
       }
     });
+    gridContainer.addEventListener('keydown', event => {
+      const card = event.target.closest('.product-card');
+      if (card && (event.key === 'Enter' || event.key === ' ')) {
+        event.preventDefault();
+        if (!event.repeat) openProductModal(card.dataset.productId);
+      }
+    });
+    setupCardMotion(gridContainer);
   }
+
+  const pagination = document.getElementById('catalogPagination');
+  pagination?.addEventListener('click', event => {
+    const button = event.target.closest('[data-page]');
+    if (!button || button.disabled) return;
+    const filtered = getFilteredCatalog();
+    const totalPages = Math.ceil(filtered.length / PRODUCTS_PER_PAGE);
+    const target = button.dataset.page === 'prev' ? currentPage - 1
+      : button.dataset.page === 'next' ? currentPage + 1 : Number(button.dataset.page);
+    if (target < 1 || target > totalPages) return;
+    currentPage = target;
+    refreshGrid();
+    document.getElementById('megaFilterBar')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+/** Delegate pointer motion so filtered cards need no new listeners. */
+function setupCardMotion(grid) {
+  const motion = matchMedia('(hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)');
+  let activeCard = null;
+  let frame = 0;
+  let bounds = null;
+  let x = 0;
+  let y = 0;
+  const reset = () => {
+    cancelAnimationFrame(frame);
+    frame = 0;
+    activeCard?.style.removeProperty('--card-rx');
+    activeCard?.style.removeProperty('--card-ry');
+    activeCard?.classList.remove('is-tilting');
+    activeCard = null;
+    bounds = null;
+  };
+  grid.addEventListener('pointermove', event => {
+    if (!motion.matches || event.pointerType === 'touch') return reset();
+    const card = event.target.closest('.product-card');
+    if (card !== activeCard) {
+      reset();
+      activeCard = card;
+      bounds = card?.getBoundingClientRect();
+    }
+    if (!card) return;
+    // Measure once on entry so rotation does not feed back into pointer coordinates.
+    const rect = bounds;
+    x = Math.max(-1, Math.min(1, (event.clientX - rect.left) / rect.width * 2 - 1));
+    y = Math.max(-1, Math.min(1, (event.clientY - rect.top) / rect.height * 2 - 1));
+    if (!frame) frame = requestAnimationFrame(() => {
+      frame = 0;
+      if (!activeCard?.isConnected) return reset();
+      activeCard.style.setProperty('--card-rx', `${-y * 3}deg`);
+      activeCard.style.setProperty('--card-ry', `${x * 3}deg`);
+      activeCard.classList.add('is-tilting');
+    });
+  });
+  grid.addEventListener('pointerleave', reset);
+  grid.addEventListener('pointercancel', reset);
+  grid.addEventListener('click', reset);
 }

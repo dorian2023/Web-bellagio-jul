@@ -1,3 +1,5 @@
+import { setupBackgroundVideo } from './background-video.js';
+
 /**
  * @file scroll.js
  * @description Smooth scrolling, sticky header state, section spy, and floating scroll-to-top button.
@@ -6,6 +8,20 @@
 
 /** @type {IntersectionObserver|null} */
 let revealObserver = null;
+let counterObserver = null;
+const videoDisposers = new Map();
+const counterFrames = new Set();
+const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+export function cleanupScrollEffects() {
+  revealObserver?.disconnect();
+  counterObserver?.disconnect();
+  videoDisposers.forEach(dispose => dispose());
+  videoDisposers.clear();
+  counterFrames.forEach(frame => cancelAnimationFrame(frame));
+  counterFrames.clear();
+}
+
 
 /**
  * Initializes navbar sticky state, scroll-to-top button, and active section highlighting.
@@ -57,7 +73,7 @@ export function initScrollEffects() {
   scrollTopBtn?.addEventListener('click', () => {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: reducedMotion() ? 'instant' : 'smooth'
     });
   });
 
@@ -74,6 +90,14 @@ export function initScrollEffects() {
     rootMargin: '0px 0px -30px 0px'
   });
 
+  matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', () => {
+    if (reducedMotion()) {
+      counterFrames.forEach(frame => cancelAnimationFrame(frame));
+      counterFrames.clear();
+    }
+    reattachRevealObservers();
+  });
+
   // Initial reveal + counter setup
   reattachRevealObservers();
 }
@@ -88,7 +112,8 @@ export function reattachRevealObservers() {
 
   // Observe new reveal-items that haven't been revealed yet
   document.querySelectorAll('.reveal-item:not(.revealed)').forEach(item => {
-    revealObserver.observe(item);
+    if (reducedMotion()) item.classList.add('revealed');
+    else revealObserver.observe(item);
   });
 
   // Re-initialize counter animations for freshly injected stat elements
@@ -102,36 +127,9 @@ export function reattachRevealObservers() {
  * Loads and plays store videos only when the user scrolls near the stores section.
  */
 function initLazyVideos() {
-  const lazyVideos = document.querySelectorAll('video.lazy-video');
-  if (!lazyVideos.length) return;
-
-  const videoObserver = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      const video = entry.target;
-      if (entry.isIntersecting) {
-        if (!video.src && video.dataset.src) {
-          video.src = video.dataset.src;
-          video.load();
-        }
-        video.muted = true;
-        video.defaultMuted = true;
-        const playPromise = video.play();
-        if (playPromise !== undefined) {
-          playPromise.catch(() => {});
-        }
-      } else {
-        // Pause offscreen video to save CPU/battery/RAM
-        if (video.src) {
-          video.pause();
-        }
-      }
-    });
-  }, {
-    rootMargin: '200px 0px 200px 0px', // Pre-load slightly before entering viewport
-    threshold: 0.1
+  document.querySelectorAll('video.lazy-video').forEach(video => {
+    if (!videoDisposers.has(video)) videoDisposers.set(video, setupBackgroundVideo(video, '200px'));
   });
-
-  lazyVideos.forEach(v => videoObserver.observe(v));
 }
 
 /**
@@ -140,19 +138,26 @@ function initLazyVideos() {
 function initCounterAnimations() {
   const statElements = document.querySelectorAll('.stat-number[data-target]');
   
-  const counterObserver = new IntersectionObserver((entries, observer) => {
+  counterObserver?.disconnect();
+  counterObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
         const el = entry.target;
         const target = parseInt(el.getAttribute('data-target') || '0', 10);
         const suffix = el.getAttribute('data-suffix') || '';
+        el.dataset.counted = 'true';
         animateValue(el, 0, target, 1400, suffix);
         observer.unobserve(el);
       }
     });
   }, { threshold: 0.2 });
 
-  statElements.forEach(el => counterObserver.observe(el));
+  statElements.forEach(el => {
+    if (reducedMotion()) {
+      el.textContent = `${Number(el.dataset.target).toLocaleString('es-VE')}${el.dataset.suffix || ''}`;
+      el.dataset.counted = 'true';
+    } else if (!el.dataset.counted) counterObserver.observe(el);
+  });
 }
 
 /**
@@ -165,7 +170,10 @@ function initCounterAnimations() {
  */
 function animateValue(obj, start, end, duration, suffix = '') {
   let startTimestamp = null;
+  let frame;
   const step = (timestamp) => {
+    counterFrames.delete(frame);
+    if (!obj.isConnected) return;
     if (!startTimestamp) startTimestamp = timestamp;
     const progress = Math.min((timestamp - startTimestamp) / duration, 1);
     const easeProgress = progress === 1 ? 1 : 1 - Math.pow(2, -10 * progress);
@@ -174,10 +182,12 @@ function animateValue(obj, start, end, duration, suffix = '') {
     obj.textContent = `${currentValue.toLocaleString('es-VE')}${suffix}`;
     
     if (progress < 1) {
-      window.requestAnimationFrame(step);
+      frame = requestAnimationFrame(step);
+      counterFrames.add(frame);
     } else {
       obj.textContent = `${end.toLocaleString('es-VE')}${suffix}`;
     }
   };
-  window.requestAnimationFrame(step);
+  frame = requestAnimationFrame(step);
+  counterFrames.add(frame);
 }

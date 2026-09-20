@@ -1,101 +1,105 @@
-/**
- * @file catalogs.js
- * @description Landing page flagship catalog preview showcase with direct link to the dedicated 17-category catalog page.
- */
-
-import { CATALOGS_DATA } from '../data/catalogs.js';
+import { getCatalogProducts, subscribeCatalog } from '../services/catalog-store.js';
 import { escapeHTML } from '../utils/security.js';
-import { openCatalogModal } from '../utils/lightbox.js';
+import { openProductModal } from '../utils/lightbox.js';
+import { getOptimizedImageUrl } from '../utils/image-optimization.js';
 
-export function renderCatalogs() {
-  // Show 6 flagship highlight pieces on the landing page
-  const featuredItems = CATALOGS_DATA.slice(0, 6);
-
-  const catalogItemsHTML = featuredItems.map((item, idx) => {
-    const delayClass = `reveal-delay-${(idx % 3) + 1}`;
-    return `
-      <div class="catalog-item-card reveal-item ${delayClass}">
-        <div class="catalog-img-container">
-          <img 
-            src="${escapeHTML(item.image)}" 
-            alt="${escapeHTML(item.title)}" 
-            class="catalog-img"
-            width="400"
-            height="240"
-            loading="lazy"
-          />
-          <span class="catalog-tag">${escapeHTML(item.categoryName)}</span>
-        </div>
-
-        <div class="catalog-body">
-          <h3 class="catalog-title">${escapeHTML(item.title)}</h3>
-          <p class="catalog-desc">${escapeHTML(item.subtitle)}</p>
-
-          <div class="catalog-footer">
-            <button type="button" class="btn btn-secondary btn-sm open-catalog-btn" data-catalog-id="${escapeHTML(item.id)}">
-              <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="11" cy="11" r="8"></circle>
-                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              </svg>
-              Ver Detalles
-            </button>
-
-            <a href="https://wa.me/584141536516?text=${encodeURIComponent('Hola Muebles Bellagio, solicito cotización de ' + item.title)}" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="btn btn-whatsapp btn-sm" 
-               aria-label="Cotizar por WhatsApp">
-              Cotizar
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
-  }).join('');
-
-  return `
-    <section id="catalogos" class="section-wrapper" style="background: var(--color-bg-surface);" aria-label="Catálogos y Colecciones">
-      <div class="container">
-        <header class="section-header reveal-item">
-          <span class="section-tag">Colecciones Selectas</span>
-          <h2 class="section-title">
-            Nuestros <span class="gold-text">Catálogos de Lujo</span>
-          </h2>
-          <p class="section-subtitle">
-            Explora una muestra destacada de nuestras 17 categorías de mobiliario de autor para residencias y oficinas.
-          </p>
-        </header>
-
-        <!-- Catalogs Grid Preview -->
-        <div class="catalogs-grid" id="catalogsGrid">
-          ${catalogItemsHTML}
-        </div>
-
-        <!-- Big CTA Button to Dedicated Catalog Page -->
-        <div class="reveal-item" style="text-align: center; margin-top: var(--space-10);">
-          <a href="#/catalogo" class="btn btn-primary btn-lg" style="padding: 1.1rem 2.8rem; font-size: 1rem; box-shadow: var(--shadow-gold);">
-            <span>Ver Catálogo Completo (17 Categorías A-Z)</span>
-            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="5" y1="12" x2="19" y2="12"></line>
-              <polyline points="12 5 19 12 12 19"></polyline>
-            </svg>
-          </a>
-        </div>
-      </div>
-    </section>
-  `;
+export function selectGalleryProducts(products) {
+  const seen = new Set();
+  return [...products].sort((a, b) => (Date.parse(b.created_at) || 0) - (Date.parse(a.created_at) || 0))
+    .filter(product => {
+      if (!product.id || seen.has(product.id) || !product.image || product.published === false) return false;
+      seen.add(product.id);
+      return true;
+    }).slice(0, 7);
 }
 
-/**
- * Attaches modal handlers to preview cards.
- */
+function renderCards() {
+  return selectGalleryProducts(getCatalogProducts()).map(product => `
+    <button class="collection-orbit-card" type="button" data-orbit-product="${escapeHTML(String(product.id))}" aria-label="Ver ${escapeHTML(product.title)}">
+      <img src="${escapeHTML(getOptimizedImageUrl(product.image, 720, 720, 85, 'contain'))}" alt="${escapeHTML(product.title)}" loading="lazy" decoding="async" width="720" height="720">
+      <span class="collection-orbit-caption"><small>${escapeHTML(product.categoryName)}</small><strong>${escapeHTML(product.title)}</strong><span aria-hidden="true">↗</span></span>
+    </button>`).join('');
+}
+
+export function renderCatalogs() {
+  return `
+    <section id="catalogos" class="section-wrapper catalog-entrance-section" aria-label="Acceso al catálogo">
+      <div class="container collection-showcase">
+        <div class="catalog-entrance reveal-item">
+          <div class="catalog-entrance-mark" aria-hidden="true"><span></span><img src="/logo.png" alt="" width="72" height="72"><span></span></div>
+          <span class="section-tag">Colección Bellagio</span>
+          <h2 class="section-title">Descubre nuestro <span class="gold-text">catálogo completo</span></h2>
+          <p class="section-subtitle">Explora todas nuestras piezas, categorías y novedades en una experiencia creada para encontrar el mobiliario ideal para tus espacios.</p>
+          <a href="#/catalogo" class="btn btn-primary btn-lg catalog-entrance-cta"><span>Explorar el catálogo</span><span aria-hidden="true">→</span></a>
+        </div>
+        <div class="collection-orbit" role="group" aria-label="Productos del catálogo">${renderCards()}</div>
+      </div>
+    </section>`;
+}
+
+let dispose = () => {};
+export function cleanupCatalogsEvents() { dispose(); dispose = () => {}; }
+
 export function setupCatalogsEvents() {
-  document.querySelectorAll('.open-catalog-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const catalogId = btn.getAttribute('data-catalog-id');
-      if (catalogId) {
-        openCatalogModal(catalogId);
-      }
+  cleanupCatalogsEvents();
+  const gallery = document.querySelector('.collection-orbit');
+  if (!gallery) return;
+  const controller = new AbortController();
+  const options = { signal: controller.signal };
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+  let cards = [...gallery.children];
+  let phase = 0, frame = 0, previous = 0, visible = false, hovered = false;
+  let width = gallery.clientWidth, height = gallery.clientHeight;
+  function paint() {
+    gallery.classList.toggle('is-static', reduced.matches || cards.length < 2);
+    if (reduced.matches || cards.length < 2) {
+      cards.forEach(card => card.removeAttribute('style'));
+      return;
+    }
+    cards.forEach((card, index) => {
+      const angle = phase + index * Math.PI * 2 / cards.length;
+      const depth = (Math.cos(angle) + 1) / 2;
+      const x = (1 - Math.cos(angle)) * width * .62;
+      const y = Math.sin(angle) * height * .62;
+      card.style.transform = `translate3d(${x}px, ${y}px, 0) scale(${.64 + .36 * depth})`;
+      card.style.zIndex = String(Math.round(depth * 100));
     });
+  }
+  function tick(now) {
+    if (previous) phase += Math.min(now - previous, 50) * Math.PI * 2 / 42000;
+    previous = now;
+    paint();
+    frame = requestAnimationFrame(tick);
+  }
+  function sync() {
+    cancelAnimationFrame(frame); previous = 0;
+    if (visible && !document.hidden && !reduced.matches && !hovered && !gallery.contains(document.activeElement) && cards.length > 1) frame = requestAnimationFrame(tick);
+  }
+  const observer = new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; sync(); });
+  observer.observe(gallery);
+  const resize = new ResizeObserver(() => { width = gallery.clientWidth; height = gallery.clientHeight; paint(); });
+  resize.observe(gallery);
+  gallery.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') { hovered = true; sync(); } }, options);
+  gallery.addEventListener('pointerleave', () => { hovered = false; sync(); }, options);
+  gallery.addEventListener('focusin', event => {
+    const index = cards.indexOf(event.target.closest('.collection-orbit-card'));
+    if (index >= 0) { phase = -index * Math.PI * 2 / cards.length; paint(); }
+    sync();
+  }, options);
+  gallery.addEventListener('focusout', () => queueMicrotask(() => { if (!controller.signal.aborted) sync(); }), options);
+  gallery.addEventListener('click', event => {
+    const id = event.target.closest('[data-orbit-product]')?.dataset.orbitProduct;
+    const product = getCatalogProducts().find(item => String(item.id) === id);
+    if (product) openProductModal(product);
+  }, options);
+  gallery.addEventListener('error', event => {
+    if (event.target.tagName === 'IMG') event.target.style.visibility = 'hidden';
+  }, { ...options, capture: true });
+  reduced.addEventListener('change', () => { paint(); sync(); }, options);
+  document.addEventListener('visibilitychange', sync, options);
+  const unsubscribe = subscribeCatalog(() => {
+    gallery.innerHTML = renderCards(); cards = [...gallery.children]; paint(); sync();
   });
+  paint();
+  dispose = () => { cancelAnimationFrame(frame); observer.disconnect(); resize.disconnect(); controller.abort(); unsubscribe(); };
 }

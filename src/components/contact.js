@@ -4,7 +4,7 @@
  */
 
 import { STORES_DATA } from '../data/stores.js';
-import { escapeHTML, sanitizeInput, validateEmail, validatePhone, createRateLimiter } from '../utils/security.js';
+import { escapeHTML, sanitizeInput, validateEmail, validatePhone } from '../utils/security.js';
 
 export function renderContact() {
   const storeOptionsHTML = STORES_DATA.map(store => `
@@ -29,7 +29,7 @@ export function renderContact() {
           <div class="luxury-card reveal-item">
             <h3 style="font-size: 1.5rem; margin-bottom: var(--space-2);">Solicitud de Asesoría & Cotización</h3>
             <p style="font-size: 0.9rem; margin-bottom: var(--space-6); color: var(--color-text-secondary);">
-              Completa el formulario y un especialista se pondrá en contacto contigo en menos de 2 horas.
+              Completa el formulario y un especialista se pondrá en contacto contigo en un plazo máximo de 2 horas.
             </p>
 
             <div id="formFeedback" class="form-feedback" role="alert"></div>
@@ -113,6 +113,10 @@ export function renderContact() {
                 </svg>
                 <span>Enviar Mensaje</span>
               </button>
+              <div id="contactWhatsappDraft" class="contact-whatsapp-draft" hidden>
+                <p>La consulta todavía no se ha enviado. Abre WhatsApp, revisa el mensaje y pulsa Enviar allí.</p>
+                <a id="contactWhatsappLink" class="btn btn-whatsapp" target="_blank" rel="noopener noreferrer">Continuar en WhatsApp</a>
+              </div>
             </form>
           </div>
 
@@ -176,7 +180,7 @@ export function renderContact() {
                 </div>
                 <div class="contact-method-content">
                   <h4>Horario de Atención</h4>
-                  <p>Lunes a Sábado: 9:00 AM - 6:30 PM</p>
+                  <p>${escapeHTML(STORES_DATA[0].schedule)}</p>
                 </div>
               </div>
             </div>
@@ -202,8 +206,13 @@ export function renderContact() {
 export function setupContactEvents() {
   const form = document.getElementById('contactForm');
   const feedback = document.getElementById('formFeedback');
-  const submitBtn = document.getElementById('submitBtn');
-  const rateLimiter = createRateLimiter(20000); // 20s cooldown
+  const draft = document.getElementById('contactWhatsappDraft');
+  const draftLink = document.getElementById('contactWhatsappLink');
+  form?.addEventListener('input', () => {
+    if (draft) draft.hidden = true;
+    draftLink?.removeAttribute('href');
+    if (feedback) { feedback.textContent = ''; feedback.className = 'form-feedback'; }
+  });
 
   form?.addEventListener('submit', (e) => {
     e.preventDefault();
@@ -215,23 +224,15 @@ export function setupContactEvents() {
       return;
     }
 
-    // 2. Rate limiting check
-    if (!rateLimiter()) {
-      showFeedback(feedback, 'Por favor espera unos momentos antes de enviar otro mensaje.', 'error');
-      return;
-    }
-
     // 3. Extract and sanitize inputs
     const nameInput = document.getElementById('contactName');
     const emailInput = document.getElementById('contactEmail');
     const phoneInput = document.getElementById('contactPhone');
-    const storeInput = document.getElementById('contactStore');
     const messageInput = document.getElementById('contactMessage');
 
     const name = sanitizeInput(nameInput?.value || '');
     const email = sanitizeInput(emailInput?.value || '');
     const phone = sanitizeInput(phoneInput?.value || '');
-    const store = sanitizeInput(storeInput?.value || '');
     const message = sanitizeInput(messageInput?.value || '');
 
     // Reset error states
@@ -255,56 +256,33 @@ export function setupContactEvents() {
       return;
     }
 
-    // 4. Loading state
-    if (submitBtn) {
-      submitBtn.disabled = true;
-      submitBtn.innerHTML = `
-        <svg class="animate-spin" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10" stroke-opacity="0.25"></circle>
-          <path d="M12 2a10 10 0 0 1 10 10" stroke-opacity="0.85"></path>
-        </svg>
-        <span>Enviando mensaje...</span>
-      `;
+    const text = [
+      'Hola Muebles Bellagio, deseo asesoría sobre muebles.',
+      `Nombre: ${name}`,
+      `Correo: ${email}`,
+      `Teléfono: ${phone}`,
+      `Consulta: ${message}`
+    ].join('\n');
+    if (draft && draftLink) {
+      draftLink.href = `https://wa.me/${STORES_DATA[0].whatsapp}?text=${encodeURIComponent(text)}`;
+      draft.hidden = false;
     }
+    showFeedback(feedback, 'Tu mensaje está preparado. Continúa en WhatsApp para revisarlo y enviarlo.', 'success');
 
-    // Simulate safe send & prepare WhatsApp direct backup
-    setTimeout(() => {
-      if (submitBtn) {
-        submitBtn.disabled = false;
-        submitBtn.innerHTML = `
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <polyline points="20 6 9 17 4 12"></polyline>
-          </svg>
-          <span>¡Mensaje Enviado con Éxito!</span>
-        `;
-      }
-
-      showFeedback(feedback, `¡Gracias ${escapeHTML(name)}! Hemos recibido tu solicitud para ${escapeHTML(store)}. Un asesor te contactará a la brevedad.`, 'success');
-      form.reset();
-
-      // Clear success button label after 4s
-      setTimeout(() => {
-        if (submitBtn) {
-          submitBtn.innerHTML = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="22" y1="2" x2="11" y2="13"></line>
-              <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-            </svg>
-            <span>Enviar Mensaje</span>
-          `;
-        }
-      }, 4000);
-    }, 800);
   });
 }
 
 function toggleError(errorId, inputElement, isError) {
   const errorSpan = document.getElementById(errorId);
   if (isError) {
+    inputElement?.setAttribute('aria-invalid', 'true');
+    inputElement?.setAttribute('aria-describedby', errorId);
     inputElement?.classList.add('error');
     inputElement?.classList.remove('valid');
     errorSpan?.classList.add('visible');
   } else {
+    inputElement?.removeAttribute('aria-invalid');
+    inputElement?.removeAttribute('aria-describedby');
     inputElement?.classList.remove('error');
     inputElement?.classList.add('valid');
     errorSpan?.classList.remove('visible');
@@ -315,5 +293,5 @@ function showFeedback(el, message, type) {
   if (!el) return;
   el.className = `form-feedback ${type}`;
   el.textContent = message;
-  el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'nearest' });
 }

@@ -5,27 +5,27 @@
 
 export const STATS_DATA = [
   {
-    value: 15,
-    suffix: '+',
+    value: 17,
+    suffix: '',
     label: 'Años de Trayectoria',
-    description: 'Liderando el diseño de muebles de alta gama en Venezuela'
+    description: '17 años en el mercado mobiliario venezolano'
   },
   {
     value: 100,
     suffix: '%',
     label: 'Diseño Exclusivo',
-    description: 'Showrooms y colecciones de autor para espacios únicos'
+    description: 'Diseño exclusivo y productos importados de excelente calidad'
   },
   {
     value: 10000,
     suffix: '+',
     label: 'Espacios Transformados',
-    description: 'Hogares, oficinas y proyectos residenciales de lujo'
+    description: 'Más de 10.000 habitaciones, salas y comedores de nuestros clientes'
   },
   {
-    value: 100,
-    suffix: '%',
-    label: 'Garantía & Excelencia',
-    description: 'Materiales nobles y servicio de postventa personalizado'
+    value: 3,
+    suffix: ' meses',
+    label: 'Servicio de Postventa',
+    description: 'Te acompañamos después de tu compra: atención de defectos de fábrica durante los 3 meses siguientes a la entrega de tu producto.'
   }
 ];

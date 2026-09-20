@@ -47,7 +47,7 @@ export function renderNavbar() {
       <div class="mobile-drawer" id="mobileDrawer">
         <a href="#/" class="mobile-nav-link">Inicio</a>
         <a href="#tiendas" class="mobile-nav-link">Tiendas</a>
-        <a href="#/catalogo" class="mobile-nav-link">Catálogos (17 Categorías)</a>
+        <a href="#/catalogo" class="mobile-nav-link">Catálogos</a>
         <a href="#contactanos" class="mobile-nav-link">Contáctanos</a>
         <a href="https://wa.me/584141536516?text=Hola%20Muebles%20Bellagio%2C%20deseo%20m%C3%A1s%20informaci%C3%B3n." 
            target="_blank" 

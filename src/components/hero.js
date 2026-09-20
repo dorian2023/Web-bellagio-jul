@@ -3,6 +3,8 @@
  * @description Hero Option 3: Cinematic Fullscreen Video Background with Luxury Glassmorphism Floating Centerpiece.
  */
 
+import { setupBackgroundVideo } from '../utils/background-video.js';
+
 export function renderHero() {
   return `
     <section id="inicio" class="hero-cinematic-section" aria-label="Inicio - Muebles Bellagio">
@@ -11,19 +13,18 @@ export function renderHero() {
         <video 
           id="heroBackgroundVideo"
           class="hero-video-bg" 
-          autoplay 
           loop 
           muted 
           playsinline 
           webkit-playsinline="true"
           x5-playsinline="true"
-          preload="auto"
-          poster="/images/hero-poster.webp"
+          preload="none"
+          data-src="/videos/tienda-principal.mp4"
+          poster="/images/hero-video-poster.webp"
           disablepictureinpicture
           disableremoteplayback
           aria-hidden="true"
         >
-          <source src="/videos/tienda-principal.mp4" type="video/mp4" />
         </video>
         <div class="hero-video-overlay"></div>
         <div class="hero-particles-glow"></div>
@@ -31,16 +32,16 @@ export function renderHero() {
 
       <div class="container hero-cinematic-container">
         <!-- Floating Glassmorphism Centerpiece Card -->
-        <div class="hero-glass-card reveal-item">
+        <div class="hero-glass-card">
           
           <!-- Bellagio Logo -->
           <div class="hero-logo-wrapper">
             <img 
-              src="/logo.jpg" 
+              src="/logo.png" 
               alt="Muebles Bellagio" 
               class="hero-logo-circle"
-              width="90"
-              height="90"
+              width="156"
+              height="156"
               loading="eager"
             />
           </div>
@@ -54,7 +55,7 @@ export function renderHero() {
           </h1>
 
           <p class="hero-cinematic-subtitle">
-            Desde Caracas para hogares de distinción. Piezas exclusivas de alta gama fabricadas con mármol noble, maderas selectas y tapicería europea contemporánea.
+            Desde Caracas para hogares de distinción. Piezas exclusivas de alta gama fabricadas con los materiales de más alto estándar en el mercado venezolano. Así como productos importados de excelente calidad.
           </p>
 
           <!-- Action Buttons Group -->
@@ -67,31 +68,6 @@ export function renderHero() {
               </svg>
             </a>
 
-            <a href="#tiendas" class="btn btn-glass btn-lg">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                <circle cx="12" cy="10" r="3"></circle>
-              </svg>
-              <span>Nuestras Tiendas</span>
-            </a>
-          </div>
-
-          <!-- Quick Highlights Bar -->
-          <div class="hero-stats-strip">
-            <div class="strip-stat-item">
-              <strong class="gold-text">+2,500</strong>
-              <span>Espacios Amoblados</span>
-            </div>
-            <div class="strip-separator"></div>
-            <div class="strip-stat-item">
-              <strong class="gold-text">17</strong>
-              <span>Categorías</span>
-            </div>
-            <div class="strip-separator"></div>
-            <div class="strip-stat-item">
-              <strong class="gold-text">3</strong>
-              <span>Showrooms en Caracas</span>
-            </div>
           </div>
 
         </div>
@@ -108,42 +84,15 @@ export function renderHero() {
   `;
 }
 
-/**
- * Ensures mobile browsers play the background video immediately,
- * handling browser energy/data-saver policies with interaction fallbacks.
- */
+let disposeHeroVideo = () => {};
+
+export function cleanupHeroEvents() {
+  disposeHeroVideo();
+  disposeHeroVideo = () => {};
+}
+
 export function setupHeroEvents() {
+  cleanupHeroEvents();
   const video = document.getElementById('heroBackgroundVideo');
-  if (!video) return;
-
-  video.muted = true;
-  video.defaultMuted = true;
-
-  const tryPlay = () => {
-    const playPromise = video.play();
-    if (playPromise !== undefined) {
-      playPromise.catch(() => {
-        // Fallback: trigger playback on first user touch/scroll
-        const triggerOnFirstInteraction = () => {
-          video.play().catch(() => { });
-          window.removeEventListener('touchstart', triggerOnFirstInteraction);
-          window.removeEventListener('scroll', triggerOnFirstInteraction);
-          window.removeEventListener('click', triggerOnFirstInteraction);
-        };
-        window.addEventListener('touchstart', triggerOnFirstInteraction, { once: true, passive: true });
-        window.addEventListener('scroll', triggerOnFirstInteraction, { once: true, passive: true });
-        window.addEventListener('click', triggerOnFirstInteraction, { once: true, passive: true });
-      });
-    }
-  };
-
-  // Immediate attempt
-  tryPlay();
-
-  // Retry when video data is ready
-  if (video.readyState >= 2) {
-    tryPlay();
-  } else {
-    video.addEventListener('loadeddata', tryPlay, { once: true });
-  }
+  if (video) disposeHeroVideo = setupBackgroundVideo(video);
 }

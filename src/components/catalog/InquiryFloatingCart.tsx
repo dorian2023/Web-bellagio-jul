@@ -80,8 +80,17 @@ export default function InquiryFloatingCart() {
   const handleClearAll = () => {
     if (confirm('¿Deseas vaciar toda tu selección de piezas?')) {
       clearAllSelections();
+      setSelectedIds([]);
       setIsOpen(false);
     }
+  };
+
+  const handleSendWhatsApp = () => {
+    // Auto-clear list after triggering WhatsApp quote
+    clearAllSelections();
+    setSelectedIds([]);
+    setCustomNote('');
+    setIsOpen(false);
   };
 
   // Build WhatsApp URL with full itemized list
@@ -306,7 +315,7 @@ export default function InquiryFloatingCart() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="btn btn-whatsapp btn-lg inquiry-send-btn"
-                onClick={() => setIsOpen(false)}
+                onClick={handleSendWhatsApp}
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"

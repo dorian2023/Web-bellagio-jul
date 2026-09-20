@@ -87,6 +87,22 @@ export default function CatalogBrowser({ initialCategory = 'todos' }: CatalogBro
     };
   }, [isMegaOpen]);
 
+  // Lock body scroll when mega-selector curtain is open on mobile
+  useEffect(() => {
+    if (isMegaOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const handleEsc = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsMegaOpen(false);
+      };
+      document.addEventListener('keydown', handleEsc);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.removeEventListener('keydown', handleEsc);
+      };
+    }
+  }, [isMegaOpen]);
+
   // Current category object
   const activeCategoryObj = useMemo(() => {
     return categoriesList.find((c) => c.id === selectedCategory) || {
@@ -304,6 +320,15 @@ export default function CatalogBrowser({ initialCategory = 'todos' }: CatalogBro
                   </svg>
                 </div>
               </button>
+
+              {/* Mega Dropdown Backdrop Overlay on Mobile */}
+              {isMegaOpen && (
+                <div 
+                  className="mega-dropdown-backdrop" 
+                  onClick={() => setIsMegaOpen(false)} 
+                  aria-hidden="true" 
+                />
+              )}
 
               {/* Mega Dropdown Curtain */}
               <div className={`mega-dropdown-curtain ${isMegaOpen ? 'open' : ''}`}>

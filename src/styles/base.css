@@ -206,3 +206,35 @@ button {
 .section-subtitle {
   font-size: 1.125rem;
 }
+
+/* ==========================================================================
+   Mobile-First Foundations & iOS Auto-Zoom Prevention
+   ========================================================================== */
+@media (max-width: 768px) {
+  /* Enforce 16px font-size to prevent iOS Safari auto-zooming viewport */
+  input,
+  textarea,
+  select,
+  .form-input,
+  .form-select,
+  .form-textarea,
+  .catalog-search-input {
+    font-size: 16px !important;
+  }
+}
+
+/* Touch Ergonomics: 44px minimum touch targets on coarse pointer devices */
+@media (pointer: coarse) {
+  button,
+  .btn,
+  .nav-link,
+  .mobile-nav-link,
+  .quick-pill-btn,
+  .pagination-btn,
+  .hamburger-btn,
+  .theme-toggle-btn {
+    min-height: var(--touch-target-min, 44px);
+    touch-action: manipulation;
+  }
+}
+

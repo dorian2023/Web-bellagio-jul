@@ -28,8 +28,14 @@
   .collection-orbit-card { top: calc(50% - 190px); left: 10px; width: min(72%, 380px); height: auto; aspect-ratio: 1 / 1; }
 }
 @media (max-width: 480px) {
+  .catalog-entrance-cta {
+    width: 100%;
+    justify-content: center;
+    box-sizing: border-box;
+  }
   .collection-orbit { height: 440px; }
   .collection-orbit-card { top: calc(50% - 140px); border-radius: 16px; width: 72%; height: auto; aspect-ratio: 1 / 1; }
+  .collection-orbit-card:active { transform: scale(0.97); }
   .collection-orbit-caption { padding: 36px 16px 16px; }
   .collection-orbit-caption strong { font-size: .95rem; }
   .collection-orbit.is-static { grid-template-columns: 1fr; }

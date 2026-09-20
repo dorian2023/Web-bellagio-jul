@@ -38,6 +38,27 @@ export default function Navbar() {
     }
   }, []);
 
+  // Close drawer on path change
+  useEffect(() => {
+    setIsDrawerOpen(false);
+  }, [pathname]);
+
+  // Lock body scroll when mobile drawer is open
+  useEffect(() => {
+    if (isDrawerOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const handleEsc = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') setIsDrawerOpen(false);
+      };
+      document.addEventListener('keydown', handleEsc);
+      return () => {
+        document.body.style.overflow = originalOverflow;
+        document.removeEventListener('keydown', handleEsc);
+      };
+    }
+  }, [isDrawerOpen]);
+
   const toggleTheme = () => {
     const newTheme = theme === 'dark' ? 'light' : 'dark';
     setTheme(newTheme);
@@ -169,29 +190,61 @@ export default function Navbar() {
         </div>
       </div>
 
+      {/* Mobile Backdrop Blur Overlay */}
+      {isDrawerOpen && (
+        <div 
+          className="mobile-drawer-backdrop" 
+          onClick={closeDrawer} 
+          aria-hidden="true" 
+        />
+      )}
+
       {/* Mobile Dropdown Drawer */}
       <div className={`mobile-drawer ${isDrawerOpen ? 'open' : ''}`} id="mobileDrawer">
-        <Link href="/" className="mobile-nav-link" onClick={closeDrawer}>
-          Inicio
+        <Link 
+          href="/" 
+          className={`mobile-nav-link ${pathname === '/' ? 'active' : ''}`} 
+          onClick={closeDrawer}
+        >
+          <span>Inicio</span>
+          <span className="mobile-nav-arrow" aria-hidden="true">→</span>
         </Link>
-        <Link href="/tiendas" className="mobile-nav-link" onClick={closeDrawer}>
-          Tiendas en Caracas
+        <Link 
+          href="/tiendas" 
+          className={`mobile-nav-link ${pathname === '/tiendas' ? 'active' : ''}`} 
+          onClick={closeDrawer}
+        >
+          <span>Tiendas en Caracas</span>
+          <span className="mobile-nav-arrow" aria-hidden="true">→</span>
         </Link>
-        <Link href="/catalogo" className="mobile-nav-link" onClick={closeDrawer}>
-          Catálogos (17 Categorías A-Z)
+        <Link 
+          href="/catalogo" 
+          className={`mobile-nav-link ${pathname.startsWith('/catalogo') ? 'active' : ''}`} 
+          onClick={closeDrawer}
+        >
+          <span>Catálogos (17 Categorías A-Z)</span>
+          <span className="mobile-nav-arrow" aria-hidden="true">→</span>
         </Link>
-        <Link href="/#contactanos" className="mobile-nav-link" onClick={closeDrawer}>
-          Contáctanos
+        <Link 
+          href="/#contactanos" 
+          className={`mobile-nav-link ${pathname === '/#contactanos' ? 'active' : ''}`} 
+          onClick={closeDrawer}
+        >
+          <span>Contáctanos</span>
+          <span className="mobile-nav-arrow" aria-hidden="true">→</span>
         </Link>
         <a 
           href="https://wa.me/584141536516?text=Hola%20Muebles%20Bellagio%2C%20deseo%20m%C3%A1s%20informaci%C3%B3n." 
           target="_blank" 
           rel="noopener noreferrer" 
           className="btn btn-whatsapp" 
-          style={{ marginTop: 'var(--space-4)' }}
+          style={{ marginTop: 'var(--space-3)' }}
           onClick={closeDrawer}
         >
-          WhatsApp (+58 414 1536516)
+          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+          </svg>
+          <span>WhatsApp (+58 414 1536516)</span>
         </a>
       </div>
     </nav>

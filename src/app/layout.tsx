@@ -1,8 +1,20 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import Navbar from '@/src/components/shared/Navbar';
 import Footer from '@/src/components/shared/Footer';
 import WhatsAppWidget from '@/src/components/shared/WhatsAppWidget';
+import InquiryFloatingCart from '@/src/components/catalog/InquiryFloatingCart';
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  viewportFit: 'cover',
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FCFCF9' },
+    { media: '(prefers-color-scheme: dark)', color: '#0B0B0D' },
+  ],
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://mueblesbellagio.com'),
@@ -108,6 +120,7 @@ export default function RootLayout({
         <main>{children}</main>
         <Footer />
         <WhatsAppWidget />
+        <InquiryFloatingCart />
       </body>
     </html>
   );

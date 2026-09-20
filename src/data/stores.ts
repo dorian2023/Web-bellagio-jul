@@ -1,9 +1,11 @@
 /**
- * @file stores.js
+ * @file stores.ts
  * @description Official showroom and store data for Muebles Bellagio in Caracas, Venezuela.
  */
 
-export const STORES_DATA = [
+import { StoreLocation } from '@/src/types/catalog';
+
+export const STORES_DATA: StoreLocation[] = [
   {
     id: 'tienda-comercio',
     name: 'Bellagio JK',

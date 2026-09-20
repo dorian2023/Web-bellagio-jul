@@ -10,8 +10,42 @@ import { escapeHTML } from '../utils/security.js';
 /** @type {Set<string>} Selected product IDs */
 const selectedProducts = new Set();
 
+// Safely initialize from localStorage in client environment
+if (typeof window !== 'undefined') {
+  try {
+    const saved = localStorage.getItem('bellagio_selected_products');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        parsed.forEach((id) => selectedProducts.add(String(id)));
+      }
+    }
+  } catch (e) {
+    // Ignore storage parse errors
+  }
+}
+
 /** WhatsApp number for Bellagio */
 const WHATSAPP_NUMBER = '584141536516';
+
+/**
+ * Persists current selections to localStorage and notifies listeners.
+ */
+function persistSelections() {
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.setItem('bellagio_selected_products', JSON.stringify(Array.from(selectedProducts)));
+      window.dispatchEvent(new CustomEvent('bellagio:cart-updated', {
+        detail: {
+          count: selectedProducts.size,
+          selectedIds: Array.from(selectedProducts)
+        }
+      }));
+    } catch (e) {
+      // Ignore quota/access errors
+    }
+  }
+}
 
 /**
  * Toggles a product's selection state.
@@ -19,15 +53,20 @@ const WHATSAPP_NUMBER = '584141536516';
  * @returns {boolean} Whether the product is now selected
  */
 export function toggleProductSelection(productId) {
-  if (selectedProducts.has(productId)) {
-    selectedProducts.delete(productId);
+  if (!productId) return false;
+  const idStr = String(productId);
+  if (selectedProducts.has(idStr)) {
+    selectedProducts.delete(idStr);
   } else {
-    selectedProducts.add(productId);
+    selectedProducts.add(idStr);
   }
 
-  updateProductCardStates();
-  updateFAB();
-  return selectedProducts.has(productId);
+  persistSelections();
+  if (typeof document !== 'undefined') {
+    updateProductCardStates();
+    updateFAB();
+  }
+  return selectedProducts.has(idStr);
 }
 
 /**
@@ -44,7 +83,8 @@ export function getSelectionCount() {
  * @returns {boolean}
  */
 export function isProductSelected(productId) {
-  return selectedProducts.has(productId);
+  if (!productId) return false;
+  return selectedProducts.has(String(productId));
 }
 
 /**
@@ -52,8 +92,11 @@ export function isProductSelected(productId) {
  */
 export function clearAllSelections() {
   selectedProducts.clear();
-  updateProductCardStates();
-  updateFAB();
+  persistSelections();
+  if (typeof document !== 'undefined') {
+    updateProductCardStates();
+    updateFAB();
+  }
 }
 
 /**

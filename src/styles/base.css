@@ -113,6 +113,22 @@ button {
   background: none;
 }
 
+/* Global keyboard focus ring — branded, visible, accessible */
+:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+}
+
+/* Respect motion preferences — preserve state changes via opacity */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.15s !important;
+  }
+}
+
 /* Selection and scrollbar */
 ::selection {
   background: var(--gold-500);

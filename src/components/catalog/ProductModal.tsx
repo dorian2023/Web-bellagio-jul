@@ -1,0 +1,274 @@
+'use client';
+
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { Product } from '@/src/types/catalog';
+import { isProductSelected, toggleProductSelection } from '@/src/utils/inquiry-cart.js';
+
+interface ProductModalProps {
+  product: Product | null;
+  onClose: () => void;
+}
+
+export default function ProductModal({ product, onClose }: ProductModalProps) {
+  const [isZooming, setIsZooming] = useState<boolean>(false);
+  const [zoomPos, setZoomPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+  const [zoomScale, setZoomScale] = useState<number>(2.4);
+  const [isMarked, setIsMarked] = useState<boolean>(false);
+
+  const imageContainerRef = useRef<HTMLDivElement | null>(null);
+
+  // Sync selection state with inquiry cart
+  useEffect(() => {
+    if (product) {
+      setIsMarked(isProductSelected(product.id));
+    }
+
+    const handleCartUpdate = (e: Event) => {
+      const customEvent = e as CustomEvent;
+      if (product && customEvent.detail?.selectedIds) {
+        setIsMarked(customEvent.detail.selectedIds.includes(String(product.id)));
+      }
+    };
+
+    window.addEventListener('bellagio:cart-updated', handleCartUpdate);
+    return () => {
+      window.removeEventListener('bellagio:cart-updated', handleCartUpdate);
+    };
+  }, [product]);
+
+  // Handle escape key and body scroll lock
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [onClose]);
+
+  // Handle HD Magnifier mouse movement
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    const container = imageContainerRef.current;
+    if (!container) return;
+
+    const rect = container.getBoundingClientRect();
+    const x = ((e.clientX - rect.left) / rect.width) * 100;
+    const y = ((e.clientY - rect.top) / rect.height) * 100;
+
+    // Constrain within 0 - 100%
+    const clampedX = Math.max(0, Math.min(100, x));
+    const clampedY = Math.max(0, Math.min(100, y));
+
+    setZoomPos({ x: clampedX, y: clampedY });
+    setIsZooming(true);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setIsZooming(false);
+  }, []);
+
+  const toggleMobileZoom = useCallback(() => {
+    setIsZooming((prev) => !prev);
+  }, []);
+
+  const handleToggleMark = () => {
+    if (!product) return;
+    const nextState = toggleProductSelection(product.id);
+    setIsMarked(nextState);
+  };
+
+  if (!product) return null;
+
+  const quoteMsg = encodeURIComponent(
+    `Hola Muebles Bellagio, solicito asesoría y cotización formal de: ${product.title} (${product.categoryName}). ¿Tienen disponibilidad o fabrican con medidas personalizadas?`
+  );
+
+  return (
+    <div className="lightbox-overlay open" onClick={onClose} role="dialog" aria-modal="true">
+      <div className="lightbox-modal vip-product-modal" onClick={(e) => e.stopPropagation()}>
+        {/* Mobile Luxury Sheet Grab Handle */}
+        <div className="sheet-drag-handle" aria-hidden="true">
+          <span className="drag-pill"></span>
+        </div>
+
+        <button 
+          type="button" 
+          className="lightbox-close-btn" 
+          onClick={onClose}
+          aria-label="Cerrar detalles del producto"
+          title="Cerrar (Esc)"
+        >
+          ✕
+        </button>
+
+        <div className="lightbox-grid">
+          {/* Product Image Column with HD Zoom Lens */}
+          <div className="lightbox-img-col vip-img-col">
+            <div 
+              ref={imageContainerRef}
+              className={`lightbox-img-stage ${isZooming ? 'is-inspecting' : ''}`}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              onClick={toggleMobileZoom}
+              title="Pasa el cursor o toca para zoom HD"
+            >
+              <img 
+                src={product.image} 
+                alt={product.title} 
+                className="lightbox-img main-product-img"
+                style={
+                  isZooming
+                    ? {
+                        transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                        transform: `scale(${zoomScale})`,
+                      }
+                    : undefined
+                }
+              />
+
+              {/* Luxury Magnifier Badge */}
+              <div className={`hd-zoom-badge ${isZooming ? 'active' : ''}`} aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <circle cx="11" cy="11" r="8"></circle>
+                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                  <line x1="11" y1="8" x2="11" y2="14"></line>
+                  <line x1="8" y1="11" x2="14" y2="11"></line>
+                </svg>
+                <span>{isZooming ? `Inspección HD ${zoomScale}x` : 'Toca para Zoom HD'}</span>
+              </div>
+
+              {/* Zoom Scale Pill Controls (Visible when active) */}
+              {isZooming && (
+                <div className="hd-zoom-controls" onClick={(e) => e.stopPropagation()}>
+                  <button 
+                    type="button" 
+                    className="zoom-ctrl-btn" 
+                    onClick={() => setZoomScale((s) => Math.max(1.8, s - 0.4))}
+                    title="Reducir aumento"
+                  >
+                    −
+                  </button>
+                  <span className="zoom-ctrl-scale">{zoomScale.toFixed(1)}x</span>
+                  <button 
+                    type="button" 
+                    className="zoom-ctrl-btn" 
+                    onClick={() => setZoomScale((s) => Math.min(3.2, s + 0.4))}
+                    title="Aumentar zoom"
+                  >
+                    +
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Product Details Column */}
+          <div className="lightbox-info-col vip-info-col">
+            <div className="vip-modal-header">
+              <div className="vip-badge-row">
+                <span className="catalog-tag">
+                  {product.categoryName}
+                </span>
+                <span className="vip-badge-pill">
+                  ✨ Alta Ebanistería
+                </span>
+              </div>
+              <h2 className="lightbox-title">{product.title}</h2>
+              {product.subtitle && (
+                <p className="lightbox-subtitle">{product.subtitle}</p>
+              )}
+            </div>
+
+            {/* Description */}
+            {product.description && (
+              <div className="lightbox-description">
+                <p>{product.description}</p>
+              </div>
+            )}
+
+            {/* Technical Specifications */}
+            <div className="lightbox-specs vip-specs">
+              {product.materials && (
+                <div className="lightbox-spec-item">
+                  <strong>Materiales Nobles:</strong>
+                  <span>{product.materials}</span>
+                </div>
+              )}
+              {product.dimensions && (
+                <div className="lightbox-spec-item">
+                  <strong>Dimensiones:</strong>
+                  <span>{product.dimensions}</span>
+                </div>
+              )}
+              {product.availableColors && product.availableColors.length > 0 && (
+                <div className="lightbox-spec-item">
+                  <strong>Tonos y Acabados:</strong>
+                  <span>{product.availableColors.join(', ')}</span>
+                </div>
+              )}
+            </div>
+
+            {/* Luxury Value Chips */}
+            <div className="vip-modal-features">
+              <div className="vip-feature-chip">
+                <span className="vip-chip-icon">⚜️</span>
+                <span>Fabricación a la Medida</span>
+              </div>
+              <div className="vip-feature-chip">
+                <span className="vip-chip-icon">🏬</span>
+                <span>Visítalo en Showroom</span>
+              </div>
+              <div className="vip-feature-chip">
+                <span className="vip-chip-icon">🛡️</span>
+                <span>Garantía Bellagio</span>
+              </div>
+            </div>
+
+            {/* Primary Action Controls */}
+            <div className="lightbox-actions vip-modal-actions">
+              <a 
+                href={`https://wa.me/584141536516?text=${quoteMsg}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="vip-whatsapp-btn"
+                title="Cotizar directamente este producto por WhatsApp"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/>
+                </svg>
+                <span>Cotizar WhatsApp</span>
+              </a>
+
+              <button
+                type="button"
+                className={`vip-mark-btn ${isMarked ? 'is-marked' : ''}`}
+                onClick={handleToggleMark}
+                title={isMarked ? "Quitar de mi lista de cotización" : "Marcar producto para armar lista de cotización"}
+              >
+                {isMarked ? (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <span>✓ Marcado</span>
+                  </>
+                ) : (
+                  <>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    <span>Marcar Producto</span>
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}

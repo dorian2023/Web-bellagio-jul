@@ -3,12 +3,9 @@
  * @description Reusable UI components: luxury buttons, glass cards, badges, modals, form controls.
  */
 
-/* Gold Gradient Text */
+/* Gold Accent Text */
 .gold-text {
-  background: var(--gradient-gold);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+  color: var(--gold-400);
   display: inline-block;
 }
 
@@ -40,27 +37,34 @@
 }
 
 /* Primary Gold Button */
-.btn-primary {
+.btn-primary,
+.btn-gold {
   background: var(--gradient-gold);
   color: #0B0B0C;
   font-weight: 700;
-  box-shadow: var(--shadow-gold);
-  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 20px rgba(197, 165, 90, 0.32);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  position: relative;
+  overflow: hidden;
+  transition: all var(--transition-fast);
 }
 
-.btn-primary:hover {
+.btn-primary:hover,
+.btn-gold:hover {
   background: var(--gradient-gold-hover);
   transform: translateY(-2px);
-  box-shadow: var(--shadow-gold-hover);
+  box-shadow: 0 8px 28px rgba(197, 165, 90, 0.52);
   color: #000;
 }
 
-.btn-primary:active {
+.btn-primary:active,
+.btn-gold:active {
   transform: translateY(0);
 }
 
-/* Shimmer Light Effect on Primary Button */
-.btn-primary::after {
+/* Shimmer Light Effect on Primary Gold Button */
+.btn-primary::after,
+.btn-gold::after {
   content: '';
   position: absolute;
   top: -50%;
@@ -70,7 +74,7 @@
   background: linear-gradient(
     60deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0.4) 50%,
+    rgba(255, 255, 255, 0.45) 50%,
     rgba(255, 255, 255, 0) 100%
   );
   transform: rotate(25deg);
@@ -78,7 +82,8 @@
   pointer-events: none;
 }
 
-.btn-primary:hover::after {
+.btn-primary:hover::after,
+.btn-gold:hover::after {
   left: 130%;
 }
 
@@ -104,6 +109,8 @@
   border: 1.5px solid var(--gold-400);
   font-weight: 600;
   transition: all var(--transition-fast);
+  position: relative;
+  overflow: hidden;
 }
 
 .btn-outline-gold:hover {
@@ -111,7 +118,7 @@
   color: #0b0b0d;
   border-color: transparent;
   transform: translateY(-2px);
-  box-shadow: var(--shadow-gold);
+  box-shadow: 0 6px 22px rgba(197, 165, 90, 0.4);
 }
 
 .product-selected .btn-outline-gold,
@@ -120,22 +127,49 @@
   color: #0b0b0d;
   border-color: transparent;
   font-weight: 700;
-  box-shadow: var(--shadow-gold);
+  box-shadow: 0 6px 22px rgba(197, 165, 90, 0.4);
 }
 
-/* WhatsApp Accent Button */
+/* WhatsApp Accent Button (Rich Emerald Gradient) */
 .btn-whatsapp {
-  background: var(--whatsapp-color);
+  background: var(--gradient-emerald, linear-gradient(135deg, #0d7568 0%, #179e4f 50%, #25D366 100%));
   color: #FFFFFF;
   font-weight: 700;
-  box-shadow: var(--whatsapp-shadow);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.28);
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
 }
 
 .btn-whatsapp:hover {
-  background: #20BA56;
+  background: var(--gradient-emerald-hover, linear-gradient(135deg, #108c7c 0%, #1eb85c 50%, #2ef075 100%));
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(37, 211, 102, 0.5);
+  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.48);
   color: #FFFFFF;
+}
+
+/* Emerald Shimmer Light Effect on WhatsApp Button */
+.btn-whatsapp::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -60%;
+  width: 40%;
+  height: 200%;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.38) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  transition: all 0.6s ease;
+  pointer-events: none;
+}
+
+.btn-whatsapp:hover::after {
+  left: 130%;
 }
 
 /* Small Button Variant */
@@ -246,7 +280,7 @@
 
 .inquiry-cart-fab.visible {
   display: flex;
-  animation: fabPopIn 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  animation: fabPopIn 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .inquiry-cart-fab:hover {
@@ -283,13 +317,13 @@
 }
 
 .fab-bounce {
-  animation: fabBounce 0.45s ease-out;
+  animation: fabPulse 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes fabBounce {
-  0%, 100% { transform: scale(1); }
-  30% { transform: scale(1.25); }
-  60% { transform: scale(0.95); }
+@keyframes fabPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.08); }
+  100% { transform: scale(1); }
 }
 
 /* 3. Inquiry Modal Backdrop & Container */
@@ -554,14 +588,15 @@
 @media (max-width: 768px) {
   .inquiry-cart-fab {
     bottom: 85px;
-    right: 20px;
-    width: 52px;
-    height: 52px;
+    right: 16px;
+    width: 56px;
+    height: 56px;
   }
 
   .inquiry-modal-container {
-    max-height: 94vh;
-    border-radius: 18px;
+    max-height: 96vh;
+    border-radius: 20px 20px 0 0;
+    margin-top: auto;
   }
 
   .inquiry-modal-header,
@@ -576,7 +611,8 @@
 
   .inquiry-send-btn {
     font-size: 0.92rem;
-    padding: 0.85rem;
+    padding: 0.95rem;
+    min-height: 48px;
   }
 }
 
@@ -746,5 +782,791 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all var(--transition-fast);
 }
+
+/* ==========================================================================
+   Product Lightbox Modal (Catalog Exploration & Mobile Bottom Sheet)
+   ========================================================================== */
+.lightbox-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(8, 8, 10, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--transition-normal), visibility var(--transition-normal);
+}
+
+[data-theme="light"] .lightbox-overlay {
+  background: rgba(20, 20, 24, 0.72);
+}
+
+.lightbox-overlay.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+.lightbox-modal {
+  position: relative;
+  background: var(--color-bg-surface-elevated);
+  border: 1px solid var(--gold-500);
+  border-radius: var(--radius-xl);
+  max-width: 960px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.65), 
+    0 0 0 1px rgba(212, 175, 55, 0.2);
+  transform: translateY(16px) scale(0.98);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+  scrollbar-width: thin;
+}
+
+.lightbox-overlay.open .lightbox-modal {
+  transform: translateY(0) scale(1);
+}
+
+.lightbox-close-btn {
+  position: absolute;
+  top: var(--space-4);
+  right: var(--space-4);
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  border-radius: var(--radius-full);
+  background: rgba(18, 18, 22, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  cursor: pointer;
+  z-index: 12;
+  transition: all var(--transition-fast);
+}
+
+.lightbox-close-btn:hover {
+  color: var(--color-text-primary);
+  border-color: var(--gold-400);
+  background: rgba(197, 165, 90, 0.15);
+  transform: scale(1.05);
+}
+
+.lightbox-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 520px;
+}
+
+.lightbox-img-col {
+  position: relative;
+  background: #0d0d10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8) var(--space-6);
+  border-right: 1px solid var(--color-border-subtle);
+  overflow: hidden;
+}
+
+[data-theme="light"] .lightbox-img-col {
+  background: #f4f2ec;
+}
+
+.lightbox-img {
+  max-width: 100%;
+  max-height: 440px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45));
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.lightbox-modal:hover .lightbox-img {
+  transform: scale(1.02);
+}
+
+.lightbox-info-col {
+  padding: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+.catalog-tag {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-400);
+  background: rgba(197, 165, 90, 0.12);
+  border: 1px solid rgba(197, 165, 90, 0.28);
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  align-self: flex-start;
+}
+
+.lightbox-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.65rem, 2.8vw, 2.25rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  color: var(--color-text-primary);
+  margin-bottom: var(--space-1);
+}
+
+.lightbox-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: var(--space-4);
+}
+
+.lightbox-description {
+  color: var(--color-text-secondary);
+  font-size: 0.92rem;
+  line-height: 1.65;
+  margin-bottom: var(--space-5);
+}
+
+.lightbox-specs {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  border-top: 1px solid var(--color-border-subtle);
+  border-bottom: 1px solid var(--color-border-subtle);
+  padding: var(--space-4) 0;
+  margin-bottom: var(--space-4);
+}
+
+.lightbox-spec-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-4);
+  font-size: 0.88rem;
+}
+
+.lightbox-spec-item strong {
+  color: var(--gold-400);
+  font-weight: 600;
+  flex-shrink: 0;
+}
+
+.lightbox-spec-item span {
+  color: var(--color-text-primary);
+  text-align: right;
+}
+
+.lightbox-actions .btn-whatsapp {
+  min-height: 48px;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  border-radius: var(--radius-md);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.25);
+}
+
+/* ==========================================================================
+   HD Magnifier Zoom Lens & VIP Product Modal
+   ========================================================================== */
+.lightbox-img-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: crosshair;
+  border-radius: var(--radius-md);
+  user-select: none;
+}
+
+.lightbox-img-stage .main-product-img {
+  max-width: 100%;
+  max-height: 420px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 14px 28px rgba(0, 0, 0, 0.45));
+  transition: transform 0.15s ease-out;
+  pointer-events: none;
+}
+
+.lightbox-img-stage.is-inspecting .main-product-img {
+  transition: transform 0.05s ease-out;
+}
+
+/* Luxury HD Zoom Indicator Badge */
+.hd-zoom-badge {
+  position: absolute;
+  bottom: 14px;
+  left: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--gold-300);
+  background: rgba(15, 15, 18, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(197, 165, 90, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+  transition: all var(--transition-fast);
+  pointer-events: none;
+  z-index: 5;
+}
+
+[data-theme="light"] .hd-zoom-badge {
+  color: var(--gold-700);
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(170, 134, 56, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.hd-zoom-badge.active {
+  color: #fff;
+  background: rgba(197, 165, 90, 0.85);
+  border-color: var(--gold-300);
+}
+
+[data-theme="light"] .hd-zoom-badge.active {
+  color: #fff;
+  background: var(--gold-600);
+}
+
+/* Zoom Scale Controls */
+.hd-zoom-controls {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px;
+  background: rgba(15, 15, 18, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  z-index: 6;
+}
+
+.zoom-ctrl-btn {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: var(--color-bg-surface-elevated);
+  color: var(--color-text-primary);
+  font-size: 1rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  line-height: 1;
+  transition: all var(--transition-fast);
+}
+
+.zoom-ctrl-btn:hover {
+  background: var(--gold-500);
+  color: #000;
+}
+
+.zoom-ctrl-scale {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold-300);
+  padding: 0 6px;
+  font-family: var(--font-accent);
+}
+
+/* Mobile Sheet Drag Handle (Hidden on Desktop) */
+.sheet-drag-handle {
+  display: none;
+}
+
+/* VIP Modal Header & Badges */
+.vip-badge-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.vip-badge-pill {
+  font-family: var(--font-sans);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--gold-500);
+  background: rgba(197, 165, 90, 0.08);
+  border: 1px solid rgba(197, 165, 90, 0.2);
+  padding: 0.25rem 0.65rem;
+  border-radius: var(--radius-full);
+}
+
+/* Luxury Value Chips */
+.vip-modal-features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-2) 0 var(--space-4) 0;
+}
+
+.vip-feature-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.45rem 0.65rem;
+  border-radius: var(--radius-md);
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-subtle);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+}
+
+.vip-chip-icon {
+  font-size: 0.9rem;
+}
+
+/* Actions in VIP Modal */
+.vip-modal-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-top: var(--space-4);
+  width: 100%;
+}
+
+@media (max-width: 600px) {
+  .vip-modal-actions {
+    grid-template-columns: 1fr;
+    gap: var(--space-2);
+  }
+}
+
+.vip-whatsapp-btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-accent);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  background: var(--gradient-emerald);
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.3);
+  position: relative;
+  overflow: hidden;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.vip-whatsapp-btn:hover {
+  background: var(--gradient-emerald-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 26px rgba(37, 211, 102, 0.5);
+  color: #ffffff;
+}
+
+.vip-whatsapp-btn::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -70%;
+  width: 50%;
+  height: 220%;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.45) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  transition: left 0.65s ease;
+  pointer-events: none;
+}
+
+.vip-whatsapp-btn:hover::after {
+  left: 140%;
+}
+
+.vip-mark-btn {
+  width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--font-accent);
+  font-size: 0.86rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+  background: var(--gradient-gold);
+  color: #0b0b0d;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  box-shadow: 0 4px 20px rgba(197, 165, 90, 0.35);
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.vip-mark-btn:hover {
+  background: var(--gradient-gold-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(197, 165, 90, 0.55);
+  color: #000000;
+}
+
+.vip-mark-btn:active {
+  transform: translateY(0);
+}
+
+/* Gold Specular Shimmer Sweep Effect */
+.vip-mark-btn::after {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -70%;
+  width: 50%;
+  height: 220%;
+  background: linear-gradient(
+    60deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.6) 50%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  transform: rotate(25deg);
+  transition: left 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.vip-mark-btn:hover::after {
+  left: 140%;
+}
+
+/* Marked / Active State (when product is selected) */
+.vip-mark-btn.is-marked {
+  background: linear-gradient(135deg, #FFF6E0 0%, #D8B466 50%, #B8923E 100%);
+  border-color: #FFD700;
+  box-shadow: 
+    0 0 18px rgba(212, 175, 55, 0.65),
+    0 4px 20px rgba(0, 0, 0, 0.15);
+  color: #000000;
+  font-weight: 800;
+}
+
+/* ==========================================================================
+   Lightbox Mobile Bottom-Sheet Adaptation (Impeccable Luxury UI)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .sheet-drag-handle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px 0 6px 0;
+    cursor: grab;
+    touch-action: none;
+    user-select: none;
+    background: transparent;
+    flex-shrink: 0;
+  }
+
+  .sheet-drag-handle .drag-pill {
+    width: 44px;
+    height: 5px;
+    border-radius: var(--radius-full);
+    background: rgba(197, 165, 90, 0.45);
+    transition: background var(--transition-fast), width var(--transition-fast);
+  }
+
+  [data-theme="light"] .sheet-drag-handle .drag-pill {
+    background: rgba(170, 134, 56, 0.35);
+  }
+
+  .lightbox-overlay {
+    padding: 0;
+    align-items: flex-end;
+    justify-content: center;
+    background: rgba(10, 10, 14, 0.82);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  [data-theme="light"] .lightbox-overlay {
+    background: rgba(18, 18, 22, 0.68);
+  }
+
+  .lightbox-modal {
+    max-height: 90vh;
+    height: 90vh;
+    max-width: 100%;
+    width: 100%;
+    border-radius: 26px 26px 0 0;
+    border-left: none;
+    border-right: none;
+    border-bottom: none;
+    border-top: 1.5px solid rgba(197, 165, 90, 0.4);
+    background: var(--color-bg-surface-elevated);
+    box-shadow: 
+      0 -16px 48px rgba(0, 0, 0, 0.55),
+      0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transform: translateY(100%);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .lightbox-overlay.open .lightbox-modal {
+    transform: translateY(0);
+  }
+
+  .lightbox-close-btn {
+    top: 12px;
+    right: 14px;
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+    min-height: 36px;
+    font-size: 0.95rem;
+    background: rgba(18, 18, 22, 0.7);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(197, 165, 90, 0.3);
+    color: var(--color-text-primary);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
+    z-index: 25;
+  }
+
+  .lightbox-close-btn:active {
+    transform: scale(0.92);
+  }
+
+  .lightbox-grid {
+    grid-template-columns: 1fr;
+    min-height: 0;
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .lightbox-img-col {
+    padding: var(--space-3) var(--space-4) var(--space-2);
+    border-right: none;
+    border-bottom: 1px solid var(--color-border-subtle);
+    background: linear-gradient(180deg, rgba(197, 165, 90, 0.06) 0%, rgba(0, 0, 0, 0.02) 100%);
+    flex-shrink: 0;
+    overflow: hidden;
+  }
+
+  .lightbox-img-stage {
+    min-height: 180px;
+    height: 200px;
+    border-radius: var(--radius-lg);
+  }
+
+  .lightbox-img {
+    max-height: 175px;
+  }
+
+  .hd-zoom-badge {
+    bottom: 8px;
+    left: 8px;
+    padding: 0.28rem 0.6rem;
+    font-size: 0.7rem;
+    border-radius: var(--radius-full);
+  }
+
+  .hd-zoom-controls {
+    bottom: 8px;
+    right: 8px;
+    padding: 3px;
+  }
+
+  .zoom-ctrl-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 0.85rem;
+  }
+
+  .zoom-ctrl-scale {
+    font-size: 0.7rem;
+    padding: 0 4px;
+  }
+
+  .lightbox-info-col {
+    padding: var(--space-4) var(--space-4) calc(var(--space-8) + 20px) var(--space-4);
+    gap: var(--space-3);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .vip-badge-row {
+    margin-bottom: 4px;
+  }
+
+  .lightbox-title {
+    font-size: 1.55rem;
+    line-height: 1.15;
+    margin-bottom: 2px;
+  }
+
+  .lightbox-subtitle {
+    font-size: 0.86rem;
+    line-height: 1.4;
+    margin-bottom: var(--space-2);
+  }
+
+  .lightbox-description {
+    font-size: 0.86rem;
+    line-height: 1.5;
+    margin-bottom: var(--space-3);
+  }
+
+  .lightbox-specs {
+    padding: var(--space-3) 0;
+    margin-bottom: var(--space-2);
+    gap: var(--space-2);
+  }
+
+  .lightbox-spec-item {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-2);
+    font-size: 0.82rem;
+  }
+
+  .lightbox-spec-item strong {
+    font-size: 0.8rem;
+  }
+
+  .lightbox-spec-item span {
+    font-size: 0.82rem;
+    text-align: right;
+  }
+
+  .vip-modal-features {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+    margin: var(--space-1) 0 var(--space-3) 0;
+  }
+
+  .vip-feature-chip {
+    padding: 0.4rem 0.35rem;
+    font-size: 0.68rem;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    gap: 3px;
+    border-radius: var(--radius-sm);
+    line-height: 1.15;
+  }
+
+  .vip-chip-icon {
+    font-size: 0.85rem;
+  }
+
+  /* Sticky Conversion Footer Bar on Mobile */
+  .vip-modal-actions {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    margin: 0;
+    margin-top: auto;
+    padding: var(--space-3) var(--space-4) max(var(--space-3), env(safe-area-inset-bottom, 16px));
+    background: var(--color-bg-surface-elevated);
+    border-top: 1px solid var(--color-border-subtle);
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.16);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2);
+    width: 100%;
+  }
+
+  .vip-whatsapp-btn,
+  .vip-mark-btn {
+    min-height: 46px;
+    height: 46px;
+    font-size: 0.82rem;
+    padding: 0 0.5rem;
+    gap: 6px;
+    letter-spacing: 0.03em;
+  }
+
+  .vip-whatsapp-btn svg,
+  .vip-mark-btn svg {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+  }
+}
+
+@media (max-width: 360px) {
+  .vip-modal-actions {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+
+  .vip-whatsapp-btn,
+  .vip-mark-btn {
+    min-height: 42px;
+    height: 42px;
+    font-size: 0.78rem;
+  }
+}
+
 
 

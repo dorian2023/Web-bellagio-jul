@@ -111,7 +111,7 @@ export function renderCatalogPage() {
           <div class="catalog-hero-content">
             <span class="section-tag">Colecciones de Alta Ebanistería</span>
             <h1 class="catalog-hero-title">
-              Catálogo de <span class="gold-text">Muebles de Lujo</span>
+              Catálogo <span class="gold-text">Bellagio</span>
             </h1>
             <p class="catalog-hero-subtitle">
               Explora nuestra selecta curaduría de piezas en 17 categorías exclusivas para residencias, oficinas de alta dirección y proyectos de interiorismo en Caracas.

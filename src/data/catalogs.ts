@@ -1,9 +1,12 @@
 /**
- * @file catalogs.js
+ * @file catalogs.ts
  * @description Real catalog and categories data synchronized with Supabase database for Muebles Bellagio.
+ * Contains 76 real products.
  */
 
-export const CATEGORIES_DATA = [
+import { Category, Product } from '@/src/types/catalog';
+
+export const CATEGORIES_DATA: Category[] = [
   {
     "id": "todos",
     "name": "Todas las Categorías",
@@ -96,7 +99,7 @@ export const CATEGORIES_DATA = [
   }
 ];
 
-export const CATALOGS_DATA = [
+export const CATALOGS_DATA: Product[] = [
   {
     "id": "2152e4e9-f5b9-4dfc-9964-0e58a6286b72",
     "category": "espejos",

@@ -12,8 +12,7 @@ const THEME_KEY = 'bellagio_theme_preference';
 export function initTheme(toggleBtn) {
   // Determine initial theme: saved preference or system preference
   const savedTheme = localStorage.getItem(THEME_KEY);
-  const systemPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  const initialTheme = savedTheme || (systemPrefersDark ? 'dark' : 'dark'); // Default to dark for luxury branding
+  const initialTheme = savedTheme || 'light';
 
   applyTheme(initialTheme);
   updateToggleButton(toggleBtn, initialTheme);

@@ -7,8 +7,8 @@
 :root {
   /* Typography Scale */
   --font-serif: 'Playfair Display', Georgia, 'Times New Roman', serif;
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-accent: 'Montserrat', 'Public Sans', sans-serif;
+  --font-sans: 'Albert Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-accent: 'Jost', 'Public Sans', sans-serif;
 
   /* Gold Palette (Brand Signature) */
   --gold-100: #FAF5E6;
@@ -25,6 +25,20 @@
   --gradient-gold: linear-gradient(135deg, #F5E5C0 0%, #C5A55A 50%, #9E7D32 100%);
   --gradient-gold-hover: linear-gradient(135deg, #FFF0D0 0%, #D8B466 50%, #B59042 100%);
   --gradient-gold-border: linear-gradient(135deg, rgba(245, 229, 192, 0.6) 0%, rgba(197, 165, 90, 0.2) 50%, rgba(158, 125, 50, 0.5) 100%);
+  --gradient-gold-glow: 0 8px 28px rgba(197, 165, 90, 0.45);
+  
+  /* Emerald Palette & Gradients (WhatsApp & Instant Conversion) */
+  --gradient-emerald: linear-gradient(135deg, #0d7568 0%, #179e4f 50%, #25D366 100%);
+  --gradient-emerald-hover: linear-gradient(135deg, #108c7c 0%, #1eb85c 50%, #2ef075 100%);
+  --gradient-emerald-glow: 0 8px 26px rgba(37, 211, 102, 0.42);
+  --whatsapp-gradient: linear-gradient(135deg, #0d7568 0%, #179e4f 50%, #25D366 100%);
+  --whatsapp-gradient-hover: linear-gradient(135deg, #108c7c 0%, #1eb85c 50%, #2ef075 100%);
+
+  /* Ruby / Crimson Palette & Gradients (Closed State & Alerts) */
+  --gradient-ruby: linear-gradient(135deg, #EF4444 0%, #DC2626 50%, #991B1B 100%);
+  --gradient-ruby-hover: linear-gradient(135deg, #F87171 0%, #EF4444 50%, #B91C1C 100%);
+  --gradient-ruby-glow: 0 8px 26px rgba(239, 68, 68, 0.42);
+  
   --gradient-glass: linear-gradient(135deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%);
   --gradient-card-dark: linear-gradient(180deg, rgba(28, 28, 30, 0.8) 0%, rgba(18, 18, 20, 0.95) 100%);
   --gradient-card-light: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 246, 240, 0.9) 100%);
@@ -55,53 +69,16 @@
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-slow: 400ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-bounce: 500ms cubic-bezier(0.34, 1.56, 0.64, 1);
+  --transition-bounce: 500ms cubic-bezier(0.16, 1, 0.3, 1);
 
   /* Container */
   --container-max-width: 1280px;
 }
 
 /* ==========================================================================
-   Dark Theme (Default)
+   Light Theme (Default Mode)
    ========================================================================== */
 :root,
-[data-theme="dark"] {
-  --color-bg-main: #0B0B0C;
-  --color-bg-surface: #131315;
-  --color-bg-surface-elevated: #1B1B1E;
-  --color-bg-card: rgba(22, 22, 25, 0.75);
-  --color-bg-input: rgba(15, 15, 17, 0.85);
-
-  --color-text-primary: #F9F9FB;
-  --color-text-secondary: #B4B4BC;
-  --color-text-muted: #737380;
-  --color-text-inverse: #0B0B0C;
-
-  --color-border: rgba(197, 165, 90, 0.18);
-  --color-border-subtle: rgba(255, 255, 255, 0.07);
-  --color-border-focus: var(--gold-400);
-
-  --nav-bg: rgba(11, 11, 12, 0.82);
-  --nav-border: rgba(197, 165, 90, 0.15);
-
-  --card-bg-gradient: var(--gradient-card-dark);
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
-  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
-  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.7);
-  --shadow-gold: 0 8px 30px rgba(197, 165, 90, 0.22);
-  --shadow-gold-hover: 0 12px 40px rgba(197, 165, 90, 0.4);
-
-  --badge-bg: rgba(197, 165, 90, 0.12);
-  --badge-text: var(--gold-300);
-  --badge-border: rgba(197, 165, 90, 0.25);
-
-  --whatsapp-color: #25D366;
-  --whatsapp-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
-}
-
-/* ==========================================================================
-   Light Theme Mode
-   ========================================================================== */
 [data-theme="light"] {
   --color-bg-main: #FBF9F4;
   --color-bg-surface: #F3EFE6;
@@ -134,4 +111,41 @@
 
   --whatsapp-color: #20BA56;
   --whatsapp-shadow: 0 8px 24px rgba(32, 186, 86, 0.3);
+}
+
+/* ==========================================================================
+   Dark Theme Mode
+   ========================================================================== */
+[data-theme="dark"] {
+  --color-bg-main: #0B0B0C;
+  --color-bg-surface: #131315;
+  --color-bg-surface-elevated: #1B1B1E;
+  --color-bg-card: rgba(22, 22, 25, 0.75);
+  --color-bg-input: rgba(15, 15, 17, 0.85);
+
+  --color-text-primary: #F9F9FB;
+  --color-text-secondary: #B4B4BC;
+  --color-text-muted: #737380;
+  --color-text-inverse: #0B0B0C;
+
+  --color-border: rgba(197, 165, 90, 0.18);
+  --color-border-subtle: rgba(255, 255, 255, 0.07);
+  --color-border-focus: var(--gold-400);
+
+  --nav-bg: rgba(11, 11, 12, 0.82);
+  --nav-border: rgba(197, 165, 90, 0.15);
+
+  --card-bg-gradient: var(--gradient-card-dark);
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.6);
+  --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.7);
+  --shadow-gold: 0 8px 30px rgba(197, 165, 90, 0.22);
+  --shadow-gold-hover: 0 12px 40px rgba(197, 165, 90, 0.4);
+
+  --badge-bg: rgba(197, 165, 90, 0.12);
+  --badge-text: var(--gold-300);
+  --badge-border: rgba(197, 165, 90, 0.25);
+
+  --whatsapp-color: #25D366;
+  --whatsapp-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
 }

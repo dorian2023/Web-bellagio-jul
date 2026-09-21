@@ -1147,9 +1147,10 @@
   position: relative;
   background: #0d0d10;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: var(--space-8) var(--space-6);
+  padding: var(--space-6) var(--space-6);
   border-right: 1px solid var(--color-border-subtle);
   overflow: hidden;
 }
@@ -1375,6 +1376,244 @@
   color: var(--gold-300);
   padding: 0 6px;
   font-family: var(--font-accent);
+}
+
+/* Fullscreen HD Expand Button (Desktop & Global Default) */
+.hd-fullscreen-trigger-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 7;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-family: var(--font-accent);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-full);
+  background: rgba(18, 18, 22, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(197, 165, 90, 0.4);
+  color: #FFFFFF;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  user-select: none;
+}
+
+[data-theme="light"] .hd-fullscreen-trigger-btn {
+  background: rgba(255, 255, 255, 0.9);
+  color: #1A1A1C;
+  border-color: rgba(170, 134, 56, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+}
+
+.hd-fullscreen-trigger-btn:hover {
+  background: var(--gold-500);
+  color: #000000;
+  border-color: var(--gold-400);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(197, 165, 90, 0.45);
+}
+
+.hd-fullscreen-trigger-btn:active {
+  transform: translateY(0);
+}
+
+/* ==========================================================================
+   Product Media Switcher (Foto HD ↔ Ver Video)
+   ========================================================================== */
+.product-media-switcher-tabs {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  gap: 4px;
+  background: rgba(18, 18, 22, 0.85);
+  padding: 4px 6px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(197, 165, 90, 0.35);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  margin-bottom: var(--space-3);
+  z-index: 5;
+}
+
+[data-theme="light"] .product-media-switcher-tabs {
+  background: rgba(245, 245, 247, 0.9);
+  border-color: rgba(170, 134, 56, 0.3);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.media-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  border: none;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-family: var(--font-accent);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  white-space: nowrap;
+}
+
+.media-tab-btn:hover {
+  color: var(--color-text-primary);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-theme="light"] .media-tab-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.media-tab-btn.active {
+  background: var(--gradient-gold);
+  color: #0b0b0d;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(197, 165, 90, 0.4);
+}
+
+.media-video-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ff334b;
+  box-shadow: 0 0 6px #ff334b;
+  display: inline-block;
+  animation: pulse-video-dot 1.6s infinite;
+}
+
+@keyframes pulse-video-dot {
+  0% { transform: scale(0.95); opacity: 0.8; }
+  50% { transform: scale(1.3); opacity: 1; }
+  100% { transform: scale(0.95); opacity: 0.8; }
+}
+
+/* Video Wrapper within Product Modal Stage */
+.product-modal-video-wrapper {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: #0b0b0e;
+  position: relative;
+}
+
+/* Fast Luxury Video Poster Overlay & Skeleton Loader */
+.product-video-poster-overlay {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 4;
+  background: #0b0b0e;
+  overflow: hidden;
+}
+
+.product-video-poster-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(0.45) blur(4px);
+  transform: scale(1.04);
+}
+
+.product-video-loader-backdrop {
+  position: relative;
+  z-index: 5;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  background: rgba(14, 14, 18, 0.82);
+  border: 1px solid rgba(197, 165, 90, 0.3);
+  border-radius: var(--radius-lg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.product-video-spinner {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 3px solid rgba(197, 165, 90, 0.2);
+  border-top-color: var(--gold-400);
+  border-right-color: var(--gold-300);
+  animation: luxury-spin 0.8s linear infinite;
+}
+
+@keyframes luxury-spin {
+  to { transform: rotate(360deg); }
+}
+
+.product-video-loader-text {
+  font-family: var(--font-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--gold-300);
+}
+
+.product-modal-iframe {
+  width: 100%;
+  height: 100%;
+  min-height: 380px;
+  border: none;
+  aspect-ratio: 16/9;
+  position: relative;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.35s ease-in;
+}
+
+.product-modal-iframe.is-loaded {
+  opacity: 1;
+}
+
+.product-modal-direct-video {
+  width: 100%;
+  height: 100%;
+  max-height: 440px;
+  object-fit: contain;
+  background: #000000;
+  border-radius: var(--radius-md);
+  position: relative;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.35s ease-in;
+}
+
+.product-modal-direct-video.is-loaded {
+  opacity: 1;
+}
+
+.lightbox-img-stage.is-video-active {
+  cursor: default;
+  padding: 0;
+  background: #0b0b0e !important;
 }
 
 /* Mobile Sheet Drag Handle (Hidden on Desktop) */
@@ -1707,6 +1946,27 @@
     object-fit: contain;
     padding: 6px;
     transition: transform 0.12s ease-out;
+  }
+
+  .product-media-switcher-tabs {
+    margin-bottom: var(--space-2);
+    padding: 3px 5px;
+  }
+
+  .media-tab-btn {
+    padding: 5px 11px;
+    font-size: 0.72rem;
+  }
+
+  .product-modal-video-wrapper {
+    min-height: 270px;
+    height: 290px;
+    border-radius: var(--radius-lg);
+  }
+
+  .product-modal-iframe {
+    min-height: 270px;
+    height: 100%;
   }
 
   .hd-zoom-badge {

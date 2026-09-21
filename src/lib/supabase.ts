@@ -28,7 +28,8 @@ export function normalizeProduct(row: any): Product {
     materials: row.materials || 'Maderas nobles y acabados finos',
     dimensions: row.dimensions || 'A convenir',
     image: row.image_url || row.image || '/images/hero-poster.webp',
-    availableColors: row.available_colors || row.availableColors || ['Oro', 'Nogal']
+    availableColors: row.available_colors || row.availableColors || ['Oro', 'Nogal'],
+    youtubeUrl: row.youtube_url || row.youtubeUrl || row.video_url || row.videoUrl || ''
   };
 }
 

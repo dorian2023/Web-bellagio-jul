@@ -122,6 +122,7 @@ export const CATALOGS_DATA: Product[] = [
     "materials": "",
     "dimensions": "",
     "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/abc24531-3e43-494a-b337-3513fe5033d3-1789689762859.webp",
+    "youtubeUrl": "https://www.youtube.com/shorts/5e8yqT7yYn4",
     "availableColors": []
   },
   {

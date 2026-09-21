@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Product } from '@/src/types/catalog';
 import { isProductSelected, toggleProductSelection } from '@/src/utils/inquiry-cart.js';
+import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/src/utils/media.js';
 
 interface ProductModalProps {
   product: Product | null;
@@ -10,6 +11,8 @@ interface ProductModalProps {
 }
 
 export default function ProductModal({ product, onClose }: ProductModalProps) {
+  const [mediaTab, setMediaTab] = useState<'photo' | 'video'>('photo');
+  const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
   const [isZooming, setIsZooming] = useState<boolean>(false);
   const [zoomPos, setZoomPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
   const [zoomScale, setZoomScale] = useState<number>(2.8);
@@ -21,8 +24,18 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const fullscreenStageRef = useRef<HTMLDivElement | null>(null);
 
-  // Sync selection state with inquiry cart
+  // Detect video availability and posters
+  const videoUrl = product?.youtubeUrl || (product as any)?.video_url || '';
+  const youtubeEmbedUrl = videoUrl ? getYouTubeEmbedUrl(videoUrl, true) : null;
+  const videoPoster = (videoUrl ? getYouTubeThumbnailUrl(videoUrl) : null) || product?.image;
+  const isDirectVideo = Boolean(videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.endsWith('.webm') || videoUrl.includes('/videos/')));
+  const hasVideo = Boolean(youtubeEmbedUrl || isDirectVideo);
+
+  // Sync selection state with inquiry cart and reset media tab on product change
   useEffect(() => {
+    setMediaTab('photo');
+    setIsVideoLoading(true);
+    setIsZooming(false);
     if (product) {
       setIsMarked(isProductSelected(product.id));
     }
@@ -62,6 +75,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
   // Handle desktop mouse movement
   const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (mediaTab !== 'photo') return;
     const container = imageContainerRef.current;
     if (!container) return;
 
@@ -74,7 +88,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       y: Math.max(0, Math.min(100, y)),
     });
     setIsZooming(true);
-  }, []);
+  }, [mediaTab]);
 
   const handleMouseLeave = useCallback(() => {
     setIsZooming(false);
@@ -82,6 +96,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
   // Handle mobile touch drag & pan
   const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
+    if (mediaTab !== 'photo') return;
     const container = imageContainerRef.current;
     if (!container || !e.touches[0]) return;
 
@@ -95,7 +110,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
       y: Math.max(0, Math.min(100, y)),
     });
     if (!isZooming) setIsZooming(true);
-  }, [isZooming]);
+  }, [isZooming, mediaTab]);
 
   // Handle mobile touch on fullscreen modal
   const handleFullscreenTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
@@ -114,8 +129,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
   }, []);
 
   const toggleZoom = useCallback(() => {
-    setIsZooming((prev) => !prev);
-  }, []);
+    if (mediaTab === 'photo') {
+      setIsZooming((prev) => !prev);
+    }
+  }, [mediaTab]);
 
   const openFullscreen = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -156,80 +173,166 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           </button>
 
           <div className="lightbox-grid">
-            {/* Product Image Column with HD Zoom Lens */}
+            {/* Product Media Column (Photos / Video Switcher) */}
             <div className="lightbox-img-col vip-img-col">
+              {/* Media Switcher Pills (Visible when product has video) */}
+              {hasVideo && (
+                <div className="product-media-switcher-tabs" role="tablist" aria-label="Selector de Foto y Video">
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={mediaTab === 'photo'}
+                    className={`media-tab-btn ${mediaTab === 'photo' ? 'active' : ''}`}
+                    onClick={() => setMediaTab('photo')}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                      <circle cx="8.5" cy="8.5" r="1.5"/>
+                      <polyline points="21 15 16 10 5 21"/>
+                    </svg>
+                    <span>Foto HD</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    role="tab"
+                    aria-selected={mediaTab === 'video'}
+                    className={`media-tab-btn ${mediaTab === 'video' ? 'active' : ''}`}
+                    onClick={() => {
+                      setMediaTab('video');
+                      setIsVideoLoading(true);
+                    }}
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <polygon points="5 3 19 12 5 21 5 3"/>
+                    </svg>
+                    <span>Ver Video</span>
+                    <span className="media-video-dot" aria-hidden="true" />
+                  </button>
+                </div>
+              )}
+
               <div 
                 ref={imageContainerRef}
-                className={`lightbox-img-stage ${isZooming ? 'is-inspecting' : ''}`}
+                className={`lightbox-img-stage ${isZooming ? 'is-inspecting' : ''} ${mediaTab === 'video' ? 'is-video-active' : ''}`}
                 onMouseMove={handleMouseMove}
                 onMouseLeave={handleMouseLeave}
                 onTouchMove={handleTouchMove}
                 onClick={toggleZoom}
-                title="Pasa el cursor o arrastra el dedo para zoom HD"
+                title={mediaTab === 'photo' ? 'Pasa el cursor o arrastra el dedo para zoom HD' : undefined}
               >
-                <img 
-                  src={product.image} 
-                  alt={product.title} 
-                  className="lightbox-img main-product-img"
-                  style={
-                    isZooming
-                      ? {
-                          transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
-                          transform: `scale(${zoomScale})`,
-                        }
-                      : undefined
-                  }
-                />
+                {mediaTab === 'video' ? (
+                  <div className="product-modal-video-wrapper" onClick={(e) => e.stopPropagation()}>
+                    {/* Instant Video Skeleton / Poster Facade (No blank/frozen screens) */}
+                    {isVideoLoading && (
+                      <div className="product-video-poster-overlay">
+                        {videoPoster && (
+                          <img 
+                            src={videoPoster} 
+                            alt={`Cargando video de ${product.title}`} 
+                            className="product-video-poster-img"
+                            loading="eager"
+                          />
+                        )}
+                        <div className="product-video-loader-backdrop">
+                          <div className="product-video-spinner" aria-hidden="true" />
+                          <span className="product-video-loader-text">Conectando Video HD...</span>
+                        </div>
+                      </div>
+                    )}
 
-                {/* Luxury Magnifier Badge */}
-                <div className={`hd-zoom-badge ${isZooming ? 'active' : ''}`} aria-hidden="true">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="11" cy="11" r="8"></circle>
-                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    <line x1="11" y1="8" x2="11" y2="14"></line>
-                    <line x1="8" y1="11" x2="14" y2="11"></line>
-                  </svg>
-                  <span>{isZooming ? `Zoom HD ${zoomScale}x (Arrastra para mover)` : 'Toca para Zoom HD'}</span>
-                </div>
-
-                {/* Fullscreen HD Expand Button */}
-                <button
-                  type="button"
-                  className="hd-fullscreen-trigger-btn"
-                  onClick={openFullscreen}
-                  title="Ver imagen en pantalla completa HD"
-                  aria-label="Ver imagen en pantalla completa HD"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                    <polyline points="15 3 21 3 21 9"></polyline>
-                    <polyline points="9 21 3 21 3 15"></polyline>
-                    <line x1="21" y1="3" x2="14" y2="10"></line>
-                    <line x1="3" y1="21" x2="10" y2="14"></line>
-                  </svg>
-                  <span>Pantalla Completa</span>
-                </button>
-
-                {/* Zoom Scale Pill Controls (Visible when active) */}
-                {isZooming && (
-                  <div className="hd-zoom-controls" onClick={(e) => e.stopPropagation()}>
-                    <button 
-                      type="button" 
-                      className="zoom-ctrl-btn" 
-                      onClick={() => setZoomScale((s) => Math.max(2.0, parseFloat((s - 0.4).toFixed(1))))}
-                      title="Reducir aumento"
-                    >
-                      −
-                    </button>
-                    <span className="zoom-ctrl-scale">{zoomScale.toFixed(1)}x</span>
-                    <button 
-                      type="button" 
-                      className="zoom-ctrl-btn" 
-                      onClick={() => setZoomScale((s) => Math.min(3.8, parseFloat((s + 0.4).toFixed(1))))}
-                      title="Aumentar zoom"
-                    >
-                      +
-                    </button>
+                    {youtubeEmbedUrl ? (
+                      <iframe
+                        src={youtubeEmbedUrl}
+                        title={`Video del producto ${product.title}`}
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        allowFullScreen
+                        loading="eager"
+                        onLoad={() => setIsVideoLoading(false)}
+                        className={`product-modal-iframe ${isVideoLoading ? 'is-loading' : 'is-loaded'}`}
+                      />
+                    ) : isDirectVideo ? (
+                      <video
+                        src={videoUrl}
+                        controls
+                        autoPlay
+                        playsInline
+                        loop
+                        preload="metadata"
+                        poster={videoPoster || undefined}
+                        onLoadedData={() => setIsVideoLoading(false)}
+                        onCanPlay={() => setIsVideoLoading(false)}
+                        className={`product-modal-direct-video ${isVideoLoading ? 'is-loading' : 'is-loaded'}`}
+                      />
+                    ) : null}
                   </div>
+                ) : (
+                  <>
+                    <img 
+                      src={product.image} 
+                      alt={product.title} 
+                      className="lightbox-img main-product-img"
+                      style={
+                        isZooming
+                          ? {
+                              transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
+                              transform: `scale(${zoomScale})`,
+                            }
+                          : undefined
+                      }
+                    />
+
+                    {/* Luxury Magnifier Badge */}
+                    <div className={`hd-zoom-badge ${isZooming ? 'active' : ''}`} aria-hidden="true">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        <line x1="11" y1="8" x2="11" y2="14"></line>
+                        <line x1="8" y1="11" x2="14" y2="11"></line>
+                      </svg>
+                      <span>{isZooming ? `Zoom HD ${zoomScale}x (Arrastra para mover)` : 'Toca para Zoom HD'}</span>
+                    </div>
+
+                    {/* Fullscreen HD Expand Button */}
+                    <button
+                      type="button"
+                      className="hd-fullscreen-trigger-btn"
+                      onClick={openFullscreen}
+                      title="Ver imagen en pantalla completa HD"
+                      aria-label="Ver imagen en pantalla completa HD"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="15 3 21 3 21 9"></polyline>
+                        <polyline points="9 21 3 21 3 15"></polyline>
+                        <line x1="21" y1="3" x2="14" y2="10"></line>
+                        <line x1="3" y1="21" x2="10" y2="14"></line>
+                      </svg>
+                      <span>Pantalla Completa</span>
+                    </button>
+
+                    {/* Zoom Scale Pill Controls (Visible when active) */}
+                    {isZooming && (
+                      <div className="hd-zoom-controls" onClick={(e) => e.stopPropagation()}>
+                        <button 
+                          type="button" 
+                          className="zoom-ctrl-btn" 
+                          onClick={() => setZoomScale((s) => Math.max(2.0, parseFloat((s - 0.4).toFixed(1))))}
+                          title="Reducir aumento"
+                        >
+                          −
+                        </button>
+                        <span className="zoom-ctrl-scale">{zoomScale.toFixed(1)}x</span>
+                        <button 
+                          type="button" 
+                          className="zoom-ctrl-btn" 
+                          onClick={() => setZoomScale((s) => Math.min(3.8, parseFloat((s + 0.4).toFixed(1))))}
+                          title="Aumentar zoom"
+                        >
+                          +
+                        </button>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>

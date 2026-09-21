@@ -44,7 +44,7 @@ export function getYouTubeThumbnailUrl(urlOrId) {
 }
 
 /**
- * Returns a secure autoplay-ready YouTube embed URL using the official youtube.com domain.
+ * Returns a secure autoplay-ready lightweight YouTube embed URL using the privacy-enhanced youtube-nocookie domain.
  * @param {string} urlOrId - YouTube video URL or ID.
  * @param {boolean} autoplay - Whether to autoplay in loop/mute mode.
  * @returns {string|null}
@@ -60,8 +60,11 @@ export function getYouTubeEmbedUrl(urlOrId, autoplay = true) {
     playlist: videoId,
     playsinline: '1',
     rel: '0',
-    controls: '1'
+    controls: '1',
+    modestbranding: '1',
+    iv_load_policy: '3'
   });
 
-  return `https://www.youtube.com/embed/${videoId}?${params.toString()}`;
+  return `https://www.youtube-nocookie.com/embed/${videoId}?${params.toString()}`;
 }
+

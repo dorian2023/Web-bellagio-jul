@@ -1,5 +1,5 @@
 # ==============================================================================
-# MUEBLES BELLAGIO - GITIGNORE (PRODUCCIÓN)
+# MUEBLES BELLAGIO - GITIGNORE (PRODUCCIÓN & SEGURIDAD)
 # Solo archivos esenciales para despliegue y producción.
 # ==============================================================================
 
@@ -7,8 +7,13 @@
 node_modules/
 .pnp
 .pnp.js
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
 
-# 2. Compilación y Salidas de Build (Next.js / Vite)
+# 2. Compilación y Salidas de Build (Next.js / Vite / Tailwind)
 .next/
 out/
 dist/
@@ -16,15 +21,19 @@ dist-ssr/
 build/
 .vercel/
 .turbo/
+.swc/
 *.tsbuildinfo
+.analyze/
 
-# 3. Variables de Entorno y Secretos (Seguridad)
+# 3. Variables de Entorno y Secretos (Seguridad Estricta)
 .env
 .env*.local
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+.env.staging
+.env.backup
 !.env.example
 
 # 4. Asistentes de IA, Contexto y Agentes (Solo Desarrollo)
@@ -34,35 +43,47 @@ build/
 .codex/
 .opencode/
 .impeccable/
+.cortex/
 AGENTS.md
 CLAUDE.md
 PRODUCT.md
+*.scratchpad*
 
 # 5. Documentación y Guías Internas de Desarrollo
 docs/
+architecture/
+guidelines/
 
-# 6. Scripts Auxiliares y Temporales de Desarrollo
+# 6. Scripts Auxiliares, Pruebas y Temporales de Desarrollo
 fix-css.js
 fix-html.js
 generate-logo.js
+test-*.js
+test-*.ts
 scratch/
 temp/
 tmp/
 *.tmp
 *.temp
+*.bak
+*.old
+*.orig
+*~
 
-# 7. Logs y Diagnósticos
+# 7. Testing & Coverage
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+.cypress/
+
+# 8. Logs y Diagnósticos
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 .eslintcache
 .cache/
 
-# 8. Archivos de IDE y Editores
+# 9. Archivos de IDE y Editores
 .vscode/*
 !.vscode/extensions.json
 .idea/
@@ -74,7 +95,7 @@ lerna-debug.log*
 *.swo
 *.swn
 
-# 9. Archivos del Sistema Operativo
+# 10. Archivos del Sistema Operativo
 .DS_Store
 .DS_Store?
 ._*
@@ -83,3 +104,5 @@ lerna-debug.log*
 ehthumbs.db
 Thumbs.db
 Desktop.ini
+$RECYCLE.BIN/
+

@@ -4245,10 +4245,10 @@
   .mega-dropdown-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.65);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    z-index: 999;
+    background: rgba(0, 0, 0, 0.75);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    z-index: 9999;
     animation: fadeIn 0.2s ease-out forwards;
   }
 
@@ -4259,47 +4259,87 @@
     left: 0;
     right: 0;
     width: 100vw;
-    max-height: 85dvh;
-    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
-    border-top: 1.5px solid var(--gold-400);
+    max-height: 72dvh;
+    border-radius: 24px 24px 0 0;
+    border-top: 1.5px solid rgba(197, 165, 90, 0.5);
     border-left: none;
     border-right: none;
     border-bottom: none;
-    padding: var(--space-4) var(--space-4) calc(var(--space-6) + var(--safe-bottom, 20px)) var(--space-4);
+    padding: var(--space-3) var(--space-4) calc(var(--space-5) + env(safe-area-inset-bottom, 20px)) var(--space-4);
     transform: translateY(100%);
-    box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.75);
-    z-index: 1000;
+    box-shadow: 0 -12px 48px rgba(0, 0, 0, 0.85);
+    z-index: 10000;
+    display: flex;
+    flex-direction: column;
     overscroll-behavior: contain;
     -webkit-overflow-scrolling: touch;
     transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-
-  .mega-dropdown-curtain::before {
-    content: "";
-    display: block;
-    width: 44px;
-    height: 5px;
-    background: rgba(197, 165, 90, 0.4);
-    border-radius: var(--radius-full);
-    margin: 0 auto var(--space-3);
   }
 
   .mega-dropdown-curtain.open {
     transform: translateY(0);
   }
 
+  .mega-dropdown-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: var(--space-3);
+    margin-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border-subtle);
+    flex-shrink: 0;
+  }
+
+  .mega-dropdown-title-group h4 {
+    font-size: 1rem;
+    font-family: var(--font-sans);
+    font-weight: 700;
+    margin: 0;
+  }
+
   .mega-categories-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: var(--space-2);
-    max-height: 58vh;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 8px;
+    flex: 1;
+    max-height: calc(72dvh - 90px);
     overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
     padding-right: 4px;
     scrollbar-width: thin;
   }
 
   .mega-category-card {
-    min-height: 48px;
-    padding: var(--space-3);
+    min-height: 46px;
+    padding: 0.45rem 0.65rem;
+    gap: 8px;
+    border-radius: var(--radius-md);
+  }
+
+  .mega-cat-icon {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    min-height: 28px;
+    border-radius: var(--radius-sm);
+  }
+
+  .mega-cat-icon svg {
+    width: 14px;
+    height: 14px;
+  }
+
+  .mega-cat-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .mega-cat-count {
+    font-size: 0.68rem;
+    color: var(--color-text-muted);
   }
 
   .quick-access-pills-row {
@@ -4365,9 +4405,14 @@
     width: 100%;
   }
 
-  /* Compact Mobile: Single-column catalog grid & category list for readability */
+  /* Keep 2-column layout for category sheet on small mobile */
   .mega-categories-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 6px;
+  }
+
+  .mega-category-card {
+    padding: 0.4rem 0.5rem;
   }
 
   .dedicated-catalog-grid {

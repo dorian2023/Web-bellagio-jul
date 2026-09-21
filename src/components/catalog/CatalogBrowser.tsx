@@ -332,6 +332,11 @@ export default function CatalogBrowser({ initialCategory = 'todos' }: CatalogBro
 
               {/* Mega Dropdown Curtain */}
               <div className={`mega-dropdown-curtain ${isMegaOpen ? 'open' : ''}`}>
+                {/* Mobile Sheet Drag Handle */}
+                <div className="sheet-drag-handle" aria-hidden="true">
+                  <span className="drag-pill"></span>
+                </div>
+
                 <div className="mega-dropdown-header">
                   <div className="mega-dropdown-title-group">
                     <span className="section-tag" style={{ marginBottom: 2 }}>

@@ -14,7 +14,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
   const [zoomPos, setZoomPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
   const [zoomScale, setZoomScale] = useState<number>(2.8);
   const [isFullscreenZoom, setIsFullscreenZoom] = useState<boolean>(false);
-  const [fullscreenScale, setFullscreenScale] = useState<number>(2.5);
+  const [fullscreenScale, setFullscreenScale] = useState<number>(1.0);
   const [fullscreenPos, setFullscreenPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
   const [isMarked, setIsMarked] = useState<boolean>(false);
 
@@ -119,6 +119,8 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
   const openFullscreen = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
+    setFullscreenScale(1.0);
+    setFullscreenPos({ x: 50, y: 50 });
     setIsFullscreenZoom(true);
   }, []);
 
@@ -240,7 +242,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     {product.categoryName}
                   </span>
                   <span className="vip-badge-pill">
-                    ✨ Alta Ebanistería
+                    ✨ Calidad Garantizada
                   </span>
                 </div>
                 <h2 className="lightbox-title">{product.title}</h2>

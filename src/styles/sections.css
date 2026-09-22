@@ -1008,6 +1008,290 @@
   }
 }
 
+/* ==========================================================================
+   Luxury 3D Interactive Brand Metric Cards
+   ========================================================================== */
+
+.luxury-stats-stage {
+  position: relative;
+  width: 100%;
+  perspective: 1200px;
+}
+
+.luxury-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-6);
+  position: relative;
+}
+
+.luxury-3d-card {
+  position: relative;
+  background: var(--color-bg-surface);
+  border: 1px solid rgba(197, 165, 90, 0.2);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  overflow: hidden;
+  transform-style: preserve-3d;
+  will-change: transform, box-shadow;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.4s ease;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04),
+              0 1px 3px rgba(0, 0, 0, 0.02);
+  cursor: default;
+}
+
+[data-theme="dark"] .luxury-3d-card {
+  background: linear-gradient(135deg, rgba(26, 26, 30, 0.85) 0%, rgba(17, 17, 20, 0.95) 100%);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.35);
+}
+
+.luxury-3d-card.is-tilting {
+  transform: perspective(1200px) rotateX(var(--card-rx, 0deg)) rotateY(var(--card-ry, 0deg)) translateY(-3px) scale3d(1.008, 1.008, 1.008);
+  border-color: rgba(197, 165, 90, 0.45);
+  box-shadow: 0 16px 36px rgba(197, 165, 90, 0.12),
+              0 6px 14px rgba(0, 0, 0, 0.04);
+  transition: transform 0.1s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+}
+
+[data-theme="dark"] .luxury-3d-card.is-tilting {
+  border-color: rgba(229, 201, 122, 0.35);
+  box-shadow: 0 18px 45px rgba(0, 0, 0, 0.5),
+              0 0 20px rgba(197, 165, 90, 0.15);
+}
+
+/* Dynamic Glare & Orb lighting */
+.card-light-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(
+    circle at var(--light-x, 50%) var(--light-y, 50%),
+    rgba(255, 255, 255, 0.45) 0%,
+    rgba(255, 255, 255, 0.08) 30%,
+    transparent 65%
+  );
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  mix-blend-mode: overlay;
+  z-index: 2;
+}
+
+[data-theme="dark"] .card-light-glare {
+  background: radial-gradient(
+    circle at var(--light-x, 50%) var(--light-y, 50%),
+    rgba(229, 201, 122, 0.25) 0%,
+    rgba(229, 201, 122, 0.05) 35%,
+    transparent 70%
+  );
+  mix-blend-mode: screen;
+}
+
+.luxury-3d-card.is-tilting .card-light-glare {
+  opacity: 1;
+}
+
+.card-ambient-orb {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(197, 165, 90, 0.18) 0%, transparent 70%);
+  filter: blur(20px);
+  pointer-events: none;
+  transition: transform 0.6s ease, opacity 0.4s ease;
+  z-index: 1;
+}
+
+.luxury-3d-card:hover .card-ambient-orb {
+  transform: scale(1.4);
+  opacity: 0.8;
+}
+
+/* Card Interior in 3D Depth */
+.card-3d-inner {
+  position: relative;
+  z-index: 3;
+  transform: translateZ(30px);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-4);
+}
+
+.card-icon-emblem {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(135deg, rgba(197, 165, 90, 0.15) 0%, rgba(197, 165, 90, 0.05) 100%);
+  border: 1px solid rgba(197, 165, 90, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--gold-500);
+  box-shadow: 0 4px 12px rgba(197, 165, 90, 0.12);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.3s ease, background 0.3s ease;
+}
+
+[data-theme="dark"] .card-icon-emblem {
+  background: linear-gradient(135deg, rgba(229, 201, 122, 0.18) 0%, rgba(136, 103, 34, 0.12) 100%);
+  border-color: rgba(229, 201, 122, 0.35);
+  color: var(--gold-300);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+.luxury-3d-card:hover .card-icon-emblem {
+  transform: translateZ(15px) scale(1.08) rotate(4deg);
+  background: linear-gradient(135deg, var(--gold-500) 0%, var(--gold-600) 100%);
+  color: #FFFFFF;
+  box-shadow: 0 8px 20px rgba(197, 165, 90, 0.35);
+}
+
+.card-category-tag {
+  font-family: var(--font-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-600);
+  background: rgba(197, 165, 90, 0.1);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(197, 165, 90, 0.25);
+  transition: all 0.3s ease;
+}
+
+[data-theme="dark"] .card-category-tag {
+  color: var(--gold-300);
+  background: rgba(229, 201, 122, 0.12);
+  border-color: rgba(229, 201, 122, 0.3);
+}
+
+.luxury-3d-card:hover .card-category-tag {
+  background: var(--gold-500);
+  color: #FFFFFF;
+  border-color: var(--gold-500);
+}
+
+.card-top-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.card-number-spotlight {
+  display: flex;
+  align-items: baseline;
+}
+
+.card-badge-emblem-cluster {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.card-metric-number {
+  display: flex;
+  align-items: baseline;
+  line-height: 0.95;
+  font-family: var(--font-serif);
+}
+
+.card-metric-number .number-core {
+  font-size: 3.8rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, var(--gold-700) 0%, var(--gold-500) 50%, var(--gold-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.03em;
+  filter: drop-shadow(0 2px 8px rgba(197, 165, 90, 0.25));
+}
+
+[data-theme="dark"] .card-metric-number .number-core {
+  background: linear-gradient(135deg, #FFFFFF 0%, var(--gold-200) 45%, var(--gold-400) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 2px 14px rgba(229, 201, 122, 0.35));
+}
+
+.card-metric-number .number-suffix {
+  font-size: 1.85rem;
+  font-weight: 700;
+  color: var(--gold-500);
+  margin-left: 3px;
+  font-family: var(--font-serif);
+}
+
+[data-theme="dark"] .card-metric-number .number-suffix {
+  color: var(--gold-300);
+}
+
+.card-details-block {
+  margin-bottom: var(--space-3);
+}
+
+.card-metric-label {
+  font-family: var(--font-accent);
+  font-size: 0.96rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-primary);
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.card-metric-desc {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--color-text-secondary);
+  margin-top: var(--space-2);
+  margin-bottom: var(--space-4);
+  flex-grow: 1;
+}
+
+.card-bottom-accent {
+  width: 100%;
+  height: 2px;
+  background: rgba(197, 165, 90, 0.15);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-full);
+}
+
+.accent-glow-line {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 35%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, var(--gold-400), transparent);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), width 0.6s ease;
+}
+
+.luxury-3d-card:hover .accent-glow-line {
+  width: 100%;
+  transform: translateX(0);
+  background: linear-gradient(90deg, var(--gold-500), var(--gold-300), var(--gold-500));
+  box-shadow: 0 0 10px var(--gold-400);
+}
+
+/* Fallback / Classic Classes for Compatibility */
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -3437,13 +3721,12 @@
   }
 
   .dedicated-catalog-grid .product-card.is-tilting {
-    transform: perspective(1000px) rotateX(var(--card-rx, 0deg)) rotateY(var(--card-ry, 0deg)) translateY(-8px) scale3d(1.03, 1.03, 1.03) !important;
-    transition: transform 0.04s ease-out, box-shadow 0.2s ease !important;
+    transform: perspective(1200px) rotateX(var(--card-rx, 0deg)) rotateY(var(--card-ry, 0deg)) translateY(-4px) scale3d(1.01, 1.01, 1.01) !important;
+    transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease !important;
     z-index: 10;
     box-shadow: 
-      0 24px 60px rgba(0, 0, 0, 0.35),
-      0 0 25px rgba(197, 165, 90, 0.3),
-      0 0 0 1px rgba(197, 165, 90, 0.4) !important;
+      0 16px 36px rgba(0, 0, 0, 0.12),
+      0 0 0 1px rgba(197, 165, 90, 0.35) !important;
     border-color: var(--gold-400) !important;
   }
 
@@ -4117,6 +4400,32 @@
     border-radius: var(--radius-lg);
   }
 
+  .luxury-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+  }
+
+  .luxury-3d-card {
+    padding: var(--space-5);
+  }
+
+  .card-metric-number .number-core {
+    font-size: 2.25rem;
+  }
+
+  .card-icon-emblem {
+    width: 44px;
+    height: 44px;
+  }
+
+  .card-metric-label {
+    font-size: 0.82rem;
+  }
+
+  .card-metric-desc {
+    font-size: 0.8rem;
+  }
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
     gap: var(--space-3);
@@ -4382,6 +4691,19 @@
 
   .hero-floating-tag h4 {
     font-size: 0.78rem;
+  }
+
+  .luxury-stats-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .luxury-3d-card {
+    padding: var(--space-5);
+  }
+
+  .card-metric-number .number-core {
+    font-size: 2.1rem;
   }
 
   .stats-grid {

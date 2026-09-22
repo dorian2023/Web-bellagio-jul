@@ -9,6 +9,8 @@ import { fetchCatalog } from '@/src/lib/supabase';
 
 interface CatalogBrowserProps {
   initialCategory?: string;
+  initialProducts?: Product[];
+  initialCategories?: Category[];
 }
 
 const POPULAR_CATEGORY_IDS = ['todos', 'sofas', 'comedores', 'dormitorios', 'poltronas'];
@@ -44,19 +46,24 @@ function getPageNumbers(current: number, total: number): (number | string)[] {
   return pages;
 }
 
-export default function CatalogBrowser({ initialCategory = 'todos' }: CatalogBrowserProps) {
+export default function CatalogBrowser({
+  initialCategory = 'todos',
+  initialProducts,
+  initialCategories
+}: CatalogBrowserProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMegaOpen, setIsMegaOpen] = useState<boolean>(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [allProducts, setAllProducts] = useState<Product[]>(DEFAULT_PRODUCTS);
-  const [categoriesList, setCategoriesList] = useState<Category[]>(DEFAULT_CATEGORIES);
+  const [allProducts, setAllProducts] = useState<Product[]>(() => initialProducts || DEFAULT_PRODUCTS);
+  const [categoriesList, setCategoriesList] = useState<Category[]>(() => initialCategories || DEFAULT_CATEGORIES);
 
   const megaDropdownRef = useRef<HTMLDivElement | null>(null);
 
-  // Sync latest live data from Supabase
+  // Sync latest live data from Supabase if not provided by server
   useEffect(() => {
+    if (initialProducts && initialProducts.length > 0) return;
     let isMounted = true;
     fetchCatalog().then(({ products, categories }) => {
       if (!isMounted) return;
@@ -70,7 +77,7 @@ export default function CatalogBrowser({ initialCategory = 'todos' }: CatalogBro
     return () => {
       isMounted = false;
     };
-  }, []);
+  }, [initialProducts]);
 
   // Close mega dropdown on outside click
   useEffect(() => {
@@ -159,14 +166,15 @@ export default function CatalogBrowser({ initialCategory = 'todos' }: CatalogBro
     }
   };
 
-  // 3D Parallax Tilt interaction for product cards
+  // Subtle, quiet-luxury tilt interaction for product cards
   const handleCardMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left - rect.width / 2;
     const y = e.clientY - rect.top - rect.height / 2;
-    const rx = -(y / (rect.height / 2)) * 9;
-    const ry = (x / (rect.width / 2)) * 9;
+    // Elegant, restrained tilt: max 3.5 degrees
+    const rx = -(y / (rect.height / 2)) * 3.5;
+    const ry = (x / (rect.width / 2)) * 3.5;
     card.style.setProperty('--card-rx', `${rx.toFixed(2)}deg`);
     card.style.setProperty('--card-ry', `${ry.toFixed(2)}deg`);
     card.classList.add('is-tilting');

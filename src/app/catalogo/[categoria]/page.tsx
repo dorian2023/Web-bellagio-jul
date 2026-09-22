@@ -2,8 +2,11 @@ import type { Metadata } from 'next';
 import React from 'react';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { CATEGORIES_DATA, CATALOGS_DATA } from '@/src/data/catalogs';
+import { CATEGORIES_DATA } from '@/src/data/catalogs';
 import CatalogBrowser from '@/src/components/catalog/CatalogBrowser';
+import { fetchCatalog } from '@/src/lib/supabase';
+
+export const revalidate = 60;
 
 interface CategoryPageProps {
   params: {
@@ -45,14 +48,13 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
   };
 }
 
-export default function CategoryPage({ params }: CategoryPageProps) {
-  const category = CATEGORIES_DATA.find(c => c.id === params.categoria);
+export default async function CategoryPage({ params }: CategoryPageProps) {
+  const { products, categories } = await fetchCatalog();
+  const category = (categories && categories.length > 0 ? categories : CATEGORIES_DATA).find(c => c.id === params.categoria);
 
   if (!category) {
     notFound();
   }
-
-  const categoryProducts = CATALOGS_DATA.filter(p => p.category === category.id);
 
   // Schema.org Breadcrumb JSON-LD
   const breadcrumbLd = {
@@ -107,7 +109,11 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         </header>
 
         {/* Load Catalog Browser filtered to this category */}
-        <CatalogBrowser initialCategory={category.id} />
+        <CatalogBrowser
+          initialCategory={category.id}
+          initialProducts={products}
+          initialCategories={categories}
+        />
       </div>
     </div>
   );

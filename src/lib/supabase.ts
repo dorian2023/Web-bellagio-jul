@@ -43,7 +43,6 @@ export async function fetchCatalog(): Promise<{ products: Product[]; categories:
       .from('products')
       .select('*, categories(name, slug)')
       .eq('published', true)
-      .order('sort_order', { ascending: true })
       .order('created_at', { ascending: false });
 
     const { data: dbCategories, error: cError } = await supabase

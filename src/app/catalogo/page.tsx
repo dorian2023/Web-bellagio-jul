@@ -1,6 +1,9 @@
 import type { Metadata } from 'next';
 import React from 'react';
 import CatalogBrowser from '@/src/components/catalog/CatalogBrowser';
+import { fetchCatalog } from '@/src/lib/supabase';
+
+export const revalidate = 60; // Incremental Static Regeneration every 60 seconds
 
 export const metadata: Metadata = {
   title: 'Catálogo Bellagio (17 Categorías A-Z)',
@@ -16,10 +19,17 @@ export const metadata: Metadata = {
   }
 };
 
-export default function CatalogoPage() {
+export default async function CatalogoPage() {
+  const { products, categories } = await fetchCatalog();
+
   return (
     <div className="dedicated-catalog-page">
-      <CatalogBrowser initialCategory="todos" />
+      <CatalogBrowser
+        initialCategory="todos"
+        initialProducts={products}
+        initialCategories={categories}
+      />
     </div>
   );
 }
+

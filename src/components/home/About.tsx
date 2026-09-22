@@ -1,10 +1,77 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
 import { STATS_DATA } from '@/src/data/stats';
 
+/**
+ * Animated number counter component that increments smoothly when entering the viewport
+ */
+function AnimatedCounter({ targetValue, suffix, isVisible }: { targetValue: number; suffix: string; isVisible: boolean }) {
+  const [count, setCount] = useState<number>(0);
+
+  useEffect(() => {
+    if (!isVisible) return;
+
+    let startTime: number | null = null;
+    const duration = 2000; // 2.0s luxury ease-out count animation
+
+    const easeOutQuart = (t: number): number => 1 - Math.pow(1 - t, 4);
+
+    const step = (timestamp: number) => {
+      if (!startTime) startTime = timestamp;
+      const progress = Math.min((timestamp - startTime) / duration, 1);
+      const easedProgress = easeOutQuart(progress);
+      
+      setCount(Math.floor(easedProgress * targetValue));
+
+      if (progress < 1) {
+        requestAnimationFrame(step);
+      } else {
+        setCount(targetValue);
+      }
+    };
+
+    const animFrame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(animFrame);
+  }, [isVisible, targetValue]);
+
+  // Format with dot separator for numbers over 1000 (e.g. 10.000)
+  const formattedNumber = count >= 1000 
+    ? count.toLocaleString('de-DE') 
+    : count.toString();
+
+  return (
+    <div className="card-metric-number">
+      <span className="number-core">{formattedNumber}</span>
+      {suffix && <span className="number-suffix">{suffix}</span>}
+    </div>
+  );
+}
+
 export default function About() {
+  const [hasEnteredView, setHasEnteredView] = useState<boolean>(false);
+  const statsSectionRef = useRef<HTMLDivElement | null>(null);
+
+  // Trigger counters when scrolled into view
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setHasEnteredView(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    if (statsSectionRef.current) {
+      observer.observe(statsSectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <section className="section-wrapper about-section" id="tradicion" aria-label="Sobre Muebles Bellagio">
       <div className="container">
@@ -125,21 +192,116 @@ export default function About() {
           </div>
         </div>
 
-        {/* Brand Live Stats Counters */}
-        <div className="stats-grid" style={{ marginTop: 'var(--space-12)' }}>
-          {STATS_DATA.map((stat, idx) => (
-            <div key={idx} className="stat-card">
-              <div className="stat-number">
-                {stat.displayValue}{stat.suffix}
-              </div>
-              <div className="stat-label">{stat.label}</div>
-              <p style={{ fontSize: '0.82rem', color: 'var(--color-text-muted)', marginTop: 'var(--space-2)' }}>
-                {stat.description}
-              </p>
-            </div>
-          ))}
+        {/* Luxury 3D Interactive Brand Metric Cards with Big Dynamic Numbers on Top */}
+        <div 
+          ref={statsSectionRef}
+          className="luxury-stats-stage" 
+          style={{ marginTop: 'var(--space-12)' }}
+        >
+          <div className="luxury-stats-grid">
+            {STATS_DATA.map((stat, idx) => {
+              const icons = [
+                // 17 Años de Trayectoria (Emblema de maestría / corona)
+                <svg key="0" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L15.09 8.26L22 9.27L17 14.14L18.18 21.02L12 17.77L5.82 21.02L7 14.14L2 9.27L8.91 8.26L12 2Z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>,
+                // 100% Diseño Exclusivo (Gema / Diamante)
+                <svg key="1" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 3H18L22 9L12 22L2 9L6 3Z"/>
+                  <path d="M2 9H22"/>
+                  <path d="M12 22L7 9L10 3"/>
+                  <path d="M12 22L17 9L14 3"/>
+                </svg>,
+                // 10.000+ Espacios Transformados (Hogar arquitectónico)
+                <svg key="2" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 9L12 2L21 9V20C21 20.5304 20.7893 21.0391 20.4142 21.4142C20.0391 21.7893 19.5304 22 19 22H5C4.46957 22 3.96086 21.7893 3.58579 21.4142C3.21071 21.0391 3 20.5304 3 20V9Z"/>
+                  <path d="M9 22V12H15V22"/>
+                  <path d="M12 7H12.01"/>
+                </svg>,
+                // 3 Meses Servicio Postventa (Escudo de garantía total)
+                <svg key="3" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 22S4 18 4 12V5L12 2L20 5V12C20 18 12 22 12 22Z"/>
+                  <path d="M9 12L11 14L15 10"/>
+                </svg>
+              ];
+
+              return (
+                <div
+                  key={idx}
+                  className="luxury-3d-card"
+                  style={{ animationDelay: `${idx * 120}ms` }}
+                  onMouseMove={(e) => {
+                    const card = e.currentTarget;
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left - rect.width / 2;
+                    const y = e.clientY - rect.top - rect.height / 2;
+                    // Quiet Luxury: sutil y elegante inclinación máxima de 4.5 grados
+                    const rx = -(y / (rect.height / 2)) * 4.5;
+                    const ry = (x / (rect.width / 2)) * 4.5;
+                    const lightX = ((e.clientX - rect.left) / rect.width) * 100;
+                    const lightY = ((e.clientY - rect.top) / rect.height) * 100;
+                    card.style.setProperty('--card-rx', `${rx.toFixed(2)}deg`);
+                    card.style.setProperty('--card-ry', `${ry.toFixed(2)}deg`);
+                    card.style.setProperty('--light-x', `${lightX.toFixed(1)}%`);
+                    card.style.setProperty('--light-y', `${lightY.toFixed(1)}%`);
+                    card.classList.add('is-tilting');
+                  }}
+                  onMouseLeave={(e) => {
+                    const card = e.currentTarget;
+                    card.style.removeProperty('--card-rx');
+                    card.style.removeProperty('--card-ry');
+                    card.style.removeProperty('--light-x');
+                    card.style.removeProperty('--light-y');
+                    card.classList.remove('is-tilting');
+                  }}
+                >
+                  <div className="card-ambient-orb" aria-hidden="true" />
+                  <div className="card-light-glare" aria-hidden="true" />
+                  
+                  <div className="card-3d-inner">
+                    {/* Header Row: Big Animated Number on Left + Badge & Icon on Right */}
+                    <div className="card-top-header">
+                      <div className="card-number-spotlight">
+                        <AnimatedCounter
+                          targetValue={stat.value}
+                          suffix={stat.suffix}
+                          isVisible={hasEnteredView}
+                        />
+                      </div>
+
+                      <div className="card-badge-emblem-cluster">
+                        {stat.badge && (
+                          <span className="card-category-tag">
+                            {stat.badge}
+                          </span>
+                        )}
+                        <div className="card-icon-emblem">
+                          {icons[idx % icons.length]}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Metric Label & Description */}
+                    <div className="card-details-block">
+                      <h3 className="card-metric-label">{stat.label}</h3>
+                      <p className="card-metric-desc">
+                        {stat.description}
+                      </p>
+                    </div>
+
+                    {/* Bottom Dynamic Gold Shimmer Accent Line */}
+                    <div className="card-bottom-accent">
+                      <span className="accent-glow-line" />
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
     </section>
   );
 }
+

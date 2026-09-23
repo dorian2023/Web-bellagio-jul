@@ -115,19 +115,20 @@ export default function About() {
 
             {/* Overlapping Floating Inset: Material & Comfort Detail */}
             <div className="editorial-inset-card">
-              <div className="inset-img-wrapper">
+              <div className="inset-img-wrapper" style={{ background: '#FAF9F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <img
-                  src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&w=450&q=85"
-                  alt="Tapicería fina Pet Friendly y acabados modernos"
+                  src="/images/about-sofa-inset.jpg"
+                  alt="Sofá Seccional Bellagio en acabado lino y tapicería de autor"
                   className="inset-detail-img"
-                  width={180}
-                  height={130}
+                  style={{ objectFit: 'contain', padding: '6px' }}
+                  width={220}
+                  height={115}
                   loading="lazy"
                 />
               </div>
               <div className="inset-caption">
-                <span className="inset-tag">TECNOLOGÍA & CONFORT</span>
-                <p className="inset-text">Telas Pet Friendly, antifluido y piedras sinterizadas</p>
+                <span className="inset-tag">TECNOLOGÍA &amp; CONFORT</span>
+                <p className="inset-text">Telas Pet Friendly, antifluido y espumas indeformables</p>
               </div>
             </div>
           </div>

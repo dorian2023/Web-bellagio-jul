@@ -30,7 +30,7 @@ if (typeof window !== 'undefined') {
 const WHATSAPP_NUMBER = '584141536516';
 
 /**
- * Persists current selections to localStorage and notifies listeners.
+ * Persists current selections and optional cached product details to localStorage and notifies listeners.
  */
 function persistSelections() {
   if (typeof window !== 'undefined') {
@@ -49,17 +49,44 @@ function persistSelections() {
 }
 
 /**
- * Toggles a product's selection state.
+ * Toggles a product's selection state and caches product details if provided.
  * @param {string} productId 
+ * @param {object} [productDetails]
  * @returns {boolean} Whether the product is now selected
  */
-export function toggleProductSelection(productId) {
+export function toggleProductSelection(productId, productDetails = null) {
   if (!productId) return false;
   const idStr = String(productId);
   if (selectedProducts.has(idStr)) {
     selectedProducts.delete(idStr);
+    if (typeof window !== 'undefined') {
+      try {
+        const detailsRaw = localStorage.getItem('bellagio_selected_products_details');
+        if (detailsRaw) {
+          const detailsMap = JSON.parse(detailsRaw);
+          delete detailsMap[idStr];
+          localStorage.setItem('bellagio_selected_products_details', JSON.stringify(detailsMap));
+        }
+      } catch (e) {}
+    }
   } else {
     selectedProducts.add(idStr);
+    if (typeof window !== 'undefined' && productDetails) {
+      try {
+        const detailsRaw = localStorage.getItem('bellagio_selected_products_details');
+        const detailsMap = detailsRaw ? JSON.parse(detailsRaw) : {};
+        detailsMap[idStr] = {
+          id: productDetails.id,
+          title: productDetails.title,
+          category: productDetails.category,
+          categoryName: productDetails.categoryName,
+          materials: productDetails.materials,
+          dimensions: productDetails.dimensions,
+          image: productDetails.image
+        };
+        localStorage.setItem('bellagio_selected_products_details', JSON.stringify(detailsMap));
+      } catch (e) {}
+    }
   }
 
   persistSelections();
@@ -89,10 +116,15 @@ export function isProductSelected(productId) {
 }
 
 /**
- * Clears all selections.
+ * Clears all selections and stored details.
  */
 export function clearAllSelections() {
   selectedProducts.clear();
+  if (typeof window !== 'undefined') {
+    try {
+      localStorage.removeItem('bellagio_selected_products_details');
+    } catch (e) {}
+  }
   persistSelections();
   if (typeof document !== 'undefined') {
     updateProductCardStates();

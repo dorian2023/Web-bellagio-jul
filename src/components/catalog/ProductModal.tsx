@@ -143,7 +143,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
   const handleToggleMark = () => {
     if (!product) return;
-    const nextState = toggleProductSelection(product.id);
+    const nextState = toggleProductSelection(product.id, product);
     setIsMarked(nextState);
   };
 

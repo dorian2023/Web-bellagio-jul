@@ -115,14 +115,14 @@ export default function About() {
 
             {/* Overlapping Floating Inset: Material & Comfort Detail */}
             <div className="editorial-inset-card">
-              <div className="inset-img-wrapper" style={{ background: '#FAF9F6', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div className="inset-img-wrapper" style={{ background: '#FAF9F6', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>
                 <img
                   src="/images/about-sofa-inset.jpg"
                   alt="Sofá Seccional Bellagio en acabado lino y tapicería de autor"
                   className="inset-detail-img"
-                  style={{ objectFit: 'contain', padding: '6px' }}
-                  width={220}
-                  height={115}
+                  style={{ objectFit: 'contain', width: '100%', height: '100%', transform: 'scale(1.08)' }}
+                  width={270}
+                  height={140}
                   loading="lazy"
                 />
               </div>

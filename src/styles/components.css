@@ -469,57 +469,98 @@
   gap: var(--space-4);
 }
 
+@keyframes inquiryCardSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.inquiry-card-animated {
+  animation: inquiryCardSlideIn 0.38s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 .inquiry-product-card {
   display: flex;
-  gap: var(--space-4);
-  background: var(--color-bg-surface);
-  border: 1px solid var(--color-border-subtle);
+  align-items: center;
+  gap: 16px;
+  background: var(--color-bg-surface-elevated, #FFFFFF);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: var(--space-3);
+  padding: 14px 16px;
   position: relative;
-  transition: border-color var(--transition-fast), transform var(--transition-fast);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 0.28s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.25s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
 }
 
 .inquiry-product-card:hover {
-  border-color: var(--gold-400);
+  transform: translateY(-2px);
+  border-color: rgba(197, 165, 90, 0.55);
+  box-shadow: 0 8px 24px rgba(197, 165, 90, 0.14), 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
+.inquiry-product-img-wrapper,
 .inquiry-product-img-box {
-  width: 95px;
-  height: 80px;
+  width: 92px;
+  height: 86px;
   flex-shrink: 0;
   border-radius: var(--radius-md);
   overflow: hidden;
   position: relative;
-  background: #000;
+  background: #FAF9F6;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  transition: border-color var(--transition-fast);
 }
 
+.inquiry-product-card:hover .inquiry-product-img-wrapper {
+  border-color: rgba(197, 165, 90, 0.35);
+}
+
+.inquiry-product-img-wrapper img,
 .inquiry-product-img-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.inquiry-product-card:hover .inquiry-product-img-wrapper img {
+  transform: scale(1.08);
 }
 
 .inquiry-remove-btn {
   position: absolute;
-  top: 4px;
-  right: 4px;
-  width: 22px;
-  height: 22px;
+  top: 10px;
+  right: 10px;
+  width: 28px;
+  height: 28px;
   border-radius: var(--radius-full);
-  background: rgba(220, 53, 69, 0.9);
-  color: #FFF;
-  border: none;
+  background: rgba(220, 53, 69, 0.08);
+  color: #DC3545;
+  border: 1px solid rgba(220, 53, 69, 0.18);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform var(--transition-fast);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .inquiry-remove-btn:hover {
-  transform: scale(1.15);
+  transform: scale(1.15) rotate(4deg);
   background: #DC3545;
+  color: #FFFFFF;
+  border-color: #DC3545;
+  box-shadow: 0 3px 10px rgba(220, 53, 69, 0.35);
 }
 
 .inquiry-product-info {
@@ -527,29 +568,57 @@
   flex-direction: column;
   justify-content: center;
   overflow: hidden;
+  padding-right: 28px;
+  flex-grow: 1;
 }
 
-.inquiry-product-category {
-  font-size: 0.72rem;
-  color: var(--gold-400);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 2px;
-}
-
+.inquiry-product-title,
 .inquiry-product-info h4 {
-  font-size: 0.95rem;
-  margin-bottom: 3px;
+  font-family: var(--font-serif);
+  font-size: 1.12rem;
+  font-weight: 700;
+  margin: 0 0 6px 0;
   color: var(--color-text-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+  transition: color 0.2s ease;
 }
 
-.inquiry-product-info p {
-  font-size: 0.78rem;
-  color: var(--color-text-muted);
+.inquiry-product-card:hover .inquiry-product-title {
+  color: var(--gold-500, #C5A55A);
+}
+
+.inquiry-product-dims-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  background: rgba(197, 165, 90, 0.08);
+  border: 1px solid rgba(197, 165, 90, 0.25);
+  border-radius: 6px;
+  padding: 4px 10px;
+  width: fit-content;
+  max-width: 100%;
+  transition: all 0.2s ease;
+}
+
+.inquiry-product-card:hover .inquiry-product-dims-badge {
+  background: rgba(197, 165, 90, 0.14);
+  border-color: rgba(197, 165, 90, 0.45);
+  color: var(--color-text-primary);
+}
+
+.inquiry-dims-icon {
+  font-size: 0.88rem;
+  flex-shrink: 0;
+}
+
+.inquiry-dims-text {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -580,9 +649,9 @@
   margin: 0 auto;
 }
 
-/* Modal Footer */
+/* Modal Footer Form Fields */
 .inquiry-modal-footer {
-  padding: var(--space-6) var(--space-8);
+  padding: var(--space-5) var(--space-8);
   border-top: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
@@ -590,32 +659,56 @@
   background: var(--color-bg-surface);
 }
 
-.inquiry-modal-footer-left {
+.inquiry-form-fields {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.inquiry-message-box {
+  flex-direction: column;
+  gap: 12px;
   width: 100%;
 }
 
+.inquiry-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+.inquiry-field-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.80rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: 0.02em;
+}
+
+.inquiry-label-icon {
+  font-size: 0.9rem;
+}
+
+.inquiry-input,
 .inquiry-textarea {
   width: 100%;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  background: var(--color-bg-surface-elevated);
+  background: var(--color-bg-surface-elevated, #FFFFFF);
   color: var(--color-text-primary);
-  padding: var(--space-3) var(--space-4);
+  padding: 10px 14px;
   font-family: var(--font-sans);
-  font-size: 0.88rem;
-  resize: none;
-  transition: border-color var(--transition-fast);
+  font-size: 0.90rem;
+  transition: all var(--transition-fast);
+  outline: none;
 }
 
+.inquiry-input:focus,
 .inquiry-textarea:focus {
-  outline: none;
   border-color: var(--gold-400);
+  box-shadow: 0 0 0 3px rgba(197, 165, 90, 0.15);
+}
+
+.inquiry-textarea {
+  resize: none;
 }
 
 .inquiry-send-btn {
@@ -623,7 +716,7 @@
   justify-content: center;
   font-size: 1.05rem;
   padding: 1rem;
-  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.35);
 }
 
 /* Mobile Adjustments for Inquiry Cart */

@@ -2,28 +2,56 @@
 
 import React, { useState, useEffect, useMemo } from 'react';
 import { CATALOGS_DATA } from '@/src/data/catalogs';
+import { Product } from '@/src/types/catalog';
+import { fetchCatalog } from '@/src/lib/supabase';
 import { toggleProductSelection, clearAllSelections } from '@/src/utils/inquiry-cart.js';
 
 const WHATSAPP_NUMBER = '584141536516';
 
 export default function InquiryFloatingCart() {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
+  const [storedDetails, setStoredDetails] = useState<Record<string, Product>>({});
+  const [catalogProducts, setCatalogProducts] = useState<Product[]>(() => CATALOGS_DATA);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [customerName, setCustomerName] = useState<string>('');
   const [customNote, setCustomNote] = useState<string>('');
+
+  // Fetch full live catalog from Supabase on mount
+  useEffect(() => {
+    let isMounted = true;
+    fetchCatalog().then(({ products }) => {
+      if (isMounted && products && products.length > 0) {
+        setCatalogProducts(products);
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // Synchronize with localStorage & custom event
   useEffect(() => {
     const syncFromStorage = () => {
       try {
-        const saved = localStorage.getItem('bellagio_selected_products');
-        if (saved) {
-          const parsed = JSON.parse(saved);
+        const savedIds = localStorage.getItem('bellagio_selected_products');
+        if (savedIds) {
+          const parsed = JSON.parse(savedIds);
           if (Array.isArray(parsed)) {
             setSelectedIds(parsed.map(String));
-            return;
+          } else {
+            setSelectedIds([]);
+          }
+        } else {
+          setSelectedIds([]);
+        }
+
+        const savedDetails = localStorage.getItem('bellagio_selected_products_details');
+        if (savedDetails) {
+          const parsedDetails = JSON.parse(savedDetails);
+          if (parsedDetails && typeof parsedDetails === 'object') {
+            setStoredDetails(parsedDetails);
           }
         }
-        setSelectedIds([]);
       } catch {
         setSelectedIds([]);
       }
@@ -35,9 +63,8 @@ export default function InquiryFloatingCart() {
       const customEvent = e as CustomEvent<{ selectedIds?: string[] }>;
       if (customEvent.detail?.selectedIds) {
         setSelectedIds(customEvent.detail.selectedIds.map(String));
-      } else {
-        syncFromStorage();
       }
+      syncFromStorage();
     };
 
     window.addEventListener('bellagio:cart-updated', handleCartUpdate);
@@ -64,11 +91,31 @@ export default function InquiryFloatingCart() {
     }
   }, [isOpen]);
 
-  // Find corresponding products
+  // Find corresponding products combining live Supabase items, stored details, and fallback data
   const selectedProducts = useMemo(() => {
-    const idSet = new Set(selectedIds);
-    return CATALOGS_DATA.filter((item) => idSet.has(String(item.id)));
-  }, [selectedIds]);
+    if (selectedIds.length === 0) return [];
+
+    const map = new Map<string, Product>();
+
+    // 1. Fallback local catalogs
+    CATALOGS_DATA.forEach((p) => {
+      if (p && p.id) map.set(String(p.id), p);
+    });
+
+    // 2. Supabase live products (higher priority)
+    catalogProducts.forEach((p) => {
+      if (p && p.id) map.set(String(p.id), p);
+    });
+
+    // 3. Stored product details snapshot
+    Object.values(storedDetails).forEach((p) => {
+      if (p && p.id) map.set(String(p.id), p);
+    });
+
+    return selectedIds
+      .map((id) => map.get(String(id)))
+      .filter((item): item is Product => Boolean(item));
+  }, [selectedIds, catalogProducts, storedDetails]);
 
   const count = selectedIds.length;
 
@@ -81,6 +128,7 @@ export default function InquiryFloatingCart() {
     if (confirm('¿Deseas vaciar toda tu selección de piezas?')) {
       clearAllSelections();
       setSelectedIds([]);
+      setStoredDetails({});
       setIsOpen(false);
     }
   };
@@ -89,30 +137,39 @@ export default function InquiryFloatingCart() {
     // Auto-clear list after triggering WhatsApp quote
     clearAllSelections();
     setSelectedIds([]);
+    setStoredDetails({});
     setCustomNote('');
     setIsOpen(false);
   };
 
-  // Build WhatsApp URL with full itemized list
+  // Build WhatsApp URL with customer name and full itemized list
   const whatsappUrl = useMemo(() => {
-    let msg = `✨ *Consulta de Selección - Muebles Bellagio*\n\n`;
-    msg += `Hola, deseo cotizar las siguientes piezas que seleccioné en su página web:\n\n`;
+    const trimmedName = customerName.trim();
+    let msg = `✨ *SOLICITUD DE COTIZACIÓN - MUEBLES BELLAGIO*\n\n`;
+
+    if (trimmedName) {
+      msg += `👤 *Cliente:* ${trimmedName}\n`;
+      msg += `Hola, deseo cotizar formalmente las siguientes piezas que seleccioné en su página web:\n\n`;
+    } else {
+      msg += `Hola Muebles Bellagio, deseo cotizar las siguientes piezas que seleccioné en su página web:\n\n`;
+    }
 
     selectedProducts.forEach((item, idx) => {
       msg += `${idx + 1}. *${item.title}*\n`;
-      msg += `   📂 ${item.categoryName} | 📐 ${item.dimensions || 'Medidas estándar'}\n\n`;
+      msg += `   📂 Categoría: ${item.categoryName}\n`;
+      msg += `   📐 Medidas: ${item.dimensions || 'Estándar / A convenir'}\n\n`;
     });
 
-    msg += `Total de piezas: ${selectedProducts.length}\n`;
+    msg += `📦 *Total de piezas:* ${selectedProducts.length}\n`;
 
     if (customNote.trim()) {
-      msg += `\n💬 *Nota adicional:* ${customNote.trim()}\n`;
+      msg += `\n💬 *Notas / Solicitud especial:* ${customNote.trim()}\n`;
     }
 
-    msg += `\nPor favor, confirmar disponibilidad, acabados y tiempos de entrega. ¡Muchas gracias!`;
+    msg += `\nPor favor, confirmar disponibilidad, opciones de acabados y tiempos de entrega. ¡Muchas gracias!`;
 
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
-  }, [selectedProducts, customNote]);
+  }, [selectedProducts, customerName, customNote]);
 
   if (count === 0 && !isOpen) {
     return null;
@@ -218,8 +275,12 @@ export default function InquiryFloatingCart() {
               </div>
             ) : (
               <div className="inquiry-products-grid">
-                {selectedProducts.map((item) => (
-                  <div key={item.id} className="inquiry-product-card">
+                {selectedProducts.map((item, idx) => (
+                  <div 
+                    key={item.id} 
+                    className="inquiry-product-card inquiry-card-animated"
+                    style={{ animationDelay: `${idx * 45}ms` }}
+                  >
                     <div className="inquiry-product-img-wrapper">
                       <img
                         src={item.image}
@@ -231,15 +292,13 @@ export default function InquiryFloatingCart() {
                     </div>
 
                     <div className="inquiry-product-info">
-                      <span className="inquiry-product-category">
-                        {item.categoryName}
-                      </span>
-                      <h4>{item.title}</h4>
-                      <p>
-                        {item.materials
-                          ? item.materials.slice(0, 50) + '...'
-                          : 'Alta Ebanistería'}
-                      </p>
+                      <h4 className="inquiry-product-title">{item.title}</h4>
+                      <div className="inquiry-product-dims-badge">
+                        <span className="inquiry-dims-icon" aria-hidden="true">📐</span>
+                        <span className="inquiry-dims-text">
+                          {item.dimensions || 'Medidas estándar / A convenir'}
+                        </span>
+                      </div>
                     </div>
 
                     <button
@@ -251,12 +310,12 @@ export default function InquiryFloatingCart() {
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="16"
-                        height="16"
+                        width="15"
+                        height="15"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
-                        strokeWidth="2"
+                        strokeWidth="2.2"
                         strokeLinecap="round"
                         strokeLinejoin="round"
                       >
@@ -270,7 +329,7 @@ export default function InquiryFloatingCart() {
             )}
           </div>
 
-          {/* Modal Footer: Clear, Note & WhatsApp Action */}
+          {/* Modal Footer: Customer Name, Notes & WhatsApp Action */}
           {selectedProducts.length > 0 && (
             <footer className="inquiry-modal-footer">
               <div className="inquiry-footer-top">
@@ -297,16 +356,38 @@ export default function InquiryFloatingCart() {
                 </button>
               </div>
 
-              {/* Optional Custom Note */}
-              <div className="inquiry-message-box">
-                <textarea
-                  className="inquiry-textarea form-textarea"
-                  placeholder="Nota adicional (opcional): medidas especiales, colores, solicitud de visita..."
-                  rows={2}
-                  maxLength={400}
-                  value={customNote}
-                  onChange={(e) => setCustomNote(e.target.value)}
-                />
+              {/* Customer Inputs Form */}
+              <div className="inquiry-form-fields">
+                <div className="inquiry-form-group">
+                  <label htmlFor="inquiryCustomerName" className="inquiry-field-label">
+                    <span className="inquiry-label-icon">👤</span> Tu Nombre y Apellido:
+                  </label>
+                  <input
+                    type="text"
+                    id="inquiryCustomerName"
+                    className="inquiry-input"
+                    placeholder="Ej. Carlos Mendoza"
+                    maxLength={80}
+                    value={customerName}
+                    onChange={(e) => setCustomerName(e.target.value)}
+                    autoComplete="name"
+                  />
+                </div>
+
+                <div className="inquiry-form-group">
+                  <label htmlFor="inquiryCustomNote" className="inquiry-field-label">
+                    <span className="inquiry-label-icon">📝</span> Nota o requerimientos adicionales (opcional):
+                  </label>
+                  <textarea
+                    id="inquiryCustomNote"
+                    className="inquiry-textarea"
+                    placeholder="Medidas especiales de tu espacio, colores de tapicería, solicitud de visita al showroom..."
+                    rows={2}
+                    maxLength={400}
+                    value={customNote}
+                    onChange={(e) => setCustomNote(e.target.value)}
+                  />
+                </div>
               </div>
 
               {/* Primary WhatsApp Conversion CTA */}

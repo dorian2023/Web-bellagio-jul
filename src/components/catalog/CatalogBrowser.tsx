@@ -534,6 +534,12 @@ export default function CatalogBrowser({
                         {product.categoryName}
                       </span>
 
+                      {product.galleryImages && product.galleryImages.length > 1 && (
+                        <span className="product-angles-count-badge" title={`${product.galleryImages.length} ángulos disponibles`}>
+                          📷 {product.galleryImages.length} vistas
+                        </span>
+                      )}
+
                       <img
                         src={product.image}
                         alt={product.title}
@@ -544,8 +550,8 @@ export default function CatalogBrowser({
                       />
 
                       <div className="product-card-hover-action" aria-hidden="true">
-                        <span className="card-zoom-icon">🔍</span>
-                        <span>Ver Ficha &amp; Zoom HD</span>
+                        <span className="card-zoom-icon">👁️</span>
+                        <span>Ver Detalles de la Pieza</span>
                       </div>
                     </div>
 

@@ -29,7 +29,8 @@ export function normalizeProduct(row: any): Product {
     dimensions: row.dimensions || 'A convenir',
     image: row.image_url || row.image || '/images/hero-poster.webp',
     availableColors: row.available_colors || row.availableColors || ['Oro', 'Nogal'],
-    youtubeUrl: row.youtube_url || row.youtubeUrl || row.video_url || row.videoUrl || ''
+    youtubeUrl: row.youtube_url || row.youtubeUrl || row.video_url || row.videoUrl || '',
+    galleryImages: Array.isArray(row.gallery_images) ? row.gallery_images : (Array.isArray(row.galleryImages) ? row.galleryImages : [])
   };
 }
 
@@ -107,6 +108,7 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
     category_id: productData.category,
     image_url: productData.image,
     youtube_url: productData.youtubeUrl || '',
+    gallery_images: Array.isArray(productData.galleryImages) ? productData.galleryImages : [],
     published: !!productData.published
   };
 
@@ -147,7 +149,8 @@ export async function deleteProduct(productId: string): Promise<void> {
  */
 export async function uploadProductImage(file: File): Promise<string> {
   const fileExt = file.name.split('.').pop() || 'webp';
-  const fileName = `products/${Date.now()}-${Math.random().toString(36).substring(2, 9)}.${fileExt}`;
+  const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_').toLowerCase();
+  const fileName = `products/${Date.now()}-${Math.random().toString(36).substring(2, 8)}-${cleanName}`;
 
   const { error } = await supabase.storage
     .from('product-images')
@@ -164,3 +167,14 @@ export async function uploadProductImage(file: File): Promise<string> {
 
   return data.publicUrl;
 }
+
+/**
+ * Admin: Upload multiple product images in parallel to Supabase Storage
+ */
+export async function uploadMultipleProductImages(files: File[]): Promise<string[]> {
+  if (!files || files.length === 0) return [];
+  const uploadPromises = files.map(file => uploadProductImage(file));
+  const results = await Promise.all(uploadPromises);
+  return results;
+}
+

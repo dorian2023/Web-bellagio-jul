@@ -13,21 +13,36 @@ interface ProductModalProps {
 export default function ProductModal({ product, onClose }: ProductModalProps) {
   const [mediaTab, setMediaTab] = useState<'photo' | 'video'>('photo');
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
-  const [isZooming, setIsZooming] = useState<boolean>(false);
-  const [zoomPos, setZoomPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
-  const [zoomScale, setZoomScale] = useState<number>(2.8);
   const [isFullscreenZoom, setIsFullscreenZoom] = useState<boolean>(false);
   const [fullscreenScale, setFullscreenScale] = useState<number>(1.0);
   const [fullscreenPos, setFullscreenPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
   const [isMarked, setIsMarked] = useState<boolean>(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
 
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const fullscreenStageRef = useRef<HTMLDivElement | null>(null);
 
+  // Extract all distinct images for gallery (Cover + extra angles)
+  const allImages: string[] = React.useMemo(() => {
+    if (!product) return [];
+    const list: string[] = [];
+    if (product.image) list.push(product.image);
+    if (Array.isArray(product.galleryImages)) {
+      product.galleryImages.forEach((img) => {
+        if (img && !list.includes(img)) {
+          list.push(img);
+        }
+      });
+    }
+    return list.length > 0 ? list : ['/images/hero-poster.webp'];
+  }, [product]);
+
+  const currentDisplayImage = allImages[selectedImageIndex] || product?.image || '/images/hero-poster.webp';
+
   // Detect video availability and posters
   const videoUrl = product?.youtubeUrl || (product as any)?.video_url || '';
   const youtubeEmbedUrl = videoUrl ? getYouTubeEmbedUrl(videoUrl, true) : null;
-  const videoPoster = (videoUrl ? getYouTubeThumbnailUrl(videoUrl) : null) || product?.image;
+  const videoPoster = (videoUrl ? getYouTubeThumbnailUrl(videoUrl) : null) || currentDisplayImage;
   const isDirectVideo = Boolean(videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.endsWith('.webm') || videoUrl.includes('/videos/')));
   const hasVideo = Boolean(youtubeEmbedUrl || isDirectVideo);
 
@@ -35,7 +50,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
   useEffect(() => {
     setMediaTab('photo');
     setIsVideoLoading(true);
-    setIsZooming(false);
+    setSelectedImageIndex(0);
     if (product) {
       setIsMarked(isProductSelected(product.id));
     }
@@ -73,45 +88,6 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     };
   }, [onClose, isFullscreenZoom]);
 
-  // Handle desktop mouse movement
-  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-    if (mediaTab !== 'photo') return;
-    const container = imageContainerRef.current;
-    if (!container) return;
-
-    const rect = container.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-
-    setZoomPos({
-      x: Math.max(0, Math.min(100, x)),
-      y: Math.max(0, Math.min(100, y)),
-    });
-    setIsZooming(true);
-  }, [mediaTab]);
-
-  const handleMouseLeave = useCallback(() => {
-    setIsZooming(false);
-  }, []);
-
-  // Handle mobile touch drag & pan
-  const handleTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
-    if (mediaTab !== 'photo') return;
-    const container = imageContainerRef.current;
-    if (!container || !e.touches[0]) return;
-
-    const touch = e.touches[0];
-    const rect = container.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 100;
-    const y = ((touch.clientY - rect.top) / rect.height) * 100;
-
-    setZoomPos({
-      x: Math.max(0, Math.min(100, x)),
-      y: Math.max(0, Math.min(100, y)),
-    });
-    if (!isZooming) setIsZooming(true);
-  }, [isZooming, mediaTab]);
-
   // Handle mobile touch on fullscreen modal
   const handleFullscreenTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     const container = fullscreenStageRef.current;
@@ -128,11 +104,6 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     });
   }, []);
 
-  const toggleZoom = useCallback(() => {
-    if (mediaTab === 'photo') {
-      setIsZooming((prev) => !prev);
-    }
-  }, [mediaTab]);
 
   const openFullscreen = useCallback((e: React.MouseEvent) => {
     e.stopPropagation();
@@ -214,12 +185,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
               <div 
                 ref={imageContainerRef}
-                className={`lightbox-img-stage ${isZooming ? 'is-inspecting' : ''} ${mediaTab === 'video' ? 'is-video-active' : ''}`}
-                onMouseMove={handleMouseMove}
-                onMouseLeave={handleMouseLeave}
-                onTouchMove={handleTouchMove}
-                onClick={toggleZoom}
-                title={mediaTab === 'photo' ? 'Pasa el cursor o arrastra el dedo para zoom HD' : undefined}
+                className={`lightbox-img-stage ${mediaTab === 'video' ? 'is-video-active' : ''}`}
               >
                 {mediaTab === 'video' ? (
                   <div className="product-modal-video-wrapper" onClick={(e) => e.stopPropagation()}>
@@ -269,29 +235,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 ) : (
                   <>
                     <img 
-                      src={product.image} 
-                      alt={product.title} 
+                      src={currentDisplayImage} 
+                      alt={`${product.title} - Ángulo ${selectedImageIndex + 1}`} 
                       className="lightbox-img main-product-img"
-                      style={
-                        isZooming
-                          ? {
-                              transformOrigin: `${zoomPos.x}% ${zoomPos.y}%`,
-                              transform: `scale(${zoomScale})`,
-                            }
-                          : undefined
-                      }
                     />
-
-                    {/* Luxury Magnifier Badge */}
-                    <div className={`hd-zoom-badge ${isZooming ? 'active' : ''}`} aria-hidden="true">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                        <line x1="11" y1="8" x2="11" y2="14"></line>
-                        <line x1="8" y1="11" x2="14" y2="11"></line>
-                      </svg>
-                      <span>{isZooming ? `Zoom HD ${zoomScale}x (Arrastra para mover)` : 'Toca para Zoom HD'}</span>
-                    </div>
 
                     {/* Fullscreen HD Expand Button */}
                     <button
@@ -309,32 +256,38 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                       </svg>
                       <span>Pantalla Completa</span>
                     </button>
-
-                    {/* Zoom Scale Pill Controls (Visible when active) */}
-                    {isZooming && (
-                      <div className="hd-zoom-controls" onClick={(e) => e.stopPropagation()}>
-                        <button 
-                          type="button" 
-                          className="zoom-ctrl-btn" 
-                          onClick={() => setZoomScale((s) => Math.max(2.0, parseFloat((s - 0.4).toFixed(1))))}
-                          title="Reducir aumento"
-                        >
-                          −
-                        </button>
-                        <span className="zoom-ctrl-scale">{zoomScale.toFixed(1)}x</span>
-                        <button 
-                          type="button" 
-                          className="zoom-ctrl-btn" 
-                          onClick={() => setZoomScale((s) => Math.min(3.8, parseFloat((s + 0.4).toFixed(1))))}
-                          title="Aumentar zoom"
-                        >
-                          +
-                        </button>
-                      </div>
-                    )}
                   </>
                 )}
               </div>
+
+              {/* Luxury Multi-Angle Thumbnails Gallery Strip */}
+              {allImages.length > 1 && (
+                <div className="product-angle-thumbnails-strip" role="group" aria-label="Selector de ángulos y vistas">
+                  <div className="thumbnails-scroll-container">
+                    {allImages.map((imgUrl, idx) => {
+                      const isSelected = selectedImageIndex === idx && mediaTab === 'photo';
+                      return (
+                        <button
+                          key={idx}
+                          type="button"
+                          className={`angle-thumb-btn ${isSelected ? 'active' : ''}`}
+                          onClick={() => {
+                            setSelectedImageIndex(idx);
+                            setMediaTab('photo');
+                          }}
+                          aria-label={`Ver ángulo ${idx + 1} de ${allImages.length}`}
+                          title={`Ver vista / ángulo ${idx + 1}`}
+                        >
+                          <img src={imgUrl} alt={`${product.title} ángulo ${idx + 1}`} loading="lazy" />
+                          <span className="angle-thumb-pill">
+                            {idx === 0 ? 'Portada' : `Ángulo ${idx + 1}`}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Product Details Column */}
@@ -470,8 +423,8 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             title="Arrastra para explorar la pieza en detalle"
           >
             <img 
-              src={product.image} 
-              alt={product.title}
+              src={currentDisplayImage} 
+              alt={`${product.title} - Ángulo ${selectedImageIndex + 1}`}
               className="fullscreen-hd-img"
               style={{
                 transformOrigin: `${fullscreenPos.x}% ${fullscreenPos.y}%`,
@@ -481,37 +434,56 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
           </div>
 
           <footer className="fullscreen-hd-controls" onClick={(e) => e.stopPropagation()}>
-            <button
-              type="button"
-              className="fullscreen-hd-btn"
-              onClick={() => setFullscreenScale((s) => Math.max(1.0, parseFloat((s - 0.5).toFixed(1))))}
-              title="Reducir"
-            >
-              −
-            </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button
+                type="button"
+                className="fullscreen-hd-btn"
+                onClick={() => setFullscreenScale((s) => Math.max(1.0, parseFloat((s - 0.5).toFixed(1))))}
+                title="Reducir"
+              >
+                −
+              </button>
 
-            <span className="fullscreen-hd-scale-text">{fullscreenScale.toFixed(1)}x</span>
+              <span className="fullscreen-hd-scale-text">{fullscreenScale.toFixed(1)}x</span>
 
-            <button
-              type="button"
-              className="fullscreen-hd-btn"
-              onClick={() => setFullscreenScale((s) => Math.min(4.5, parseFloat((s + 0.5).toFixed(1))))}
-              title="Aumentar"
-            >
-              +
-            </button>
+              <button
+                type="button"
+                className="fullscreen-hd-btn"
+                onClick={() => setFullscreenScale((s) => Math.min(4.5, parseFloat((s + 0.5).toFixed(1))))}
+                title="Aumentar"
+              >
+                +
+              </button>
 
-            <button
-              type="button"
-              className="fullscreen-hd-reset-btn"
-              onClick={() => {
-                setFullscreenScale(1.0);
-                setFullscreenPos({ x: 50, y: 50 });
-              }}
-              title="Restablecer tamaño original"
-            >
-              Ajustar 1x
-            </button>
+              <button
+                type="button"
+                className="fullscreen-hd-reset-btn"
+                onClick={() => {
+                  setFullscreenScale(1.0);
+                  setFullscreenPos({ x: 50, y: 50 });
+                }}
+                title="Restablecer tamaño original"
+              >
+                Ajustar 1x
+              </button>
+            </div>
+
+            {/* Quick Angle switcher in Fullscreen */}
+            {allImages.length > 1 && (
+              <div className="fullscreen-hd-angles-row">
+                {allImages.map((_, idx) => (
+                  <button
+                    key={idx}
+                    type="button"
+                    className={`fullscreen-angle-dot ${selectedImageIndex === idx ? 'active' : ''}`}
+                    onClick={() => setSelectedImageIndex(idx)}
+                    title={`Ver Ángulo ${idx + 1}`}
+                  >
+                    {idx === 0 ? 'Portada' : `Ángulo ${idx + 1}`}
+                  </button>
+                ))}
+              </div>
+            )}
           </footer>
         </div>
       )}

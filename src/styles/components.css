@@ -1362,7 +1362,7 @@
   align-items: center;
   justify-content: center;
   overflow: hidden;
-  cursor: crosshair;
+  cursor: default;
   border-radius: var(--radius-md);
   user-select: none;
 }
@@ -2676,5 +2676,152 @@
 .fullscreen-hd-reset-btn:active {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* ==========================================================================
+   Luxury Multi-Angle Gallery & Thumbnails Strip
+   ========================================================================== */
+
+.product-angle-thumbnails-strip {
+  margin-top: var(--space-3);
+  width: 100%;
+  overflow: hidden;
+}
+
+.thumbnails-scroll-container {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 4px 2px 8px 2px;
+  scrollbar-width: thin;
+  scrollbar-color: var(--gold-400) transparent;
+}
+
+.thumbnails-scroll-container::-webkit-scrollbar {
+  height: 4px;
+}
+
+.thumbnails-scroll-container::-webkit-scrollbar-thumb {
+  background: var(--gold-400);
+  border-radius: 4px;
+}
+
+.angle-thumb-btn {
+  flex: 0 0 74px;
+  height: 74px;
+  position: relative;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--color-bg-surface-elevated, #1A1A22);
+  border: 1.5px solid var(--color-border, rgba(255, 255, 255, 0.12));
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.angle-thumb-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.angle-thumb-btn:hover {
+  border-color: var(--gold-400);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+}
+
+.angle-thumb-btn:hover img {
+  transform: scale(1.08);
+}
+
+.angle-thumb-btn.active {
+  border-color: var(--gold-400);
+  box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.45), 0 4px 16px rgba(212, 175, 55, 0.35);
+  transform: scale(1.02);
+}
+
+.angle-thumb-pill {
+  position: absolute;
+  bottom: 3px;
+  left: 3px;
+  right: 3px;
+  background: rgba(10, 10, 14, 0.88);
+  color: #FFFFFF;
+  font-size: 0.58rem;
+  font-weight: 700;
+  text-align: center;
+  padding: 1px 2px;
+  border-radius: 3px;
+  letter-spacing: 0.02em;
+  backdrop-filter: blur(4px);
+  pointer-events: none;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.angle-thumb-btn.active .angle-thumb-pill {
+  background: var(--gold-400);
+  color: #0A0A0E;
+}
+
+/* Fullscreen HD Angles Row */
+.fullscreen-hd-angles-row {
+  display: flex;
+  gap: 6px;
+  margin-left: 8px;
+  padding-left: 8px;
+  border-left: 1px solid rgba(255, 255, 255, 0.18);
+  overflow-x: auto;
+  max-width: 280px;
+}
+
+.fullscreen-angle-dot {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #E2E8F0;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.fullscreen-angle-dot:hover {
+  background: rgba(255, 255, 255, 0.25);
+  color: #FFFFFF;
+}
+
+.fullscreen-angle-dot.active {
+  background: var(--gold-400);
+  color: #0A0A0E;
+  border-color: var(--gold-400);
+  font-weight: 700;
+}
+
+/* Catalog Card Multi-Angle Badge */
+.product-angles-count-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  background: rgba(15, 15, 20, 0.82);
+  color: var(--gold-300, #E6CA65);
+  font-size: 0.72rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  border: 1px solid rgba(212, 175, 55, 0.35);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  letter-spacing: 0.02em;
+}
+
 
 

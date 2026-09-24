@@ -4,6 +4,12 @@ import React, { useState, useEffect } from 'react';
 import { supabase, fetchAdminProducts, saveProduct, deleteProduct, uploadProductImage } from '@/src/lib/supabase';
 import { CATEGORIES_DATA } from '@/src/data/catalogs';
 
+interface GalleryItem {
+  id: string;
+  url: string;
+  file?: File;
+}
+
 export default function AdminPage() {
   const [session, setSession] = useState<any>(null);
   const [loading, setLoading] = useState(true);
@@ -19,6 +25,7 @@ export default function AdminPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState<string>('');
 
   // Product Form Data
   const [formData, setFormData] = useState({
@@ -29,10 +36,11 @@ export default function AdminPage() {
     dimensions: '',
     availableColors: '',
     youtubeUrl: '',
-    published: true,
-    imageFile: null as File | null,
-    currentImage: ''
+    published: true
   });
+
+  // Gallery items state (holds existing URLs & newly selected files)
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
 
   // Check auth session
   useEffect(() => {
@@ -87,10 +95,10 @@ export default function AdminPage() {
       dimensions: '',
       availableColors: '',
       youtubeUrl: '',
-      published: true,
-      imageFile: null,
-      currentImage: ''
+      published: true
     });
+    setGalleryItems([]);
+    setUploadProgress('');
   };
 
   const handleEdit = (prod: any) => {
@@ -103,10 +111,22 @@ export default function AdminPage() {
       dimensions: prod.dimensions || '',
       availableColors: (prod.availableColors || []).join(', '),
       youtubeUrl: prod.youtubeUrl || '',
-      published: prod.published !== false,
-      imageFile: null,
-      currentImage: prod.image || ''
+      published: prod.published !== false
     });
+
+    // Populate gallery from existing product photos
+    const loadedGallery: GalleryItem[] = [];
+    if (prod.image) {
+      loadedGallery.push({ id: `cover-${Date.now()}`, url: prod.image });
+    }
+    if (Array.isArray(prod.galleryImages)) {
+      prod.galleryImages.forEach((imgUrl: string, idx: number) => {
+        if (imgUrl && imgUrl !== prod.image && !loadedGallery.some(g => g.url === imgUrl)) {
+          loadedGallery.push({ id: `gal-${idx}-${Date.now()}`, url: imgUrl });
+        }
+      });
+    }
+    setGalleryItems(loadedGallery);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -122,23 +142,69 @@ export default function AdminPage() {
     }
   };
 
+  const handleAddFiles = (files: FileList | null) => {
+    if (!files || files.length === 0) return;
+    const newItems: GalleryItem[] = Array.from(files).map((file, idx) => ({
+      id: `new-${Date.now()}-${idx}-${Math.random().toString(36).substring(2, 6)}`,
+      url: URL.createObjectURL(file),
+      file
+    }));
+    setGalleryItems(prev => [...prev, ...newItems]);
+  };
+
+  const handleRemoveImage = (index: number) => {
+    setGalleryItems(prev => prev.filter((_, i) => i !== index));
+  };
+
+  const handleSetAsCover = (index: number) => {
+    if (index === 0) return;
+    setGalleryItems(prev => {
+      const copy = [...prev];
+      const [target] = copy.splice(index, 1);
+      copy.unshift(target);
+      return copy;
+    });
+  };
+
+  const handleMoveImage = (index: number, direction: 'up' | 'down') => {
+    setGalleryItems(prev => {
+      const targetIndex = direction === 'up' ? index - 1 : index + 1;
+      if (targetIndex < 0 || targetIndex >= prev.length) return prev;
+      const copy = [...prev];
+      const temp = copy[index];
+      copy[index] = copy[targetIndex];
+      copy[targetIndex] = temp;
+      return copy;
+    });
+  };
+
   const handleSubmitProduct = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (galleryItems.length === 0) {
+      setFeedback({ type: 'error', text: 'Debes añadir al menos una foto (Portada) para el producto.' });
+      return;
+    }
+
     setIsSubmitting(true);
-    setFeedback({ type: 'success', text: 'Procesando producto...' });
+    setFeedback({ type: 'success', text: 'Procesando y guardando producto...' });
 
     try {
-      let finalImageUrl = formData.currentImage;
+      const uploadedUrls: string[] = [];
 
-      // If user uploaded a new image, upload to Supabase Storage bucket
-      if (formData.imageFile) {
-        setFeedback({ type: 'success', text: 'Subiendo imagen a Supabase Storage...' });
-        finalImageUrl = await uploadProductImage(formData.imageFile);
+      for (let i = 0; i < galleryItems.length; i++) {
+        const item = galleryItems[i];
+        if (item.file) {
+          setUploadProgress(`Subiendo foto ${i + 1} de ${galleryItems.length}...`);
+          const uploadedUrl = await uploadProductImage(item.file);
+          uploadedUrls.push(uploadedUrl);
+        } else {
+          uploadedUrls.push(item.url);
+        }
       }
 
-      if (!finalImageUrl) {
-        throw new Error('Debes seleccionar o adjuntar una imagen para el producto.');
-      }
+      setUploadProgress('Guardando datos en la base de datos...');
+      const finalMainImage = uploadedUrls[0];
+      const finalGalleryImages = uploadedUrls;
 
       const payload = {
         title: formData.title,
@@ -148,7 +214,8 @@ export default function AdminPage() {
         dimensions: formData.dimensions,
         availableColors: formData.availableColors.split(',').map(c => c.trim()).filter(Boolean),
         youtubeUrl: formData.youtubeUrl,
-        image: finalImageUrl,
+        image: finalMainImage,
+        galleryImages: finalGalleryImages,
         published: formData.published
       };
 
@@ -157,12 +224,13 @@ export default function AdminPage() {
       resetForm();
       setFeedback({
         type: 'success',
-        text: editingId ? '¡Producto actualizado con éxito!' : '¡Producto creado y guardado en la base de datos!'
+        text: editingId ? '¡Producto actualizado con éxito con su galería!' : '¡Producto creado con éxito con sus fotos en diferentes ángulos!'
       });
     } catch (err: any) {
       setFeedback({ type: 'error', text: `Error: ${err.message}` });
     } finally {
       setIsSubmitting(false);
+      setUploadProgress('');
     }
   };
 
@@ -356,18 +424,215 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div className="form-group" style={{ marginBottom: 'var(--space-4)' }}>
-                <label className="form-label">Subir Foto Principal (JPG, PNG o WebP)</label>
-                <input 
-                  type="file" 
-                  accept="image/jpeg,image/png,image/webp"
-                  className="form-input"
-                  onChange={(e) => setFormData({ ...formData, imageFile: e.target.files?.[0] || null })}
-                />
-                {formData.currentImage && (
-                  <div style={{ marginTop: '8px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <img src={formData.currentImage} alt="Preview" style={{ width: '48px', height: '48px', objectFit: 'cover', borderRadius: '4px' }} />
-                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>Foto actual guardada</span>
+              {/* Multi-Photo Gallery & Angles Manager */}
+              <div className="form-group" style={{ marginBottom: 'var(--space-5)' }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <label className="form-label" style={{ margin: 0, fontWeight: 600 }}>
+                    Galería de Fotos & Ángulos ({galleryItems.length})
+                  </label>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--gold-400)' }}>
+                    {galleryItems.length === 0 ? 'Sin fotos' : `${galleryItems.length} foto(s) registrada(s)`}
+                  </span>
+                </div>
+
+                <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', marginBottom: '12px' }}>
+                  Sube hasta 5 o más fotos (Frontal, Lateral, Perspectiva, Detalle de Acabados, Ambiente). La primera foto será la <strong>Portada Principal</strong>.
+                </p>
+
+                {/* Upload Action Area */}
+                <div style={{
+                  border: '2px dashed var(--color-border)',
+                  borderRadius: 'var(--radius-md)',
+                  padding: 'var(--space-4)',
+                  textAlign: 'center',
+                  background: 'var(--color-bg-surface-elevated)',
+                  marginBottom: '16px',
+                  cursor: 'pointer'
+                }}>
+                  <input
+                    type="file"
+                    id="gallery-file-input"
+                    multiple
+                    accept="image/jpeg,image/png,image/webp"
+                    style={{ display: 'none' }}
+                    onChange={(e) => {
+                      handleAddFiles(e.target.files);
+                      e.target.value = '';
+                    }}
+                  />
+                  <label htmlFor="gallery-file-input" style={{ cursor: 'pointer', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '6px' }}>
+                    <div style={{
+                      width: '40px',
+                      height: '40px',
+                      borderRadius: '50%',
+                      background: 'rgba(212, 175, 55, 0.15)',
+                      color: 'var(--gold-400)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '1.2rem'
+                    }}>
+                      ➕
+                    </div>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--color-text-primary)' }}>
+                      Toca aquí para seleccionar fotos (Permite varias a la vez)
+                    </span>
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
+                      Formatos soportados: WebP, JPG, PNG
+                    </span>
+                  </label>
+                </div>
+
+                {/* Gallery Items Grid Preview */}
+                {galleryItems.length > 0 && (
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fill, minmax(130px, 1fr))',
+                    gap: '12px',
+                    marginBottom: '12px'
+                  }}>
+                    {galleryItems.map((item, index) => {
+                      const isCover = index === 0;
+                      return (
+                        <div
+                          key={item.id}
+                          style={{
+                            position: 'relative',
+                            background: 'var(--color-bg-surface-elevated)',
+                            borderRadius: 'var(--radius-sm)',
+                            overflow: 'hidden',
+                            border: isCover ? '2px solid var(--gold-400)' : '1px solid var(--color-border)',
+                            boxShadow: isCover ? '0 0 10px rgba(212, 175, 55, 0.25)' : 'none',
+                            display: 'flex',
+                            flexDirection: 'column'
+                          }}
+                        >
+                          {/* Badge */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '4px',
+                            left: '4px',
+                            zIndex: 2,
+                            padding: '2px 6px',
+                            borderRadius: '4px',
+                            fontSize: '0.65rem',
+                            fontWeight: 700,
+                            background: isCover ? 'var(--gold-400)' : 'rgba(0,0,0,0.75)',
+                            color: isCover ? '#000' : '#fff'
+                          }}>
+                            {isCover ? '⭐ Portada' : `Ángulo ${index + 1}`}
+                          </div>
+
+                          {/* Image Preview */}
+                          <div style={{ width: '100%', height: '95px', overflow: 'hidden', position: 'relative' }}>
+                            <img
+                              src={item.url}
+                              alt={`Ángulo ${index + 1}`}
+                              style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                            />
+                            {item.file && (
+                              <span style={{
+                                position: 'absolute',
+                                bottom: '4px',
+                                right: '4px',
+                                background: 'rgba(34, 197, 94, 0.9)',
+                                color: '#fff',
+                                fontSize: '0.6rem',
+                                padding: '1px 4px',
+                                borderRadius: '3px'
+                              }}>
+                                Nuevo
+                              </span>
+                            )}
+                          </div>
+
+                          {/* Controls */}
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            padding: '4px',
+                            background: 'rgba(0,0,0,0.4)',
+                            gap: '2px'
+                          }}>
+                            {!isCover ? (
+                              <button
+                                type="button"
+                                onClick={() => handleSetAsCover(index)}
+                                title="Fijar como portada principal"
+                                style={{
+                                  background: 'none',
+                                  border: 'none',
+                                  color: 'var(--gold-400)',
+                                  cursor: 'pointer',
+                                  fontSize: '0.75rem',
+                                  padding: '2px 4px'
+                                }}
+                              >
+                                ⭐ Portada
+                              </button>
+                            ) : (
+                              <span style={{ fontSize: '0.65rem', color: 'var(--gold-400)', padding: '2px 4px' }}>Principal</span>
+                            )}
+
+                            <div style={{ display: 'flex', gap: '2px' }}>
+                              {index > 0 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleMoveImage(index, 'up')}
+                                  title="Mover hacia la izquierda"
+                                  style={{
+                                    background: 'rgba(255,255,255,0.1)',
+                                    border: 'none',
+                                    color: '#fff',
+                                    cursor: 'pointer',
+                                    fontSize: '0.7rem',
+                                    borderRadius: '3px',
+                                    padding: '2px 4px'
+                                  }}
+                                >
+                                  ◀
+                                </button>
+                              )}
+                              {index < galleryItems.length - 1 && (
+                                <button
+                                  type="button"
+                                  onClick={() => handleMoveImage(index, 'down')}
+                                  title="Mover hacia la derecha"
+                                  style={{
+                                    background: 'rgba(255,255,255,0.1)',
+                                    border: 'none',
+                                    color: '#fff',
+                                    cursor: 'pointer',
+                                    fontSize: '0.7rem',
+                                    borderRadius: '3px',
+                                    padding: '2px 4px'
+                                  }}
+                                >
+                                  ▶
+                                </button>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => handleRemoveImage(index)}
+                                title="Eliminar foto"
+                                style={{
+                                  background: 'rgba(239, 68, 68, 0.2)',
+                                  border: 'none',
+                                  color: '#ef4444',
+                                  cursor: 'pointer',
+                                  fontSize: '0.75rem',
+                                  borderRadius: '3px',
+                                  padding: '2px 4px'
+                                }}
+                              >
+                                ✕
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
                   </div>
                 )}
               </div>
@@ -401,7 +666,7 @@ export default function AdminPage() {
                 className="btn btn-primary" 
                 style={{ width: '100%', justifyContent: 'center' }}
               >
-                {isSubmitting ? 'Guardando en Supabase...' : (editingId ? 'Guardar Cambios' : 'Crear y Publicar Producto')}
+                {isSubmitting ? (uploadProgress || 'Guardando en Supabase...') : (editingId ? 'Guardar Cambios' : 'Crear y Publicar Producto')}
               </button>
             </form>
           </section>
@@ -434,50 +699,79 @@ export default function AdminPage() {
                   No hay productos registrados en Supabase.
                 </p>
               ) : (
-                filteredProducts.map((prod) => (
-                  <article key={prod.id} style={{ 
-                    display: 'flex', 
-                    gap: '12px', 
-                    alignItems: 'center', 
-                    padding: 'var(--space-3)', 
-                    background: 'var(--color-bg-surface-elevated)', 
-                    borderRadius: 'var(--radius-md)',
-                    border: '1px solid var(--color-border)'
-                  }}>
-                    <img 
-                      src={prod.image} 
-                      alt={prod.title} 
-                      style={{ width: '64px', height: '64px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} 
-                    />
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <strong style={{ display: 'block', fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {prod.title}
-                      </strong>
-                      <span style={{ fontSize: '0.8rem', color: 'var(--gold-400)' }}>
-                        {prod.categoryName}
-                      </span>
-                    </div>
+                filteredProducts.map((prod) => {
+                  const photoCount = (prod.galleryImages && prod.galleryImages.length > 0) 
+                    ? prod.galleryImages.length 
+                    : (prod.image ? 1 : 0);
+                  return (
+                    <article key={prod.id} style={{ 
+                      display: 'flex', 
+                      gap: '12px', 
+                      alignItems: 'center', 
+                      padding: 'var(--space-3)', 
+                      background: 'var(--color-bg-surface-elevated)', 
+                      borderRadius: 'var(--radius-md)',
+                      border: '1px solid var(--color-border)'
+                    }}>
+                      <div style={{ position: 'relative', width: '64px', height: '64px', flexShrink: 0 }}>
+                        <img 
+                          src={prod.image} 
+                          alt={prod.title} 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} 
+                        />
+                        {photoCount > 1 && (
+                          <span style={{
+                            position: 'absolute',
+                            bottom: '2px',
+                            right: '2px',
+                            background: 'rgba(0,0,0,0.8)',
+                            color: 'var(--gold-400)',
+                            fontSize: '0.6rem',
+                            fontWeight: 700,
+                            padding: '1px 3px',
+                            borderRadius: '3px'
+                          }}>
+                            📷 {photoCount}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <strong style={{ display: 'block', fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                          {prod.title}
+                        </strong>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+                          <span style={{ fontSize: '0.8rem', color: 'var(--gold-400)' }}>
+                            {prod.categoryName}
+                          </span>
+                          {photoCount > 1 && (
+                            <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
+                              • {photoCount} fotos
+                            </span>
+                          )}
+                        </div>
+                      </div>
 
-                    <div style={{ display: 'flex', gap: '6px' }}>
-                      <button 
-                        type="button" 
-                        onClick={() => handleEdit(prod)}
-                        className="btn btn-secondary btn-sm"
-                        style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
-                      >
-                        Editar
-                      </button>
-                      <button 
-                        type="button" 
-                        onClick={() => handleDelete(prod.id, prod.title)}
-                        className="btn btn-sm"
-                        style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', border: '1px solid #ef4444' }}
-                      >
-                        Eliminar
-                      </button>
-                    </div>
-                  </article>
-                ))
+                      <div style={{ display: 'flex', gap: '6px' }}>
+                        <button 
+                          type="button" 
+                          onClick={() => handleEdit(prod)}
+                          className="btn btn-secondary btn-sm"
+                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem' }}
+                        >
+                          Editar
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => handleDelete(prod.id, prod.title)}
+                          className="btn btn-sm"
+                          style={{ padding: '0.35rem 0.65rem', fontSize: '0.75rem', background: 'rgba(239, 68, 68, 0.2)', color: '#ef4444', border: '1px solid #ef4444' }}
+                        >
+                          Eliminar
+                        </button>
+                      </div>
+                    </article>
+                  );
+                })
               )}
             </div>
           </section>

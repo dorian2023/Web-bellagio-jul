@@ -275,13 +275,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                             setSelectedImageIndex(idx);
                             setMediaTab('photo');
                           }}
-                          aria-label={`Ver ángulo ${idx + 1} de ${allImages.length}`}
-                          title={`Ver vista / ángulo ${idx + 1}`}
+                          aria-label={`Foto ${idx + 1}`}
+                          title={`Foto ${idx + 1}`}
                         >
-                          <img src={imgUrl} alt={`${product.title} ángulo ${idx + 1}`} loading="lazy" />
-                          <span className="angle-thumb-pill">
-                            {idx === 0 ? 'Portada' : `Ángulo ${idx + 1}`}
-                          </span>
+                          <img src={imgUrl} alt={`${product.title} ${idx + 1}`} loading="lazy" />
                         </button>
                       );
                     })}
@@ -477,9 +474,9 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                     type="button"
                     className={`fullscreen-angle-dot ${selectedImageIndex === idx ? 'active' : ''}`}
                     onClick={() => setSelectedImageIndex(idx)}
-                    title={`Ver Ángulo ${idx + 1}`}
+                    title={`Foto ${idx + 1}`}
                   >
-                    {idx === 0 ? 'Portada' : `Ángulo ${idx + 1}`}
+                    {idx + 1}
                   </button>
                 ))}
               </div>

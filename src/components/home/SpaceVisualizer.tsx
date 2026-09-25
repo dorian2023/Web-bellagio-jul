@@ -144,7 +144,10 @@ export default function SpaceVisualizer() {
                 {/* Architectural Measurement Dimension Callouts */}
                 <div className="dimension-line dimension-top" aria-hidden="true">
                   <span className="dimension-tick left"></span>
-                  <span className="dimension-label">Ancho: {activeSwatch.dimensions.split('×')[0]?.trim()}</span>
+                  <span className="dimension-label">
+                    <span className="dimension-text-desktop">Ancho: {activeSwatch.dimensions.split('×')[0]?.trim()}</span>
+                    <span className="dimension-text-mobile">📐 {activeSwatch.dimensions}</span>
+                  </span>
                   <span className="dimension-tick right"></span>
                 </div>
 

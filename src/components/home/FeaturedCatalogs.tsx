@@ -141,7 +141,7 @@ export default function FeaturedCatalogs() {
           <p className="section-subtitle">
             Explora todas nuestras piezas, categorías y novedades en una experiencia creada para encontrar el mobiliario ideal para tus espacios.
           </p>
-          <Link href="/catalogo" className="btn btn-primary btn-lg catalog-entrance-cta">
+          <Link href="/catalogo" prefetch={true} className="btn btn-primary btn-lg catalog-entrance-cta">
             <span>Explorar el catálogo</span>
             <span aria-hidden="true">→</span>
           </Link>

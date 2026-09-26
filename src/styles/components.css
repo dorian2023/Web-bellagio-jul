@@ -2812,5 +2812,446 @@
   letter-spacing: 0.02em;
 }
 
+/* ==========================================================================
+   Quiet Luxury Cookie Consent Banner (Muebles Bellagio)
+   ========================================================================== */
+.luxury-cookie-banner {
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  z-index: 9998;
+  max-width: 440px;
+  width: calc(100% - 48px);
+  pointer-events: auto;
+}
+
+.luxury-cookie-banner.is-entering {
+  animation: cookieSlideUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.luxury-cookie-banner.is-closing {
+  animation: cookieSlideDown 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cookieSlideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes cookieSlideDown {
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(30px) scale(0.96);
+  }
+}
+
+.luxury-cookie-glass-card {
+  position: relative;
+  background: rgba(14, 14, 18, 0.92);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1.5px solid rgba(212, 175, 55, 0.38);
+  border-radius: 20px;
+  padding: 20px 22px;
+  box-shadow: 
+    0 20px 48px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(212, 175, 55, 0.12),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  overflow: hidden;
+}
+
+.cookie-ambient-glow {
+  position: absolute;
+  top: -40px;
+  right: -40px;
+  width: 140px;
+  height: 140px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.22) 0%, rgba(212, 175, 55, 0) 70%);
+  pointer-events: none;
+}
+
+.luxury-cookie-content-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.luxury-cookie-logo-box {
+  flex-shrink: 0;
+}
+
+.luxury-cookie-logo-ring {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(212, 175, 55, 0.55);
+  background: #0b0b0e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 12px rgba(212, 175, 55, 0.25);
+}
+
+.luxury-cookie-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.luxury-cookie-text-box {
+  flex: 1;
+}
+
+.luxury-cookie-kicker {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-accent);
+  font-size: 0.68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--gold-400, #d4af37);
+  margin-bottom: 2px;
+}
+
+.kicker-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--gold-400, #d4af37);
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.7);
+}
+
+.luxury-cookie-title {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0 0 6px 0;
+  line-height: 1.25;
+}
+
+.luxury-cookie-desc {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+}
+
+.luxury-cookie-actions {
+  display: grid;
+  grid-template-columns: 1fr 1.35fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.cookie-btn {
+  border-radius: var(--radius-full, 9999px);
+  font-family: var(--font-accent);
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  border: none;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+.cookie-btn-essential {
+  background: rgba(255, 255, 255, 0.07);
+  color: #E2E8F0;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.cookie-btn-essential:hover {
+  background: rgba(255, 255, 255, 0.14);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.3);
+}
+
+.cookie-btn-accept {
+  background: var(--gradient-gold, linear-gradient(135deg, #d4af37 0%, #aa8638 100%));
+  color: #0A0A0E;
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.35);
+}
+
+.cookie-btn-accept:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(212, 175, 55, 0.55);
+  filter: brightness(1.06);
+}
+
+.cookie-btn-accept:active,
+.cookie-btn-essential:active {
+  transform: translateY(0);
+}
+
+/* Mobile Responsiveness for Cookie Banner */
+@media (max-width: 600px) {
+  .luxury-cookie-banner {
+    bottom: 16px;
+    left: 12px;
+    right: 12px;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .luxury-cookie-glass-card {
+    padding: 16px 16px;
+    border-radius: 18px;
+  }
+
+  .luxury-cookie-logo-ring {
+    width: 42px;
+    height: 42px;
+  }
+
+  .luxury-cookie-title {
+    font-size: 0.96rem;
+  }
+
+  .luxury-cookie-desc {
+    font-size: 0.76rem;
+  }
+
+  .luxury-cookie-actions {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .cookie-btn {
+    padding: 8px 10px;
+    font-size: 0.72rem;
+  }
+}
+
+/* ==========================================================================
+   Luxury Navigation Progress Bar & Page Transition Loader (Muebles Bellagio)
+   ========================================================================== */
+
+/* 1. TOP GOLDEN PROGRESS BAR */
+.luxury-progress-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  z-index: 999999;
+  pointer-events: none;
+  overflow: visible;
+  background: transparent;
+  transition: opacity 0.25s ease-out;
+}
+
+.luxury-progress-container.is-finished {
+  opacity: 0;
+}
+
+.luxury-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #997528 0%, #D4AF37 35%, #F5DE88 70%, #D4AF37 100%);
+  border-radius: 0 4px 4px 0;
+  box-shadow: 
+    0 0 12px rgba(212, 175, 55, 0.9),
+    0 0 4px rgba(255, 230, 140, 1);
+  transition: width 0.18s cubic-bezier(0.1, 0.9, 0.2, 1);
+  position: relative;
+}
+
+.luxury-progress-glow {
+  position: absolute;
+  top: -2px;
+  right: 0;
+  width: 100px;
+  height: 7px;
+  background: radial-gradient(circle at center, rgba(255, 240, 170, 0.9) 0%, rgba(212, 175, 55, 0.4) 50%, transparent 100%);
+  filter: blur(1.5px);
+  animation: pulseGlow 1.2s infinite alternate;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scaleX(0.85); opacity: 0.7; }
+  100% { transform: scaleX(1.25); opacity: 1; }
+}
+
+/* 2. LUXURY PAGE TRANSITION SEAL OVERLAY */
+.luxury-page-transition-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: all;
+  animation: fadeInOverlay 0.22s ease-out forwards;
+}
+
+@keyframes fadeInOverlay {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.luxury-transition-backdrop-blur {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 14, 0.55);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.luxury-transition-card {
+  position: relative;
+  z-index: 2;
+  background: rgba(14, 14, 18, 0.92);
+  border: 1.5px solid rgba(212, 175, 55, 0.4);
+  border-radius: 24px;
+  padding: 26px 36px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 16px;
+  max-width: 380px;
+  width: calc(100% - 32px);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    0 0 35px rgba(212, 175, 55, 0.2),
+    0 0 0 1px rgba(255, 255, 255, 0.08) inset;
+  animation: scaleInCard 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow: hidden;
+}
+
+@keyframes scaleInCard {
+  0% { transform: scale(0.92) translateY(8px); opacity: 0; }
+  100% { transform: scale(1) translateY(0); opacity: 1; }
+}
+
+.luxury-transition-ambient {
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 160px;
+  height: 160px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.25) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.luxury-transition-seal-wrapper {
+  position: relative;
+  width: 76px;
+  height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.luxury-seal-orbit-ring {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  border-top-color: var(--gold-400, #d4af37);
+  border-right-color: var(--gold-200, #fae08c);
+  animation: sealOrbit 1.2s linear infinite;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.3);
+}
+
+@keyframes sealOrbit {
+  to { transform: rotate(360deg); }
+}
+
+.luxury-seal-inner-core {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: #08080a;
+  border: 1.5px solid rgba(212, 175, 55, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.luxury-seal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.luxury-transition-text-box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.luxury-transition-kicker {
+  font-family: var(--font-accent, 'Jost', sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold-400, #d4af37);
+  text-transform: uppercase;
+}
+
+.luxury-transition-label {
+  font-family: var(--font-serif, 'Playfair Display', serif);
+  font-size: 1.08rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.luxury-transition-meter-bar {
+  width: 140px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.luxury-meter-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 45%;
+  background: var(--gradient-gold, linear-gradient(90deg, #d4af37, #fae08c));
+  border-radius: 9999px;
+  animation: meterSlide 1s ease-in-out infinite alternate;
+}
+
+@keyframes meterSlide {
+  0% { left: 0%; width: 30%; }
+  50% { width: 60%; }
+  100% { left: 70%; width: 30%; }
+}
+
+
+
 
 

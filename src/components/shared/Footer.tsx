@@ -53,9 +53,9 @@ export default function Footer() {
           <div>
             <h4 className="footer-col-title">Navegación</h4>
             <ul className="footer-links">
-              <li><Link href="/">Inicio</Link></li>
-              <li><Link href="/tiendas">Nuestras Tiendas en Caracas</Link></li>
-              <li><Link href="/catalogo">Catálogo Completo (17 Colecciones)</Link></li>
+              <li><Link href="/" prefetch={true}>Inicio</Link></li>
+              <li><Link href="/tiendas" prefetch={true}>Nuestras Tiendas en Caracas</Link></li>
+              <li><Link href="/catalogo" prefetch={true}>Catálogo Completo (17 Colecciones)</Link></li>
               <li><Link href="/#contactanos">Contáctanos</Link></li>
             </ul>
           </div>

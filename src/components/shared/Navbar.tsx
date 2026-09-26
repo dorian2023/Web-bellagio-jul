@@ -80,17 +80,17 @@ export default function Navbar() {
         {/* Desktop Menu Links (Exact 4 items: Inicio, Tiendas, Catálogos, Contáctanos) */}
         <ul className="navbar-nav" role="menubar">
           <li role="none">
-            <Link href="/" className={`nav-link ${pathname === '/' ? 'active' : ''}`} role="menuitem">
+            <Link href="/" prefetch={true} className={`nav-link ${pathname === '/' ? 'active' : ''}`} role="menuitem">
               Inicio
             </Link>
           </li>
           <li role="none">
-            <Link href="/tiendas" className={`nav-link ${pathname === '/tiendas' ? 'active' : ''}`} role="menuitem">
+            <Link href="/tiendas" prefetch={true} className={`nav-link ${pathname === '/tiendas' ? 'active' : ''}`} role="menuitem">
               Tiendas
             </Link>
           </li>
           <li role="none">
-            <Link href="/catalogo" className={`nav-link ${pathname.startsWith('/catalogo') ? 'active' : ''}`} role="menuitem">
+            <Link href="/catalogo" prefetch={true} className={`nav-link ${pathname.startsWith('/catalogo') ? 'active' : ''}`} role="menuitem">
               Catálogos
             </Link>
           </li>
@@ -203,6 +203,7 @@ export default function Navbar() {
       <div className={`mobile-drawer ${isDrawerOpen ? 'open' : ''}`} id="mobileDrawer">
         <Link 
           href="/" 
+          prefetch={true}
           className={`mobile-nav-link ${pathname === '/' ? 'active' : ''}`} 
           onClick={closeDrawer}
         >
@@ -211,6 +212,7 @@ export default function Navbar() {
         </Link>
         <Link 
           href="/tiendas" 
+          prefetch={true}
           className={`mobile-nav-link ${pathname === '/tiendas' ? 'active' : ''}`} 
           onClick={closeDrawer}
         >
@@ -219,6 +221,7 @@ export default function Navbar() {
         </Link>
         <Link 
           href="/catalogo" 
+          prefetch={true}
           className={`mobile-nav-link ${pathname.startsWith('/catalogo') ? 'active' : ''}`} 
           onClick={closeDrawer}
         >

@@ -1,9 +1,12 @@
+import React, { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import Navbar from '@/src/components/shared/Navbar';
 import Footer from '@/src/components/shared/Footer';
 import WhatsAppWidget from '@/src/components/shared/WhatsAppWidget';
 import InquiryFloatingCart from '@/src/components/catalog/InquiryFloatingCart';
+import CookieConsentBanner from '@/src/components/shared/CookieConsentBanner';
+import LuxuryNavigationLoader from '@/src/components/shared/LuxuryNavigationLoader';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -120,11 +123,15 @@ export default function RootLayout({
         />
       </head>
       <body suppressHydrationWarning>
+        <Suspense fallback={null}>
+          <LuxuryNavigationLoader />
+        </Suspense>
         <Navbar />
         <main>{children}</main>
         <Footer />
         <WhatsAppWidget />
         <InquiryFloatingCart />
+        <CookieConsentBanner />
       </body>
     </html>
   );

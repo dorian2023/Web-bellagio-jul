@@ -51,7 +51,7 @@ export default function Hero() {
 
           {/* Action Buttons Group */}
           <div className="hero-cinematic-cta-group">
-            <Link href="/catalogo" className="btn btn-primary btn-lg hero-main-cta">
+            <Link href="/catalogo" prefetch={true} className="btn btn-primary btn-lg hero-main-cta">
               <span>Explorar Colecciones 2026</span>
               <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>

@@ -15,6 +15,9 @@ export default function ShowroomModal({ store, onClose }: ShowroomModalProps) {
   const [activeTab, setActiveTab] = useState<'video' | 'foto'>('video');
   const [isMuted, setIsMuted] = useState(true);
   const [isTilting, setIsTilting] = useState(false);
+  const [isVideoLoading, setIsVideoLoading] = useState(true);
+  const [isVideoBuffering, setIsVideoBuffering] = useState(false);
+  const [hasVideoError, setHasVideoError] = useState(false);
 
   // Handle ESC key and scroll lock
   useEffect(() => {
@@ -30,18 +33,31 @@ export default function ShowroomModal({ store, onClose }: ShowroomModalProps) {
     };
   }, [onClose]);
 
-  // Autoplay video when modal opens or tab changes
+  // Autoplay video smoothly when modal opens or tab changes
   useEffect(() => {
-    if (store && activeTab === 'video' && videoRef.current) {
-      videoRef.current.currentTime = 0;
-      videoRef.current.muted = isMuted;
-      videoRef.current.play().catch(() => {
-        if (videoRef.current) {
-          videoRef.current.muted = true;
-          setIsMuted(true);
-          videoRef.current.play().catch(() => {});
+    if (store && activeTab === 'video') {
+      setIsVideoLoading(true);
+      setHasVideoError(false);
+      setIsVideoBuffering(false);
+
+      if (videoRef.current) {
+        videoRef.current.muted = isMuted;
+        const playPromise = videoRef.current.play();
+        if (playPromise !== undefined) {
+          playPromise
+            .then(() => {
+              setIsVideoLoading(false);
+            })
+            .catch(() => {
+              // Autoplay with audio was prevented; switch to muted
+              if (videoRef.current) {
+                videoRef.current.muted = true;
+                setIsMuted(true);
+                videoRef.current.play().catch(() => {});
+              }
+            });
         }
-      });
+      }
     }
   }, [store, activeTab]);
 
@@ -203,17 +219,57 @@ export default function ShowroomModal({ store, onClose }: ShowroomModalProps) {
             <div className="luxury-phone-frame-wrapper">
               <div className="luxury-phone-frame">
                 {activeTab === 'video' && store.videoUrl ? (
-                  <video
-                    ref={videoRef}
-                    src={store.videoUrl}
-                    poster={store.posterUrl}
-                    className="luxury-phone-video"
-                    controls
-                    playsInline
-                    loop
-                    muted={isMuted}
-                    aria-label={`Recorrido en video de la sede ${store.name}`}
-                  />
+                  <>
+                    <video
+                      ref={videoRef}
+                      src={store.videoUrl}
+                      poster={store.posterUrl}
+                      className="luxury-phone-video"
+                      controls
+                      playsInline
+                      loop
+                      preload="auto"
+                      muted={isMuted}
+                      aria-label={`Recorrido en video de la sede ${store.name}`}
+                      onWaiting={() => setIsVideoBuffering(true)}
+                      onPlaying={() => {
+                        setIsVideoLoading(false);
+                        setIsVideoBuffering(false);
+                      }}
+                      onCanPlay={() => {
+                        setIsVideoLoading(false);
+                      }}
+                      onError={() => {
+                        setIsVideoLoading(false);
+                        setIsVideoBuffering(false);
+                        setHasVideoError(true);
+                      }}
+                    />
+
+                    {/* Elegant Buffering / Loading Indicator */}
+                    {(isVideoLoading || isVideoBuffering) && !hasVideoError && (
+                      <div className="luxury-video-buffering-overlay" aria-live="polite">
+                        <div className="luxury-video-spinner" />
+                        <span className="luxury-video-buffering-text">
+                          {isVideoLoading ? 'Cargando video HD...' : 'Cargando contenido...'}
+                        </span>
+                      </div>
+                    )}
+
+                    {/* Error fallback overlay */}
+                    {hasVideoError && (
+                      <div className="luxury-video-error-overlay">
+                        <p>No se pudo cargar el video de este showroom</p>
+                        <button
+                          type="button"
+                          className="luxury-tab-pill active"
+                          onClick={() => setActiveTab('foto')}
+                        >
+                          Ver Foto de Fachada
+                        </button>
+                      </div>
+                    )}
+                  </>
                 ) : (
                   <img
                     src={store.posterUrl || '/images/hero-poster.webp'}

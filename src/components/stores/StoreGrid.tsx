@@ -18,11 +18,25 @@ export default function StoreGrid({ isStandalonePage = false }: StoreGridProps) 
   const [activeModalStore, setActiveModalStore] = useState<StoreLocation | null>(null);
   const [, setClockTick] = useState(0);
 
-  // Refresh dynamic time calculation every minute
+  // Dynamic time calculation refresh
   useEffect(() => {
     const timer = setInterval(() => setClockTick((prev) => prev + 1), 60000);
     return () => clearInterval(timer);
   }, []);
+
+  // Preload video buffer when hovering or focusing on store card
+  const handleStoreWarmup = (videoUrl?: string) => {
+    if (!videoUrl || typeof window === 'undefined') return;
+    const existing = document.querySelector(`link[data-warmup="${videoUrl}"]`);
+    if (!existing) {
+      const link = document.createElement('link');
+      link.rel = 'preload';
+      link.as = 'video';
+      link.href = videoUrl;
+      link.setAttribute('data-warmup', videoUrl);
+      document.head.appendChild(link);
+    }
+  };
 
   const filteredStores = useMemo(() => {
     if (activeSector === 'oeste') {
@@ -105,6 +119,9 @@ export default function StoreGrid({ isStandalonePage = false }: StoreGridProps) 
                 key={store.id}
                 className={`luxury-card store-card interactive-store-card ${isFlagship ? 'is-flagship' : ''}`}
                 onClick={() => setActiveModalStore(store)}
+                onMouseEnter={() => handleStoreWarmup(store.videoUrl)}
+                onTouchStart={() => handleStoreWarmup(store.videoUrl)}
+                onFocus={() => handleStoreWarmup(store.videoUrl)}
                 role="button"
                 tabIndex={0}
                 aria-label={`Ver detalles y video del showroom de ${store.name}`}

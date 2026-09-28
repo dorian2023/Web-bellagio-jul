@@ -3251,6 +3251,130 @@
   100% { left: 70%; width: 30%; }
 }
 
+/* ==========================================================================
+   Origin Filter Tabs & Product Provenance Badges (Nacional vs Importado)
+   ========================================================================== */
+.catalog-origin-bar {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 12px 0 4px 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.catalog-origin-bar::-webkit-scrollbar {
+  display: none;
+}
+
+.catalog-origin-tabs {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(18, 18, 22, 0.7);
+  padding: 4px 6px;
+  border-radius: var(--radius-full, 9999px);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  backdrop-filter: blur(10px);
+}
+
+[data-theme="light"] .catalog-origin-tabs {
+  background: rgba(245, 243, 238, 0.85);
+  border-color: rgba(170, 134, 56, 0.25);
+}
+
+.origin-tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full, 9999px);
+  font-family: var(--font-accent, 'Jost', sans-serif);
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: var(--color-text-secondary, #a1a1aa);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+}
+
+.origin-tab-btn:hover {
+  color: var(--color-text-primary, #ffffff);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+[data-theme="light"] .origin-tab-btn:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.origin-tab-btn.active {
+  background: var(--gradient-gold, linear-gradient(135deg, #d4af37 0%, #aa8638 100%));
+  color: #0b0b0d;
+  font-weight: 700;
+  box-shadow: 0 2px 10px rgba(212, 175, 55, 0.35);
+}
+
+.origin-badge-count {
+  font-size: 0.7rem;
+  padding: 1px 6px;
+  border-radius: var(--radius-full, 9999px);
+  background: rgba(0, 0, 0, 0.2);
+  color: inherit;
+  font-weight: 700;
+}
+
+.origin-tab-btn.active .origin-badge-count {
+  background: rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+}
+
+/* Product Card Origin Badge */
+.product-origin-card-badge {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  font-family: var(--font-accent, 'Jost', sans-serif);
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: var(--radius-full, 9999px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35);
+}
+
+.product-origin-card-badge.is-nacional {
+  background: rgba(14, 38, 24, 0.88);
+  color: #4ade80;
+  border: 1px solid rgba(74, 222, 128, 0.4);
+}
+
+.product-origin-card-badge.is-importado {
+  background: rgba(18, 30, 48, 0.88);
+  color: #60a5fa;
+  border: 1px solid rgba(96, 165, 250, 0.4);
+}
+
+/* Modal Origin Pill */
+.origin-badge-nacional {
+  background: rgba(34, 197, 94, 0.12) !important;
+  color: #4ade80 !important;
+  border: 1px solid rgba(74, 222, 128, 0.35) !important;
+}
+
+.origin-badge-importado {
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #60a5fa !important;
+  border: 1px solid rgba(96, 165, 250, 0.35) !important;
+}
+
+
 
 
 

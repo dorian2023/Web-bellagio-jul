@@ -6,13 +6,13 @@ import { fetchCatalog } from '@/src/lib/supabase';
 export const revalidate = 60; // Incremental Static Regeneration every 60 seconds
 
 export const metadata: Metadata = {
-  title: 'Catálogo Bellagio (17 Categorías A-Z)',
+  title: 'Catálogo Bellagio | Mobiliario de Alta Gama',
   description: 'Colección integral de mobiliario de alta gama en Caracas: Salas, Comedores, Sofás, Dormitorios, Ceibos, Mesas de Centro y Piezas Exclusivas de Autor.',
   alternates: {
     canonical: 'https://mueblesbellagio.com/catalogo'
   },
   openGraph: {
-    title: 'Catálogo Bellagio en Caracas (17 Categorías) | Muebles Bellagio',
+    title: 'Catálogo Bellagio en Caracas | Muebles Bellagio',
     description: 'Explora nuestra gama de alta ebanistería, sofás, comedores y dormitorios en Caracas.',
     url: 'https://mueblesbellagio.com/catalogo',
     images: ['/images/hero-poster.webp']

@@ -1,0 +1,121 @@
+[
+  {
+    "id": "box-spring",
+    "name": "Box Spring",
+    "slug": "box-spring",
+    "sort_order": 1,
+    "active": true
+  },
+  {
+    "id": "ceibos",
+    "name": "Ceibos",
+    "slug": "ceibos",
+    "sort_order": 2,
+    "active": true
+  },
+  {
+    "id": "closet",
+    "name": "Closet",
+    "slug": "closet",
+    "sort_order": 3,
+    "active": true
+  },
+  {
+    "id": "comedores",
+    "name": "Comedores",
+    "slug": "comedores",
+    "sort_order": 4,
+    "active": true
+  },
+  {
+    "id": "dormitorios",
+    "name": "Dormitorios",
+    "slug": "dormitorios",
+    "sort_order": 5,
+    "active": true
+  },
+  {
+    "id": "espejos",
+    "name": "Espejos",
+    "slug": "espejos",
+    "sort_order": 6,
+    "active": true
+  },
+  {
+    "id": "gaveteros",
+    "name": "Gaveteros",
+    "slug": "gaveteros",
+    "sort_order": 7,
+    "active": true
+  },
+  {
+    "id": "mesas-de-centro",
+    "name": "Mesas de Centro",
+    "slug": "mesas-de-centro",
+    "sort_order": 8,
+    "active": true
+  },
+  {
+    "id": "mesas-de-noche",
+    "name": "Mesas de Noche",
+    "slug": "mesas-de-noche",
+    "sort_order": 9,
+    "active": true
+  },
+  {
+    "id": "mesas-tv",
+    "name": "Mesas Tv",
+    "slug": "mesas-tv",
+    "sort_order": 10,
+    "active": true
+  },
+  {
+    "id": "peinadoras",
+    "name": "Peinadoras",
+    "slug": "peinadoras",
+    "sort_order": 11,
+    "active": true
+  },
+  {
+    "id": "poltronas",
+    "name": "Poltronas",
+    "slug": "poltronas",
+    "sort_order": 12,
+    "active": true
+  },
+  {
+    "id": "sillas",
+    "name": "Sillas",
+    "slug": "sillas",
+    "sort_order": 13,
+    "active": true
+  },
+  {
+    "id": "sofacamas",
+    "name": "Sofacamas",
+    "slug": "sofacamas",
+    "sort_order": 14,
+    "active": true
+  },
+  {
+    "id": "sofas",
+    "name": "Sofas",
+    "slug": "sofas",
+    "sort_order": 15,
+    "active": true
+  },
+  {
+    "id": "taburete",
+    "name": "Taburete",
+    "slug": "taburete",
+    "sort_order": 16,
+    "active": true
+  },
+  {
+    "id": "zapateras",
+    "name": "Zapateras",
+    "slug": "zapateras",
+    "sort_order": 17,
+    "active": true
+  }
+]

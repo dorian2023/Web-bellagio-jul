@@ -6,6 +6,7 @@ import { CATEGORIES_DATA as DEFAULT_CATEGORIES, CATALOGS_DATA as DEFAULT_PRODUCT
 import { Product, Category } from '@/src/types/catalog';
 import ProductModal from '@/src/components/catalog/ProductModal';
 import { fetchCatalog } from '@/src/lib/supabase';
+import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
 
 interface CatalogBrowserProps {
   initialCategory?: string;
@@ -52,6 +53,7 @@ export default function CatalogBrowser({
   initialCategories
 }: CatalogBrowserProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>(initialCategory);
+  const [originFilter, setOriginFilter] = useState<'todos' | 'nacional' | 'importado'>('todos');
   const [searchQuery, setSearchQuery] = useState<string>('');
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [isMegaOpen, setIsMegaOpen] = useState<boolean>(false);
@@ -78,6 +80,17 @@ export default function CatalogBrowser({
       isMounted = false;
     };
   }, [initialProducts]);
+
+  // Origin statistics
+  const originStats = useMemo(() => {
+    const nacionalCount = allProducts.filter(p => p.origin !== 'importado').length;
+    const importadoCount = allProducts.filter(p => p.origin === 'importado').length;
+    return {
+      todos: allProducts.length,
+      nacional: nacionalCount,
+      importado: importadoCount
+    };
+  }, [allProducts]);
 
   // Close mega dropdown on outside click
   useEffect(() => {
@@ -119,10 +132,15 @@ export default function CatalogBrowser({
     };
   }, [categoriesList, selectedCategory, allProducts.length]);
 
-  // Filtered products list
+  // Filtered products list by category, origin, and search query
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
       const matchesCategory = selectedCategory === 'todos' || product.category === selectedCategory;
+      const matchesOrigin =
+        originFilter === 'todos' ||
+        (originFilter === 'nacional' && product.origin !== 'importado') ||
+        (originFilter === 'importado' && product.origin === 'importado');
+
       const query = searchQuery.toLowerCase().trim();
       const matchesSearch =
         !query ||
@@ -132,9 +150,9 @@ export default function CatalogBrowser({
         product.categoryName.toLowerCase().includes(query) ||
         product.dimensions.toLowerCase().includes(query);
 
-      return matchesCategory && matchesSearch;
+      return matchesCategory && matchesOrigin && matchesSearch;
     });
-  }, [allProducts, selectedCategory, searchQuery]);
+  }, [allProducts, selectedCategory, originFilter, searchQuery]);
 
   // Pagination calculations
   const totalPages = Math.ceil(filteredProducts.length / ITEMS_PER_PAGE) || 1;
@@ -463,6 +481,55 @@ export default function CatalogBrowser({
                   ? `Mostrando ${startIndex + 1}–${endIndex} de ${filteredProducts.length} piezas`
                   : `Mostrando ${filteredProducts.length} ${filteredProducts.length === 1 ? 'pieza' : 'piezas'}`}
               </span>
+            </div>
+          </div>
+
+          {/* Secondary Filter Row: Origin Filter Selector (Nacional vs Importado) */}
+          <div className="catalog-origin-bar">
+            <div className="catalog-origin-tabs" role="tablist" aria-label="Filtrar por origen del mueble">
+              <button
+                type="button"
+                role="tab"
+                aria-selected={originFilter === 'todos'}
+                className={`origin-tab-btn ${originFilter === 'todos' ? 'active' : ''}`}
+                onClick={() => {
+                  setOriginFilter('todos');
+                  setCurrentPage(1);
+                }}
+              >
+                <span>Todas las Piezas</span>
+                <span className="origin-badge-count">{originStats.todos}</span>
+              </button>
+
+              <button
+                type="button"
+                role="tab"
+                aria-selected={originFilter === 'nacional'}
+                className={`origin-tab-btn ${originFilter === 'nacional' ? 'active' : ''}`}
+                onClick={() => {
+                  setOriginFilter('nacional');
+                  setCurrentPage(1);
+                }}
+              >
+                <VenezuelaFlagIcon width={16} height={11} />
+                <span>Fabricación Nacional</span>
+                <span className="origin-badge-count">{originStats.nacional}</span>
+              </button>
+
+              <button
+                type="button"
+                role="tab"
+                aria-selected={originFilter === 'importado'}
+                className={`origin-tab-btn ${originFilter === 'importado' ? 'active' : ''}`}
+                onClick={() => {
+                  setOriginFilter('importado');
+                  setCurrentPage(1);
+                }}
+              >
+                <ImportedGlobeIcon width={14} height={14} />
+                <span>Producto Importado</span>
+                <span className="origin-badge-count">{originStats.importado}</span>
+              </button>
             </div>
           </div>
         </div>

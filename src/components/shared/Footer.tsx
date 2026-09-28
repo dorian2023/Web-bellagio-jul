@@ -55,7 +55,7 @@ export default function Footer() {
             <ul className="footer-links">
               <li><Link href="/" prefetch={true}>Inicio</Link></li>
               <li><Link href="/tiendas" prefetch={true}>Nuestras Tiendas en Caracas</Link></li>
-              <li><Link href="/catalogo" prefetch={true}>Catálogo Completo (17 Colecciones)</Link></li>
+              <li><Link href="/catalogo" prefetch={true}>Catálogo Completo</Link></li>
               <li><Link href="/#contactanos">Contáctanos</Link></li>
             </ul>
           </div>

@@ -4,6 +4,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Product } from '@/src/types/catalog';
 import { isProductSelected, toggleProductSelection } from '@/src/utils/inquiry-cart.js';
 import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/src/utils/media.js';
+import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
 
 interface ProductModalProps {
   product: Product | null;
@@ -294,6 +295,19 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                   <span className="catalog-tag">
                     {product.categoryName}
                   </span>
+                  <span className={`vip-badge-pill ${product.origin === 'importado' ? 'origin-badge-importado' : 'origin-badge-nacional'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                    {product.origin === 'importado' ? (
+                      <>
+                        <ImportedGlobeIcon width={13} height={13} />
+                        <span>Producto Importado</span>
+                      </>
+                    ) : (
+                      <>
+                        <VenezuelaFlagIcon width={16} height={11} />
+                        <span>Fabricación Nacional</span>
+                      </>
+                    )}
+                  </span>
                   <span className="vip-badge-pill">
                     ✨ Calidad Garantizada
                   </span>
@@ -313,6 +327,10 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
               {/* Technical Specifications */}
               <div className="lightbox-specs vip-specs">
+                <div className="lightbox-spec-item">
+                  <strong>Procedencia:</strong>
+                  <span>{product.origin === 'importado' ? 'Producto Importado Exclusivo' : 'Fabricación Nacional (Taller Bellagio)'}</span>
+                </div>
                 {product.materials && (
                   <div className="lightbox-spec-item">
                     <strong>Materiales Nobles:</strong>

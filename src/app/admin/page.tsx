@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { supabase, fetchAdminProducts, saveProduct, deleteProduct, uploadProductImage } from '@/src/lib/supabase';
 import { CATEGORIES_DATA } from '@/src/data/catalogs';
+import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
 
 interface GalleryItem {
   id: string;
@@ -28,9 +29,20 @@ export default function AdminPage() {
   const [uploadProgress, setUploadProgress] = useState<string>('');
 
   // Product Form Data
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<{
+    title: string;
+    category: string;
+    origin: 'nacional' | 'importado';
+    description: string;
+    materials: string;
+    dimensions: string;
+    availableColors: string;
+    youtubeUrl: string;
+    published: boolean;
+  }>({
     title: '',
     category: 'sofas',
+    origin: 'nacional',
     description: '',
     materials: '',
     dimensions: '',
@@ -90,6 +102,7 @@ export default function AdminPage() {
     setFormData({
       title: '',
       category: 'sofas',
+      origin: 'nacional',
       description: '',
       materials: '',
       dimensions: '',
@@ -106,6 +119,7 @@ export default function AdminPage() {
     setFormData({
       title: prod.title,
       category: prod.category,
+      origin: prod.origin || (prod.title?.toLowerCase().includes('imp') ? 'importado' : 'nacional'),
       description: prod.description || '',
       materials: prod.materials || '',
       dimensions: prod.dimensions || '',
@@ -209,6 +223,7 @@ export default function AdminPage() {
       const payload = {
         title: formData.title,
         category: formData.category,
+        origin: formData.origin || 'nacional',
         description: formData.description,
         materials: formData.materials,
         dimensions: formData.dimensions,
@@ -378,6 +393,60 @@ export default function AdminPage() {
                     <option key={c.id} value={c.id}>{c.name}</option>
                   ))}
                 </select>
+              </div>
+
+              {/* Origen / Procedencia del Mueble */}
+              <div className="form-group" style={{ marginBottom: 'var(--space-4)' }}>
+                <label className="form-label" style={{ fontWeight: 600 }}>Origen / Procedencia del Mueble *</label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, origin: 'nacional' })}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: 'var(--radius-md)',
+                      border: formData.origin === 'nacional' ? '2px solid var(--gold-400)' : '1px solid var(--color-border)',
+                      background: formData.origin === 'nacional' ? 'rgba(212, 175, 55, 0.16)' : 'var(--color-bg-surface-elevated)',
+                      color: formData.origin === 'nacional' ? 'var(--gold-300)' : 'var(--color-text-secondary)',
+                      cursor: 'pointer',
+                      fontWeight: 700,
+                      fontSize: '0.86rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease',
+                      boxShadow: formData.origin === 'nacional' ? '0 0 12px rgba(212, 175, 55, 0.25)' : 'none'
+                    }}
+                  >
+                    <VenezuelaFlagIcon width={20} height={14} />
+                    <span>Fabricación Nacional</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, origin: 'importado' })}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: 'var(--radius-md)',
+                      border: formData.origin === 'importado' ? '2px solid var(--gold-400)' : '1px solid var(--color-border)',
+                      background: formData.origin === 'importado' ? 'rgba(212, 175, 55, 0.16)' : 'var(--color-bg-surface-elevated)',
+                      color: formData.origin === 'importado' ? 'var(--gold-300)' : 'var(--color-text-secondary)',
+                      cursor: 'pointer',
+                      fontWeight: 700,
+                      fontSize: '0.86rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease',
+                      boxShadow: formData.origin === 'importado' ? '0 0 12px rgba(212, 175, 55, 0.25)' : 'none'
+                    }}
+                  >
+                    <ImportedGlobeIcon width={16} height={16} />
+                    <span>Producto Importado</span>
+                  </button>
+                </div>
               </div>
 
               <div className="form-group" style={{ marginBottom: 'var(--space-4)' }}>
@@ -739,9 +808,33 @@ export default function AdminPage() {
                         <strong style={{ display: 'block', fontSize: '0.9rem', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                           {prod.title}
                         </strong>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginTop: '2px', flexWrap: 'wrap' }}>
                           <span style={{ fontSize: '0.8rem', color: 'var(--gold-400)' }}>
                             {prod.categoryName}
+                          </span>
+                          <span style={{
+                            fontSize: '0.68rem',
+                            padding: '2px 8px',
+                            borderRadius: 'var(--radius-full)',
+                            background: prod.origin === 'importado' ? 'rgba(59, 130, 246, 0.15)' : 'rgba(34, 197, 94, 0.15)',
+                            color: prod.origin === 'importado' ? '#60a5fa' : '#4ade80',
+                            border: `1px solid ${prod.origin === 'importado' ? 'rgba(59, 130, 246, 0.3)' : 'rgba(34, 197, 94, 0.3)'}`,
+                            fontWeight: 600,
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '4px'
+                          }}>
+                            {prod.origin === 'importado' ? (
+                              <>
+                                <ImportedGlobeIcon width={12} height={12} />
+                                <span>Importado</span>
+                              </>
+                            ) : (
+                              <>
+                                <VenezuelaFlagIcon width={14} height={10} />
+                                <span>Nacional</span>
+                              </>
+                            )}
                           </span>
                           {photoCount > 1 && (
                             <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>

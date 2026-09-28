@@ -39,13 +39,21 @@ export const metadata: Metadata = {
   authors: [{ name: 'Muebles Bellagio' }],
   creator: 'Muebles Bellagio',
   publisher: 'Muebles Bellagio',
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon-round.png', type: 'image/png' }
+    ],
+    shortcut: '/favicon.svg',
+    apple: '/favicon-round.png',
+  },
   openGraph: {
     type: 'website',
     locale: 'es_VE',
     url: 'https://mueblesbellagio.com',
     siteName: 'Muebles Bellagio',
     title: 'Muebles Bellagio | Colecciones Exclusivas de Mobiliario de Lujo',
-    description: 'Descubre más de 17 colecciones de alta ebanistería y diseño contemporáneo para tu hogar u oficina en Caracas.',
+    description: 'Descubre colecciones exclusivas de alta ebanistería y diseño contemporáneo para tu hogar u oficina en Caracas.',
     images: [
       {
         url: '/images/hero-poster.webp',
@@ -107,6 +115,9 @@ export default function RootLayout({
   return (
     <html lang="es" data-theme="light" suppressHydrationWarning>
       <head>
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="alternate icon" href="/favicon-round.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/favicon-round.png" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link rel="preconnect" href="https://www.youtube-nocookie.com" />

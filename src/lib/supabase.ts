@@ -8,8 +8,8 @@ import { createClient } from '@supabase/supabase-js';
 import { Product, Category } from '@/src/types/catalog';
 import { CATALOGS_DATA, CATEGORIES_DATA } from '@/src/data/catalogs';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://yxtazqlqwhsxppsipwet.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_O9VxDm26U1O2Wu8Ya09rmg_26Az3Nwz';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://vjtjwifynfzdjkdpruty.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_J8wyvsMDU4uwf7tNXxZ9xQ_8CW4Dwue';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
@@ -18,6 +18,16 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey);
  */
 export function normalizeProduct(row: any): Product {
   const cat = row.categories || {};
+  const rawOrigin = (row.origin || '').toLowerCase();
+  let origin: 'nacional' | 'importado' = 'nacional';
+  if (
+    rawOrigin === 'importado' ||
+    (!rawOrigin && (row.title || '').toLowerCase().includes('imp')) ||
+    (!rawOrigin && (row.title || '').toLowerCase().includes('importad'))
+  ) {
+    origin = 'importado';
+  }
+
   return {
     id: row.id,
     category: row.category_id || row.category || 'sofas',
@@ -30,7 +40,8 @@ export function normalizeProduct(row: any): Product {
     image: row.image_url || row.image || '/images/hero-poster.webp',
     availableColors: row.available_colors || row.availableColors || ['Oro', 'Nogal'],
     youtubeUrl: row.youtube_url || row.youtubeUrl || row.video_url || row.videoUrl || '',
-    galleryImages: Array.isArray(row.gallery_images) ? row.gallery_images : (Array.isArray(row.galleryImages) ? row.galleryImages : [])
+    galleryImages: Array.isArray(row.gallery_images) ? row.gallery_images : (Array.isArray(row.galleryImages) ? row.galleryImages : []),
+    origin
   };
 }
 
@@ -109,24 +120,52 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
     image_url: productData.image,
     youtube_url: productData.youtubeUrl || '',
     gallery_images: Array.isArray(productData.galleryImages) ? productData.galleryImages : [],
+    origin: productData.origin || 'nacional',
     published: !!productData.published
   };
 
   if (idToUpdate) {
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from('products')
       .update(payload)
       .eq('id', idToUpdate)
       .select('*, categories(name, slug)')
       .single();
+
+    // Fallback if 'origin' column has not been added to Supabase table yet
+    if (error && error.message && error.message.includes("'origin' column")) {
+      const { origin: _omitted, ...fallbackPayload } = payload;
+      const retryResult = await supabase
+        .from('products')
+        .update(fallbackPayload)
+        .eq('id', idToUpdate)
+        .select('*, categories(name, slug)')
+        .single();
+      data = retryResult.data;
+      error = retryResult.error;
+    }
+
     if (error) throw error;
     return normalizeProduct(data);
   } else {
-    const { data, error } = await supabase
+    let { data, error } = await supabase
       .from('products')
       .insert(payload)
       .select('*, categories(name, slug)')
       .single();
+
+    // Fallback if 'origin' column has not been added to Supabase table yet
+    if (error && error.message && error.message.includes("'origin' column")) {
+      const { origin: _omitted, ...fallbackPayload } = payload;
+      const retryResult = await supabase
+        .from('products')
+        .insert(fallbackPayload)
+        .select('*, categories(name, slug)')
+        .single();
+      data = retryResult.data;
+      error = retryResult.error;
+    }
+
     if (error) throw error;
     return normalizeProduct(data);
   }

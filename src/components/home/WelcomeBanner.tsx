@@ -163,23 +163,23 @@ export function WelcomeBanner() {
           </div>
 
           <p className="wb-description">
-            Recibe un <strong style={{ color: '#18181B', fontWeight: 700 }}>10% de descuento</strong> al seleccionar tus piezas en el catálogo y cotizar directamente por WhatsApp.
+            Recibe un <strong style={{ color: '#18181B', fontWeight: 700 }}>descuento de temporada</strong> en nuestras tiendas al seleccionar tus piezas en el catálogo y cotizar directamente por WhatsApp.
           </p>
 
           <div className="wb-steps">
             <div className="wb-step-item">
               <span className="wb-step-icon">1</span>
-              <span>Explora nuestras 17 colecciones de alta gama</span>
+              <span>Explora nuestras colecciones de alta gama</span>
             </div>
             <div className="wb-step-item">
               <span className="wb-step-icon">2</span>
-              <span>Cotiza vía WhatsApp con tu 10% de descuento</span>
+              <span>Cotiza vía WhatsApp y obtén tu descuento en tienda</span>
             </div>
           </div>
 
           <div className="wb-actions">
             <Link href="/catalogo" className="wb-btn-primary" onClick={handleClose}>
-              <span>Explorar Catálogo & Obtener 10%</span>
+              <span>Explorar Catálogo & Obtener Descuento</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>

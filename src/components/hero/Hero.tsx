@@ -62,14 +62,6 @@ export default function Hero() {
 
         </div>
       </div>
-
-      {/* Animated Scroll Prompt */}
-      <a href="#sobre-nosotros" className="hero-scroll-indicator" aria-label="Desplazarse hacia abajo">
-        <div className="scroll-mouse-icon">
-          <span className="scroll-wheel"></span>
-        </div>
-        <span className="scroll-text">Descubrir</span>
-      </a>
     </section>
   );
 }

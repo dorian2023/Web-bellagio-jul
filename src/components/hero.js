@@ -72,14 +72,6 @@ export function renderHero() {
 
         </div>
       </div>
-
-      <!-- Animated Scroll Prompt -->
-      <a href="#sobre-nosotros" class="hero-scroll-indicator" aria-label="Desplazarse hacia abajo">
-        <span class="scroll-mouse-icon">
-          <span class="scroll-wheel"></span>
-        </span>
-        <span class="scroll-text">Descubrir</span>
-      </a>
     </section>
   `;
 }

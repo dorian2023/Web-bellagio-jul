@@ -29,11 +29,32 @@
   overflow: hidden;
   text-decoration: none;
   white-space: nowrap;
+  max-width: 100%;
 }
 
 .btn:focus-visible {
   outline: 2px solid var(--gold-400);
   outline-offset: 3px;
+}
+
+/* Specific Contact Submit Button with safe wrapping on mobile */
+.contact-submit-btn {
+  white-space: normal;
+  text-align: center;
+  line-height: 1.35;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
+  width: 100%;
+}
+
+@media (max-width: 480px) {
+  .contact-submit-btn {
+    font-size: 0.82rem;
+    padding: 0.8rem 0.85rem;
+    letter-spacing: 0.02em;
+    gap: 8px;
+  }
 }
 
 /* Primary Gold Button */
@@ -856,6 +877,12 @@
   overflow: hidden;
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
+}
+
+@media (max-width: 640px) {
+  .luxury-card {
+    padding: var(--space-5) var(--space-4);
+  }
 }
 
 .luxury-card:hover {

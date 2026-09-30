@@ -157,7 +157,10 @@ export default function InquiryFloatingCart() {
     selectedProducts.forEach((item, idx) => {
       msg += `${idx + 1}. *${item.title}*\n`;
       msg += `   📂 Categoría: ${item.categoryName}\n`;
-      msg += `   📐 Medidas: ${item.dimensions || 'Estándar / A convenir'}\n\n`;
+      if (item.dimensions && item.dimensions.trim().length > 0 && item.dimensions.trim() !== 'A convenir') {
+        msg += `   📐 Medidas: ${item.dimensions}\n`;
+      }
+      msg += `\n`;
     });
 
     msg += `📦 *Total de piezas:* ${selectedProducts.length}\n`;
@@ -293,12 +296,12 @@ export default function InquiryFloatingCart() {
 
                     <div className="inquiry-product-info">
                       <h4 className="inquiry-product-title">{item.title}</h4>
-                      <div className="inquiry-product-dims-badge">
-                        <span className="inquiry-dims-icon" aria-hidden="true">📐</span>
-                        <span className="inquiry-dims-text">
-                          {item.dimensions || 'Medidas estándar / A convenir'}
-                        </span>
-                      </div>
+                      {item.dimensions && item.dimensions.trim().length > 0 && item.dimensions.trim() !== 'A convenir' && (
+                        <div className="inquiry-product-dims-badge">
+                          <span className="inquiry-dims-icon" aria-hidden="true">📐</span>
+                          <span className="inquiry-dims-text">{item.dimensions}</span>
+                        </div>
+                      )}
                     </div>
 
                     <button

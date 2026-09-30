@@ -325,25 +325,24 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                 </div>
               )}
 
-              {/* Technical Specifications */}
-              <div className="lightbox-specs vip-specs">
-                <div className="lightbox-spec-item">
-                  <strong>Procedencia:</strong>
-                  <span>{product.origin === 'importado' ? 'Producto Importado Exclusivo' : 'Fabricación Nacional (Taller Bellagio)'}</span>
+              {/* Technical Specifications - Only shown when custom data is provided */}
+              {((product.materials && product.materials.trim().length > 0 && product.materials.trim() !== 'Maderas nobles y acabados finos') ||
+                (product.dimensions && product.dimensions.trim().length > 0 && product.dimensions.trim() !== 'A convenir')) && (
+                <div className="lightbox-specs vip-specs">
+                  {product.materials && product.materials.trim().length > 0 && product.materials.trim() !== 'Maderas nobles y acabados finos' && (
+                    <div className="lightbox-spec-item">
+                      <strong>Materiales Nobles:</strong>
+                      <span>{product.materials}</span>
+                    </div>
+                  )}
+                  {product.dimensions && product.dimensions.trim().length > 0 && product.dimensions.trim() !== 'A convenir' && (
+                    <div className="lightbox-spec-item">
+                      <strong>Dimensiones:</strong>
+                      <span>{product.dimensions}</span>
+                    </div>
+                  )}
                 </div>
-                {product.materials && (
-                  <div className="lightbox-spec-item">
-                    <strong>Materiales Nobles:</strong>
-                    <span>{product.materials}</span>
-                  </div>
-                )}
-                {product.dimensions && (
-                  <div className="lightbox-spec-item">
-                    <strong>Dimensiones:</strong>
-                    <span>{product.dimensions}</span>
-                  </div>
-                )}
-              </div>
+              )}
 
               {/* Trust Value Badges */}
               <div className="vip-modal-features">

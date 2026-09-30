@@ -247,7 +247,26 @@ export default function ProductModal({
     };
   }, [product]);
 
-  // Handle escape key and body scroll lock
+  const touchStartXRef = useRef<number | null>(null);
+  const touchStartYRef = useRef<number | null>(null);
+
+  const handleFullscreenPrevImage = useCallback((e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) e.stopPropagation();
+    if (allImages.length <= 1) return;
+    setFullscreenScale(1.0);
+    setFullscreenPos({ x: 50, y: 50 });
+    setSelectedImageIndex((prev) => (prev - 1 + allImages.length) % allImages.length);
+  }, [allImages.length]);
+
+  const handleFullscreenNextImage = useCallback((e?: React.MouseEvent | React.TouchEvent) => {
+    if (e) e.stopPropagation();
+    if (allImages.length <= 1) return;
+    setFullscreenScale(1.0);
+    setFullscreenPos({ x: 50, y: 50 });
+    setSelectedImageIndex((prev) => (prev + 1) % allImages.length);
+  }, [allImages.length]);
+
+  // Handle escape key, arrow keys, and body scroll lock
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
@@ -255,6 +274,12 @@ export default function ProductModal({
           setIsFullscreenZoom(false);
         } else {
           onClose();
+        }
+      } else if (isFullscreenZoom) {
+        if (e.key === 'ArrowLeft') {
+          handleFullscreenPrevImage();
+        } else if (e.key === 'ArrowRight') {
+          handleFullscreenNextImage();
         }
       }
     };
@@ -265,22 +290,55 @@ export default function ProductModal({
       document.removeEventListener('keydown', handleKeyDown);
       document.body.style.overflow = originalOverflow;
     };
-  }, [onClose, isFullscreenZoom]);
+  }, [onClose, isFullscreenZoom, handleFullscreenPrevImage, handleFullscreenNextImage]);
 
   // Handle mobile touch on fullscreen modal
+  const handleFullscreenTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 1) {
+      touchStartXRef.current = e.touches[0].clientX;
+      touchStartYRef.current = e.touches[0].clientY;
+    }
+  };
+
   const handleFullscreenTouchMove = useCallback((e: React.TouchEvent<HTMLDivElement>) => {
     const container = fullscreenStageRef.current;
     if (!container || !e.touches[0]) return;
 
-    const touch = e.touches[0];
-    const rect = container.getBoundingClientRect();
-    const x = ((touch.clientX - rect.left) / rect.width) * 100;
-    const y = ((touch.clientY - rect.top) / rect.height) * 100;
-    setFullscreenPos({
-      x: Math.max(0, Math.min(100, x)),
-      y: Math.max(0, Math.min(100, y)),
-    });
-  }, []);
+    if (fullscreenScale > 1.0) {
+      const touch = e.touches[0];
+      const rect = container.getBoundingClientRect();
+      const x = ((touch.clientX - rect.left) / rect.width) * 100;
+      const y = ((touch.clientY - rect.top) / rect.height) * 100;
+      setFullscreenPos({
+        x: Math.max(0, Math.min(100, x)),
+        y: Math.max(0, Math.min(100, y)),
+      });
+    }
+  }, [fullscreenScale]);
+
+  const handleFullscreenTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartXRef.current === null || touchStartYRef.current === null) return;
+    if (fullscreenScale > 1.0) {
+      touchStartXRef.current = null;
+      touchStartYRef.current = null;
+      return;
+    }
+    const touchEndX = e.changedTouches[0].clientX;
+    const touchEndY = e.changedTouches[0].clientY;
+    const diffX = touchEndX - touchStartXRef.current;
+    const diffY = touchEndY - touchStartYRef.current;
+
+    // Horizontal swipe threshold > 45px
+    if (Math.abs(diffX) > 45 && Math.abs(diffX) > Math.abs(diffY)) {
+      if (diffX > 0) {
+        handleFullscreenPrevImage();
+      } else {
+        handleFullscreenNextImage();
+      }
+    }
+    touchStartXRef.current = null;
+    touchStartYRef.current = null;
+  };
 
   const pauseAutoScrollTemporarily = useCallback((durationMs: number = 3500) => {
     isSimilarPausedRef.current = true;
@@ -722,37 +780,60 @@ export default function ProductModal({
         </div>
       </div>
 
-      {/* Dedicated Fullscreen HD Zoom Modal */}
+      {/* Dedicated Fullscreen HD Theater / Lightbox */}
       {isFullscreenZoom && (
         <div 
           className="fullscreen-hd-overlay" 
           onClick={() => setIsFullscreenZoom(false)}
           role="dialog"
           aria-modal="true"
-          aria-label="Inspección en Pantalla Completa HD"
+          aria-label={`Inspección en Pantalla Completa - ${product.title}`}
         >
+          {/* Header Bar */}
           <header className="fullscreen-hd-header" onClick={(e) => e.stopPropagation()}>
             <div className="fullscreen-hd-title-group">
-              <span className="catalog-tag" style={{ marginBottom: 2 }}>{product.categoryName}</span>
+              <span className="catalog-tag">{product.categoryName}</span>
               <h3 className="fullscreen-hd-title">{product.title}</h3>
             </div>
             
             <div className="fullscreen-hd-actions">
+              {allImages.length > 1 && (
+                <span className="fullscreen-counter-badge">
+                  {selectedImageIndex + 1} / {allImages.length}
+                </span>
+              )}
+
               <button
                 type="button"
                 className="fullscreen-zoom-btn"
                 onClick={() => setFullscreenScale(prev => prev === 1.0 ? 2.2 : 1.0)}
-                aria-label={fullscreenScale === 1.0 ? 'Acercar lupa' : 'Alejar lupa'}
+                aria-label={fullscreenScale === 1.0 ? 'Acercar lupa' : 'Restablecer zoom'}
               >
-                {fullscreenScale === 1.0 ? '🔍 Zoom 2.2x' : '↺ Resetear'}
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  {fullscreenScale === 1.0 ? (
+                    <>
+                      <circle cx="11" cy="11" r="8" />
+                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                      <line x1="11" y1="8" x2="11" y2="14" />
+                      <line x1="8" y1="11" x2="14" y2="11" />
+                    </>
+                  ) : (
+                    <>
+                      <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                      <path d="M3 3v5h5" />
+                    </>
+                  )}
+                </svg>
+                <span>{fullscreenScale === 1.0 ? 'Zoom 2.2x' : 'Resetear'}</span>
               </button>
+
               <button 
                 type="button"
                 className="fullscreen-close-btn" 
                 onClick={() => setIsFullscreenZoom(false)}
                 aria-label="Cerrar pantalla completa"
               >
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="18" y1="6" x2="6" y2="18"></line>
                   <line x1="6" y1="6" x2="18" y2="18"></line>
                 </svg>
@@ -760,6 +841,7 @@ export default function ProductModal({
             </div>
           </header>
 
+          {/* Main Stage with Side Arrows */}
           <div 
             ref={fullscreenStageRef}
             className={`fullscreen-hd-stage ${fullscreenScale > 1.0 ? 'is-zoomed' : ''}`}
@@ -774,19 +856,77 @@ export default function ProductModal({
               const y = ((e.clientY - rect.top) / rect.height) * 100;
               setFullscreenPos({ x, y });
             }}
+            onTouchStart={handleFullscreenTouchStart}
             onTouchMove={handleFullscreenTouchMove}
+            onTouchEnd={handleFullscreenTouchEnd}
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img 
-              src={currentDisplayImage} 
-              alt={`${product.title} en Alta Definición`}
-              className="fullscreen-hd-img"
-              style={{
-                transform: `scale(${fullscreenScale})`,
-                transformOrigin: `${fullscreenPos.x}% ${fullscreenPos.y}%`
-              }}
-            />
+            {/* Side Navigation Arrow - Prev */}
+            {allImages.length > 1 && (
+              <button
+                type="button"
+                className="fullscreen-theater-nav prev"
+                onClick={handleFullscreenPrevImage}
+                aria-label="Ver foto anterior"
+                title="Foto anterior (←)"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="15 18 9 12 15 6" />
+                </svg>
+              </button>
+            )}
+
+            {/* Stage Image */}
+            <div className="fullscreen-img-wrapper">
+              <img 
+                src={currentDisplayImage} 
+                alt={`${product.title} vista ${selectedImageIndex + 1}`}
+                className="fullscreen-hd-img"
+                style={{
+                  transform: `scale(${fullscreenScale})`,
+                  transformOrigin: `${fullscreenPos.x}% ${fullscreenPos.y}%`
+                }}
+                draggable={false}
+              />
+            </div>
+
+            {/* Side Navigation Arrow - Next */}
+            {allImages.length > 1 && (
+              <button
+                type="button"
+                className="fullscreen-theater-nav next"
+                onClick={handleFullscreenNextImage}
+                aria-label="Ver foto siguiente"
+                title="Foto siguiente (→)"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            )}
           </div>
+
+          {/* Bottom Dock: Thumbnails & Keyboard Hint */}
+          {allImages.length > 1 && (
+            <footer className="fullscreen-hd-dock" onClick={(e) => e.stopPropagation()}>
+              <div className="fullscreen-thumbnails-strip">
+                {allImages.map((imgUrl, idx) => (
+                  <button
+                    key={`fs-thumb-${idx}`}
+                    type="button"
+                    className={`fullscreen-thumb-item ${selectedImageIndex === idx ? 'active' : ''}`}
+                    onClick={() => {
+                      setFullscreenScale(1.0);
+                      setFullscreenPos({ x: 50, y: 50 });
+                      setSelectedImageIndex(idx);
+                    }}
+                    aria-label={`Ver ángulo ${idx + 1}`}
+                  >
+                    <img src={imgUrl} alt={`${product.title} miniatura ${idx + 1}`} />
+                  </button>
+                ))}
+              </div>
+            </footer>
+          )}
         </div>
       )}
     </>

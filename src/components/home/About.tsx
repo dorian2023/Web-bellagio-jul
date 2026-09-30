@@ -143,7 +143,7 @@ export default function About() {
             </h2>
 
             <p className="editorial-lead-p">
-              En <strong>Muebles Bellagio</strong> creamos y seleccionamos piezas pensadas para el estilo de vida de los hogares venezolanos. Combinamos fabricación propia con materiales resistentes de primera calidad y una exclusiva línea de mobiliario importado con sistemas eléctricos de vanguardia.
+              En <strong>Muebles Bellagio</strong> creamos mobiliario de ultra-lujo a la medida de los hogares venezolanos. Fusionamos ebanistería artesanal, materiales de resistencia superior y colecciones importadas con sistemas eléctricos reclinables.
             </p>
 
             {/* 3 Real Product Pillars */}
@@ -152,8 +152,8 @@ export default function About() {
               <div className="editorial-pillar-item">
                 <div className="pillar-number">01</div>
                 <div className="pillar-info">
-                  <h4>Pino Seco al Horno, MDF & Piedras Sinterizadas</h4>
-                  <p>Estructuras sólidas curadas al horno para resistir la humedad sin deformarse, con topes modernos ultra resistentes a rayaduras y calor.</p>
+                  <h4>Pino Seco al Horno & Piedras Sinterizadas</h4>
+                  <p>Estructuras curadas resistentes a la humedad y topes ultra duraderos contra rayaduras y calor.</p>
                 </div>
               </div>
 
@@ -161,8 +161,8 @@ export default function About() {
               <div className="editorial-pillar-item">
                 <div className="pillar-number">02</div>
                 <div className="pillar-info">
-                  <h4>Telas Inteligentes: Pet Friendly & Antifluido</h4>
-                  <p>Gran variedad de texturas y colores de fácil limpieza, resistentes al agua, manchas y mascotas para disfrutar tu sala sin preocupaciones.</p>
+                  <h4>Telas Inteligentes Pet Friendly</h4>
+                  <p>Texturas de fácil limpieza, resistentes al agua, manchas y mascotas para máxima tranquilidad.</p>
                 </div>
               </div>
 
@@ -170,8 +170,8 @@ export default function About() {
               <div className="editorial-pillar-item">
                 <div className="pillar-number">03</div>
                 <div className="pillar-info">
-                  <h4>Sistemas Eléctricos & Colecciones Importadas</h4>
-                  <p>Sofás y poltronas reclinables con motores eléctricos, puertos de carga y diseños exclusivos listos para entrega inmediata.</p>
+                  <h4>Sistemas Eléctricos & Reclinables</h4>
+                  <p>Sofás con motores eléctricos integrados, puertos USB y entrega inmediata en Caracas.</p>
                 </div>
               </div>
             </div>

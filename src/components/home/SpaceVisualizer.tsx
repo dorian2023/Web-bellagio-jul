@@ -75,7 +75,7 @@ export default function SpaceVisualizer() {
             </h2>
 
             <p className="visualizer-lead-desc">
-              ¿Tienes la foto y las medidas de tu sala, habitación o comedor? En <strong>Muebles Bellagio</strong> eliminamos la incertidumbre: montamos digitalmente nuestros diseños a escala real sobre la foto de tu casa para que aprecies los colores, texturas y dimensiones exactas antes de tomar tu decisión.
+              Visualiza digitalmente nuestros muebles a escala real sobre la foto de tu espacio. Aprecia texturas, colores y dimensiones exactas antes de tomar tu decisión.
             </p>
 
             {/* 3 Step Interactive Process Cards */}
@@ -83,24 +83,24 @@ export default function SpaceVisualizer() {
               <div className="visualizer-step-item">
                 <div className="step-badge-num">1</div>
                 <div className="step-info">
-                  <h4>Toma la Foto &amp; Medidas</h4>
-                  <p>Tómale una foto a tu pared o espacio con tu teléfono y anota el ancho y largo disponible.</p>
+                  <h4>Envía Foto &amp; Medidas</h4>
+                  <p>Toma una foto de tu espacio con las dimensiones disponibles.</p>
                 </div>
               </div>
 
               <div className="visualizer-step-item">
                 <div className="step-badge-num">2</div>
                 <div className="step-info">
-                  <h4>Escoge Telas &amp; Materiales</h4>
-                  <p>Elige entre más de 120 opciones: linos, cueros, piedras sinterizadas o telas Pet Friendly.</p>
+                  <h4>Elige Telas &amp; Acabados</h4>
+                  <p>Selecciona entre más de 120 linos, cueros y piedras sinterizadas.</p>
                 </div>
               </div>
 
               <div className="visualizer-step-item">
                 <div className="step-badge-num">3</div>
                 <div className="step-info">
-                  <h4>Recibe tu Montaje &amp; Presupuesto</h4>
-                  <p>Te mostramos cómo lucirá exactamente en tu hogar con cotización directa de fábrica sin costo.</p>
+                  <h4>Recibe tu Montaje 3D</h4>
+                  <p>Obtén el fotomontaje a escala con cotización directa sin costo.</p>
                 </div>
               </div>
             </div>

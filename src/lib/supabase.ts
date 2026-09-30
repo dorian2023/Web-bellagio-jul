@@ -45,51 +45,73 @@ export function normalizeProduct(row: any): Product {
   };
 }
 
+let cachedCatalogData: { products: Product[]; categories: Category[] } | null = null;
+let catalogCacheTimestamp = 0;
+let inflightCatalogPromise: Promise<{ products: Product[]; categories: Category[] }> | null = null;
+const CATALOG_CACHE_TTL_MS = 60 * 1000; // 60 seconds TTL
+
 /**
- * Fetches published products and active categories from Supabase,
+ * Fetches published products and active categories from Supabase with in-memory caching and deduplication,
  * falling back gracefully to local catalog data if the database is unreachable.
  */
 export async function fetchCatalog(): Promise<{ products: Product[]; categories: Category[] }> {
-  try {
-    const { data: dbProducts, error: pError } = await supabase
-      .from('products')
-      .select('*, categories(name, slug)')
-      .eq('published', true)
-      .order('created_at', { ascending: false });
-
-    const { data: dbCategories, error: cError } = await supabase
-      .from('categories')
-      .select('id, name, sort_order')
-      .eq('active', true)
-      .order('sort_order', { ascending: true });
-
-    if (pError || !dbProducts || dbProducts.length === 0) {
-      console.warn('Usando catálogo local:', pError?.message || 'Sin productos en DB');
-      return { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
-    }
-
-    const normalizedProducts: Product[] = dbProducts.map(normalizeProduct);
-
-    // Calculate dynamic counts
-    const countMap = new Map<string, number>();
-    normalizedProducts.forEach(p => {
-      countMap.set(p.category, (countMap.get(p.category) || 0) + 1);
-    });
-
-    const categories: Category[] = [
-      { id: 'todos', name: 'Todas las Categorías', count: normalizedProducts.length },
-      ...(dbCategories || []).map(c => ({
-        id: c.id,
-        name: c.name,
-        count: countMap.get(c.id) || 0
-      }))
-    ];
-
-    return { products: normalizedProducts, categories };
-  } catch (err) {
-    console.error('Error cargando catálogo Supabase:', err);
-    return { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
+  const now = Date.now();
+  if (cachedCatalogData && (now - catalogCacheTimestamp < CATALOG_CACHE_TTL_MS)) {
+    return cachedCatalogData;
   }
+
+  if (inflightCatalogPromise) {
+    return inflightCatalogPromise;
+  }
+
+  inflightCatalogPromise = (async () => {
+    try {
+      const { data: dbProducts, error: pError } = await supabase
+        .from('products')
+        .select('*, categories(name, slug)')
+        .eq('published', true)
+        .order('created_at', { ascending: false });
+
+      const { data: dbCategories, error: cError } = await supabase
+        .from('categories')
+        .select('id, name, sort_order')
+        .eq('active', true)
+        .order('sort_order', { ascending: true });
+
+      if (pError || !dbProducts || dbProducts.length === 0) {
+        console.warn('Usando catálogo local:', pError?.message || 'Sin productos en DB');
+        return { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
+      }
+
+      const normalizedProducts: Product[] = dbProducts.map(normalizeProduct);
+
+      // Calculate dynamic counts
+      const countMap = new Map<string, number>();
+      normalizedProducts.forEach(p => {
+        countMap.set(p.category, (countMap.get(p.category) || 0) + 1);
+      });
+
+      const categories: Category[] = [
+        { id: 'todos', name: 'Todas las Categorías', count: normalizedProducts.length },
+        ...(dbCategories || []).map(c => ({
+          id: c.id,
+          name: c.name,
+          count: countMap.get(c.id) || 0
+        }))
+      ];
+
+      cachedCatalogData = { products: normalizedProducts, categories };
+      catalogCacheTimestamp = Date.now();
+      return cachedCatalogData;
+    } catch (err) {
+      console.error('Error cargando catálogo Supabase:', err);
+      return { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
+    } finally {
+      inflightCatalogPromise = null;
+    }
+  })();
+
+  return inflightCatalogPromise;
 }
 
 /**

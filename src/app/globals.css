@@ -9,6 +9,9 @@
 @import '../styles/components.css';
 @import '../styles/sections.css';
 @import '../styles/animations.css';
+@import '../styles/home-refinement.css';
+@import '../styles/collection-orbit.css';
+@import '../styles/welcome-banner.css';
 
 /* Next.js Specific Utilities & Accessibility */
 html {

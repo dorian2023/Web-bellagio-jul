@@ -13,7 +13,7 @@ export default function Hero() {
           loop 
           muted 
           playsInline 
-          preload="auto"
+          preload="metadata"
           poster="/images/hero-poster.webp"
           aria-hidden="true"
         >

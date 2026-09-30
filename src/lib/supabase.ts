@@ -28,17 +28,28 @@ export function normalizeProduct(row: any): Product {
     origin = 'importado';
   }
 
+  let availableColors: string[] = [];
+  if (Array.isArray(row.available_colors)) {
+    availableColors = row.available_colors;
+  } else if (typeof row.available_colors === 'string' && row.available_colors.trim().length > 0) {
+    availableColors = row.available_colors.split(',').map((s: string) => s.trim()).filter(Boolean);
+  } else if (Array.isArray(row.availableColors)) {
+    availableColors = row.availableColors;
+  } else if (typeof row.availableColors === 'string' && row.availableColors.trim().length > 0) {
+    availableColors = row.availableColors.split(',').map((s: string) => s.trim()).filter(Boolean);
+  }
+
   return {
     id: row.id,
     category: row.category_id || row.category || 'sofas',
     categoryName: cat.name || row.categoryName || 'Colección Bellagio',
     title: row.title || 'Mueble Bellagio',
-    subtitle: row.subtitle || row.description?.slice(0, 80) || '',
+    subtitle: row.subtitle || '',
     description: row.description || '',
     materials: row.materials || '',
     dimensions: row.dimensions || '',
     image: row.image_url || row.image || '/images/hero-poster.webp',
-    availableColors: row.available_colors || row.availableColors || ['Oro', 'Nogal'],
+    availableColors,
     youtubeUrl: row.youtube_url || row.youtubeUrl || row.video_url || row.videoUrl || '',
     galleryImages: Array.isArray(row.gallery_images) ? row.gallery_images : (Array.isArray(row.galleryImages) ? row.galleryImages : []),
     origin
@@ -168,6 +179,8 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
     }
 
     if (error) throw error;
+    cachedCatalogData = null;
+    catalogCacheTimestamp = 0;
     return normalizeProduct(data);
   } else {
     let { data, error } = await supabase
@@ -189,6 +202,8 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
     }
 
     if (error) throw error;
+    cachedCatalogData = null;
+    catalogCacheTimestamp = 0;
     return normalizeProduct(data);
   }
 }
@@ -203,6 +218,8 @@ export async function deleteProduct(productId: string): Promise<void> {
     .eq('id', productId);
 
   if (error) throw error;
+  cachedCatalogData = null;
+  catalogCacheTimestamp = 0;
 }
 
 /**

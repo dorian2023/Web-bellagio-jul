@@ -696,6 +696,8 @@ export default function CatalogBrowser({
         <ProductModal
           product={selectedProduct}
           onClose={() => setSelectedProduct(null)}
+          onSelectProduct={(p) => setSelectedProduct(p)}
+          allProducts={allProducts}
         />
       )}
     </div>

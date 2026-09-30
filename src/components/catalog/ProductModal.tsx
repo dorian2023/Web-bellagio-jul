@@ -1,17 +1,153 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Product } from '@/src/types/catalog';
 import { isProductSelected, toggleProductSelection } from '@/src/utils/inquiry-cart.js';
 import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/src/utils/media.js';
 import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
+import { fetchCatalog } from '@/src/lib/supabase';
+import { CATALOGS_DATA } from '@/src/data/catalogs';
+
+function CategoryIcon({ categoryId }: { categoryId: string }) {
+  switch (categoryId) {
+    case 'dormitorios':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M2 9V5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v4M2 19h20M2 14h20v5H2zM4 9h16v5H4z"/>
+        </svg>
+      );
+    case 'comedores':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <ellipse cx="12" cy="7" rx="9" ry="3"/>
+          <path d="M5 7v10M19 7v10M12 10v10M2 17h20"/>
+        </svg>
+      );
+    case 'sofas':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M20 9V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2M2 11v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6M2 15h20M5 19v2M19 19v2"/>
+        </svg>
+      );
+    case 'sofacamas':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M4 11V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v5M2 13v5a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-5M2 17h20"/>
+        </svg>
+      );
+    case 'poltronas':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M19 9V6a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2v3M4 11v6a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-6M4 15h16M6 19v2M18 19v2"/>
+        </svg>
+      );
+    case 'sillas':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M7 4h10M7 4v8h10V4M6 12h12v4H6zM6 16v5M18 16v5"/>
+        </svg>
+      );
+    case 'mesas-de-centro':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <ellipse cx="12" cy="8" rx="8" ry="3"/>
+          <path d="M7 10v8M17 10v8M12 11v9"/>
+        </svg>
+      );
+    case 'mesas-de-noche':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="4" y="6" width="16" height="14" rx="2"/>
+          <path d="M4 12h16M11 9h2M11 16h2M12 2v4"/>
+        </svg>
+      );
+    case 'mesas-tv':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="2" y="7" width="20" height="11" rx="2"/>
+          <path d="M17 2l-5 5-5-5M8 21h8M12 18v3"/>
+        </svg>
+      );
+    case 'closet':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M12 3v18M8 12h.01M16 12h.01"/>
+        </svg>
+      );
+    case 'gaveteros':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <path d="M3 9h18M3 15h18M11 6h2M11 12h2M11 18h2"/>
+        </svg>
+      );
+    case 'ceibos':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="16" rx="2"/>
+          <path d="M12 4v16M3 10h18M8 14v2M16 14v2"/>
+        </svg>
+      );
+    case 'box-spring':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M2 4v16M2 8h20v12H2zM2 17h20M6 8v9M10 8v9M14 8v9M18 8v9"/>
+        </svg>
+      );
+    case 'espejos':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="8"/>
+          <path d="M12 2v2M12 20v2M2 12h2M20 12h2"/>
+        </svg>
+      );
+    case 'peinadoras':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="3" y="12" width="18" height="9" rx="1"/>
+          <circle cx="12" cy="7" r="4"/>
+          <path d="M12 15v3"/>
+        </svg>
+      );
+    case 'taburete':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <ellipse cx="12" cy="5" rx="6" ry="2"/>
+          <path d="M8 7l-2 14M16 7l2 14M7 16h10"/>
+        </svg>
+      );
+    case 'zapateras':
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <rect x="3" y="4" width="18" height="16" rx="2"/>
+          <path d="M3 10h18M3 15h18M7 8h1M11 8h1M15 8h1M7 13h1M11 13h1M15 13h1"/>
+        </svg>
+      );
+    default:
+      return (
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+          <path d="M20 9V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v2M2 11v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6M2 15h20"/>
+        </svg>
+      );
+  }
+}
 
 interface ProductModalProps {
   product: Product | null;
   onClose: () => void;
+  onSelectProduct?: (product: Product) => void;
+  allProducts?: Product[];
 }
 
-export default function ProductModal({ product, onClose }: ProductModalProps) {
+export default function ProductModal({
+  product: initialProduct,
+  onClose,
+  onSelectProduct,
+  allProducts = [],
+}: ProductModalProps) {
+  const [activeProduct, setActiveProduct] = useState<Product | null>(initialProduct);
+  const [catalogList, setCatalogList] = useState<Product[]>(allProducts);
   const [mediaTab, setMediaTab] = useState<'photo' | 'video'>('photo');
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
   const [isFullscreenZoom, setIsFullscreenZoom] = useState<boolean>(false);
@@ -22,9 +158,51 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const fullscreenStageRef = useRef<HTMLDivElement | null>(null);
+  const similarTrackRef = useRef<HTMLDivElement | null>(null);
+  const isSimilarPausedRef = useRef<boolean>(false);
+  const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // Sync active product when initialProduct changes
+  useEffect(() => {
+    setActiveProduct(initialProduct);
+  }, [initialProduct]);
+
+  // Load catalog items if not provided
+  useEffect(() => {
+    if (allProducts && allProducts.length > 0) {
+      setCatalogList(allProducts);
+      return;
+    }
+
+    fetchCatalog()
+      .then(({ products }) => {
+        if (products && products.length > 0) {
+          setCatalogList(products);
+        } else {
+          setCatalogList(CATALOGS_DATA);
+        }
+      })
+      .catch(() => {
+        setCatalogList(CATALOGS_DATA);
+      });
+  }, [allProducts]);
+
+  const product = activeProduct;
+
+  // Filter similar products by matching category
+  const similarProducts = useMemo(() => {
+    if (!product || !catalogList.length) return [];
+    return catalogList.filter(
+      (p) =>
+        p.category === product.category &&
+        p.id !== product.id &&
+        p.image &&
+        p.image.trim().length > 0
+    );
+  }, [product, catalogList]);
 
   // Extract all distinct images for gallery (Cover + extra angles)
-  const allImages: string[] = React.useMemo(() => {
+  const allImages: string[] = useMemo(() => {
     if (!product) return [];
     const list: string[] = [];
     if (product.image) list.push(product.image);
@@ -98,55 +276,122 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
     const rect = container.getBoundingClientRect();
     const x = ((touch.clientX - rect.left) / rect.width) * 100;
     const y = ((touch.clientY - rect.top) / rect.height) * 100;
-
     setFullscreenPos({
       x: Math.max(0, Math.min(100, x)),
       y: Math.max(0, Math.min(100, y)),
     });
   }, []);
 
-
-  const openFullscreen = useCallback((e: React.MouseEvent) => {
-    e.stopPropagation();
-    setFullscreenScale(1.0);
-    setFullscreenPos({ x: 50, y: 50 });
-    setIsFullscreenZoom(true);
+  const pauseAutoScrollTemporarily = useCallback((durationMs: number = 3500) => {
+    isSimilarPausedRef.current = true;
+    if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    pauseTimeoutRef.current = setTimeout(() => {
+      isSimilarPausedRef.current = false;
+    }, durationMs);
   }, []);
+
+  // Smooth continuous auto-scroll to the left for similar products
+  useEffect(() => {
+    const track = similarTrackRef.current;
+    if (!track || similarProducts.length <= 2) return;
+
+    let animFrameId: number;
+    let lastTime: number | null = null;
+    const speed = 0.45; // Smooth luxury velocity (~27px/s)
+
+    const step = (time: number) => {
+      if (!isSimilarPausedRef.current && track) {
+        if (lastTime !== null) {
+          const delta = Math.min((time - lastTime) / 16.67, 2);
+          track.scrollLeft += speed * delta;
+
+          // Seamless infinite wrap around half width
+          const halfScroll = track.scrollWidth / 2;
+          if (halfScroll > 0 && track.scrollLeft >= halfScroll) {
+            track.scrollLeft -= halfScroll;
+          }
+        }
+        lastTime = time;
+      } else {
+        lastTime = null;
+      }
+      animFrameId = requestAnimationFrame(step);
+    };
+
+    animFrameId = requestAnimationFrame(step);
+
+    return () => {
+      cancelAnimationFrame(animFrameId);
+      if (pauseTimeoutRef.current) clearTimeout(pauseTimeoutRef.current);
+    };
+  }, [similarProducts]);
 
   const handleToggleMark = () => {
     if (!product) return;
-    const nextState = toggleProductSelection(product.id, product);
-    setIsMarked(nextState);
+    const updatedState = toggleProductSelection(product.id);
+    setIsMarked(updatedState);
+  };
+
+  const handleSelectSimilar = (item: Product) => {
+    setActiveProduct(item);
+    if (onSelectProduct) {
+      onSelectProduct(item);
+    }
+  };
+
+  const handleScrollPrev = () => {
+    pauseAutoScrollTemporarily(4000);
+    if (similarTrackRef.current) {
+      similarTrackRef.current.scrollBy({ left: -160, behavior: 'smooth' });
+    }
+  };
+
+  const handleScrollNext = () => {
+    pauseAutoScrollTemporarily(4000);
+    if (similarTrackRef.current) {
+      similarTrackRef.current.scrollBy({ left: 160, behavior: 'smooth' });
+    }
+  };
+
+  const openFullscreen = () => {
+    setFullscreenScale(1.0);
+    setFullscreenPos({ x: 50, y: 50 });
+    setIsFullscreenZoom(true);
   };
 
   if (!product) return null;
 
   const quoteMsg = encodeURIComponent(
-    `Hola Muebles Bellagio, solicito asesoría y cotización formal de: ${product.title} (${product.categoryName}). ¿Tienen disponibilidad o fabrican con medidas personalizadas?`
+    `Hola Muebles Bellagio, me interesa solicitar cotización y disponibilidad del producto: *${product.title}* (Categoría: ${product.categoryName}). ¿Podrían darme información de precios y acabados?`
   );
 
   return (
     <>
-      <div className="lightbox-overlay open" onClick={onClose} role="dialog" aria-modal="true">
-        <div className="lightbox-modal vip-product-modal" onClick={(e) => e.stopPropagation()}>
-          {/* Mobile Luxury Sheet Grab Handle */}
-          <div className="sheet-drag-handle" aria-hidden="true">
-            <span className="drag-pill"></span>
-          </div>
-
+      <div 
+        className="lightbox-overlay active open" 
+        onClick={onClose}
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="modalProductTitle"
+      >
+        <div className="lightbox-container vip-modal" onClick={(e) => e.stopPropagation()}>
+          {/* Close Button */}
           <button 
             type="button" 
-            className="lightbox-close-btn" 
-            onClick={onClose}
-            aria-label="Cerrar detalles del producto"
+            className="lightbox-close vip-close-btn" 
+            onClick={onClose} 
+            aria-label="Cerrar ventana"
             title="Cerrar (Esc)"
           >
-            ✕
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
           </button>
 
-          <div className="lightbox-grid">
-            {/* Product Media Column (Photos / Video Switcher) */}
-            <div className="lightbox-img-col vip-img-col">
+          <div className="lightbox-content vip-modal-grid">
+            {/* Left Column: Media Stage & Gallery */}
+            <div className="lightbox-media-col vip-media-stage">
               {/* Media Switcher Pills (Visible when product has video) */}
               {hasVideo && (
                 <div className="product-media-switcher-tabs" role="tablist" aria-label="Selector de Foto y Video">
@@ -190,7 +435,6 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               >
                 {mediaTab === 'video' ? (
                   <div className="product-modal-video-wrapper" onClick={(e) => e.stopPropagation()}>
-                    {/* Instant Video Skeleton / Poster Facade (No blank/frozen screens) */}
                     {isVideoLoading && (
                       <div className="product-video-poster-overlay">
                         {videoPoster && (
@@ -241,42 +485,38 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
                       className="lightbox-img main-product-img"
                     />
 
-                    {/* Fullscreen HD Expand Button */}
+                    {/* Fullscreen HD Expand Button (Icon-Only) */}
                     <button
                       type="button"
                       className="hd-fullscreen-trigger-btn"
                       onClick={openFullscreen}
-                      title="Ver imagen en pantalla completa HD"
-                      aria-label="Ver imagen en pantalla completa HD"
+                      title="Expandir a Pantalla Completa HD"
+                      aria-label="Expandir a Pantalla Completa HD"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                         <polyline points="15 3 21 3 21 9"></polyline>
                         <polyline points="9 21 3 21 3 15"></polyline>
                         <line x1="21" y1="3" x2="14" y2="10"></line>
                         <line x1="3" y1="21" x2="10" y2="14"></line>
                       </svg>
-                      <span>Pantalla Completa</span>
                     </button>
                   </>
                 )}
               </div>
 
-              {/* Luxury Multi-Angle Thumbnails Gallery Strip */}
-              {allImages.length > 1 && (
-                <div className="product-angle-thumbnails-strip" role="group" aria-label="Selector de ángulos y vistas">
-                  <div className="thumbnails-scroll-container">
+              {/* Angle Selector Gallery Thumbnails */}
+              {allImages.length > 1 && mediaTab === 'photo' && (
+                <div className="product-angle-gallery" aria-label="Galería de ángulos del producto">
+                  <div className="product-angle-track">
                     {allImages.map((imgUrl, idx) => {
-                      const isSelected = selectedImageIndex === idx && mediaTab === 'photo';
+                      const isSelected = idx === selectedImageIndex;
                       return (
                         <button
                           key={idx}
                           type="button"
-                          className={`angle-thumb-btn ${isSelected ? 'active' : ''}`}
-                          onClick={() => {
-                            setSelectedImageIndex(idx);
-                            setMediaTab('photo');
-                          }}
-                          aria-label={`Foto ${idx + 1}`}
+                          className={`product-angle-thumb-btn ${isSelected ? 'active' : ''}`}
+                          onClick={() => setSelectedImageIndex(idx)}
+                          aria-label={`Ver foto ${idx + 1}`}
                           title={`Foto ${idx + 1}`}
                         >
                           <img src={imgUrl} alt={`${product.title} ${idx + 1}`} loading="lazy" />
@@ -292,73 +532,152 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
             <div className="lightbox-info-col vip-info-col">
               <div className="vip-modal-header">
                 <div className="vip-badge-row">
-                  <span className="catalog-tag">
-                    {product.categoryName}
+                  <span className="catalog-tag" style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
+                    <CategoryIcon categoryId={product.category} />
+                    <span>{product.categoryName}</span>
                   </span>
-                  <span className={`vip-badge-pill ${product.origin === 'importado' ? 'origin-badge-importado' : 'origin-badge-nacional'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                  <span className={`vip-badge-pill ${product.origin === 'importado' ? 'origin-badge-importado' : 'origin-badge-nacional'}`} style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}>
                     {product.origin === 'importado' ? (
                       <>
-                        <ImportedGlobeIcon width={13} height={13} />
-                        <span>Producto Importado</span>
+                        <ImportedGlobeIcon width={12} height={12} />
+                        <span>Importado</span>
                       </>
                     ) : (
                       <>
-                        <VenezuelaFlagIcon width={16} height={11} />
-                        <span>Fabricación Nacional</span>
+                        <VenezuelaFlagIcon width={14} height={10} />
+                        <span>Nacional</span>
                       </>
                     )}
                   </span>
-                  <span className="vip-badge-pill">
-                    ✨ Calidad Garantizada
-                  </span>
                 </div>
-                <h2 className="lightbox-title">{product.title}</h2>
+                <h2 id="modalProductTitle" className="lightbox-title">{product.title}</h2>
                 {product.subtitle && (
                   <p className="lightbox-subtitle">{product.subtitle}</p>
                 )}
               </div>
 
               {/* Description */}
-              {product.description && (
+              {product.description && product.description.trim().length > 0 && (
                 <div className="lightbox-description">
                   <p>{product.description}</p>
                 </div>
               )}
 
-              {/* Technical Specifications - Only shown when custom data is provided */}
-              {((product.materials && product.materials.trim().length > 0 && product.materials.trim() !== 'Maderas nobles y acabados finos') ||
-                (product.dimensions && product.dimensions.trim().length > 0 && product.dimensions.trim() !== 'A convenir')) && (
-                <div className="lightbox-specs vip-specs">
-                  {product.materials && product.materials.trim().length > 0 && product.materials.trim() !== 'Maderas nobles y acabados finos' && (
-                    <div className="lightbox-spec-item">
-                      <strong>Materiales Nobles:</strong>
-                      <span>{product.materials}</span>
+              {/* Technical Specifications & Atelier Details */}
+              {((product.materials && product.materials.trim().length > 0) ||
+                (product.dimensions && product.dimensions.trim().length > 0) ||
+                (product.availableColors && product.availableColors.length > 0)) && (
+                <div className="vip-atelier-specs-card">
+                  {product.materials && product.materials.trim().length > 0 && (
+                    <div className="atelier-spec-row">
+                      <div className="atelier-spec-label">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                          <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                          <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                        <span>Materiales & Estructura</span>
+                      </div>
+                      <p className="atelier-spec-value">{product.materials}</p>
                     </div>
                   )}
-                  {product.dimensions && product.dimensions.trim().length > 0 && product.dimensions.trim() !== 'A convenir' && (
-                    <div className="lightbox-spec-item">
-                      <strong>Dimensiones:</strong>
-                      <span>{product.dimensions}</span>
+
+                  {product.dimensions && product.dimensions.trim().length > 0 && (
+                    <div className="atelier-spec-row">
+                      <div className="atelier-spec-label">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <circle cx="12" cy="12" r="10"/>
+                          <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                        <span>Medidas / Dimensiones</span>
+                      </div>
+                      <p className="atelier-spec-value">{product.dimensions}</p>
+                    </div>
+                  )}
+
+                  {product.availableColors && product.availableColors.length > 0 && (
+                    <div className="atelier-spec-row">
+                      <div className="atelier-spec-label">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
+                        </svg>
+                        <span>Tonos & Acabados</span>
+                      </div>
+                      <p className="atelier-spec-value">
+                        {Array.isArray(product.availableColors) ? product.availableColors.join(', ') : product.availableColors}
+                      </p>
                     </div>
                   )}
                 </div>
               )}
 
-              {/* Trust Value Badges */}
-              <div className="vip-modal-features">
-                <div className="vip-feature-chip">
-                  <span className="vip-chip-icon">⚜️</span>
-                  <span>Fabricación a Medida</span>
+              {/* Dynamic Similar Products Carousel */}
+              {similarProducts.length > 0 && (
+                <div className="similar-products-section">
+                  <div className="similar-products-header">
+                    <span className="similar-products-tag">
+                      <span className="similar-tag-icon">✨</span>
+                      <span>Piezas Similares en {product.categoryName}</span>
+                    </span>
+
+                    {similarProducts.length > 2 && (
+                      <div className="similar-nav-controls">
+                        <button 
+                          type="button" 
+                          className="similar-nav-btn prev"
+                          onClick={handleScrollPrev}
+                          aria-label="Ver productos anteriores"
+                          title="Anterior"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="15 18 9 12 15 6"/>
+                          </svg>
+                        </button>
+                        <button 
+                          type="button" 
+                          className="similar-nav-btn next"
+                          onClick={handleScrollNext}
+                          aria-label="Ver productos siguientes"
+                          title="Siguiente"
+                        >
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                            <polyline points="9 18 15 12 9 6"/>
+                          </svg>
+                        </button>
+                      </div>
+                    )}
+                  </div>
+
+                  <div 
+                    className="similar-carousel-wrapper"
+                    onMouseEnter={() => { isSimilarPausedRef.current = true; }}
+                    onMouseLeave={() => { isSimilarPausedRef.current = false; }}
+                    onTouchStart={() => { pauseAutoScrollTemporarily(5000); }}
+                  >
+                    <div className="similar-products-track" ref={similarTrackRef}>
+                      {(similarProducts.length > 2 
+                        ? [...similarProducts, ...similarProducts] 
+                        : similarProducts
+                      ).map((item, index) => (
+                        <button
+                          key={`${item.id}-${index}`}
+                          type="button"
+                          className="similar-product-card"
+                          onClick={() => handleSelectSimilar(item)}
+                          title={`Ver ${item.title}`}
+                        >
+                          <div className="similar-img-box">
+                            <img src={item.image} alt={item.title} loading="lazy" />
+                          </div>
+                          <span className="similar-title" title={item.title}>
+                            {item.title}
+                          </span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </div>
-                <div className="vip-feature-chip">
-                  <span className="vip-chip-icon">🏬</span>
-                  <span>Showrooms Caracas</span>
-                </div>
-                <div className="vip-feature-chip">
-                  <span className="vip-chip-icon">🛡️</span>
-                  <span>Garantía Bellagio</span>
-                </div>
-              </div>
+              )}
 
               {/* Primary Action Controls */}
               <div className="lightbox-actions vip-modal-actions">
@@ -417,88 +736,57 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
               <span className="catalog-tag" style={{ marginBottom: 2 }}>{product.categoryName}</span>
               <h3 className="fullscreen-hd-title">{product.title}</h3>
             </div>
-
-            <button
-              type="button"
-              className="fullscreen-hd-close"
-              onClick={() => setIsFullscreenZoom(false)}
-              aria-label="Cerrar vista de pantalla completa"
-              title="Cerrar (Esc)"
-            >
-              ✕
-            </button>
+            
+            <div className="fullscreen-hd-actions">
+              <button
+                type="button"
+                className="fullscreen-zoom-btn"
+                onClick={() => setFullscreenScale(prev => prev === 1.0 ? 2.2 : 1.0)}
+                aria-label={fullscreenScale === 1.0 ? 'Acercar lupa' : 'Alejar lupa'}
+              >
+                {fullscreenScale === 1.0 ? '🔍 Zoom 2.2x' : '↺ Resetear'}
+              </button>
+              <button 
+                type="button"
+                className="fullscreen-close-btn" 
+                onClick={() => setIsFullscreenZoom(false)}
+                aria-label="Cerrar pantalla completa"
+              >
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
           </header>
 
           <div 
             ref={fullscreenStageRef}
-            className="fullscreen-hd-stage"
-            onClick={(e) => e.stopPropagation()}
+            className={`fullscreen-hd-stage ${fullscreenScale > 1.0 ? 'is-zoomed' : ''}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setFullscreenScale(prev => prev === 1.0 ? 2.2 : 1.0);
+            }}
+            onMouseMove={(e) => {
+              if (fullscreenScale <= 1.0) return;
+              const rect = e.currentTarget.getBoundingClientRect();
+              const x = ((e.clientX - rect.left) / rect.width) * 100;
+              const y = ((e.clientY - rect.top) / rect.height) * 100;
+              setFullscreenPos({ x, y });
+            }}
             onTouchMove={handleFullscreenTouchMove}
-            title="Arrastra para explorar la pieza en detalle"
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src={currentDisplayImage} 
-              alt={`${product.title} - Ángulo ${selectedImageIndex + 1}`}
+              alt={`${product.title} en Alta Definición`}
               className="fullscreen-hd-img"
               style={{
-                transformOrigin: `${fullscreenPos.x}% ${fullscreenPos.y}%`,
                 transform: `scale(${fullscreenScale})`,
+                transformOrigin: `${fullscreenPos.x}% ${fullscreenPos.y}%`
               }}
             />
           </div>
-
-          <footer className="fullscreen-hd-controls" onClick={(e) => e.stopPropagation()}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <button
-                type="button"
-                className="fullscreen-hd-btn"
-                onClick={() => setFullscreenScale((s) => Math.max(1.0, parseFloat((s - 0.5).toFixed(1))))}
-                title="Reducir"
-              >
-                −
-              </button>
-
-              <span className="fullscreen-hd-scale-text">{fullscreenScale.toFixed(1)}x</span>
-
-              <button
-                type="button"
-                className="fullscreen-hd-btn"
-                onClick={() => setFullscreenScale((s) => Math.min(4.5, parseFloat((s + 0.5).toFixed(1))))}
-                title="Aumentar"
-              >
-                +
-              </button>
-
-              <button
-                type="button"
-                className="fullscreen-hd-reset-btn"
-                onClick={() => {
-                  setFullscreenScale(1.0);
-                  setFullscreenPos({ x: 50, y: 50 });
-                }}
-                title="Restablecer tamaño original"
-              >
-                Ajustar 1x
-              </button>
-            </div>
-
-            {/* Quick Angle switcher in Fullscreen */}
-            {allImages.length > 1 && (
-              <div className="fullscreen-hd-angles-row">
-                {allImages.map((_, idx) => (
-                  <button
-                    key={idx}
-                    type="button"
-                    className={`fullscreen-angle-dot ${selectedImageIndex === idx ? 'active' : ''}`}
-                    onClick={() => setSelectedImageIndex(idx)}
-                    title={`Foto ${idx + 1}`}
-                  >
-                    {idx + 1}
-                  </button>
-                ))}
-              </div>
-            )}
-          </footer>
         </div>
       )}
     </>

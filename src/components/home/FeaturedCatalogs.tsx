@@ -185,6 +185,8 @@ export default function FeaturedCatalogs() {
         <ProductModal 
           product={selectedProduct} 
           onClose={() => setSelectedProduct(null)} 
+          onSelectProduct={(p) => setSelectedProduct(p)}
+          allProducts={items}
         />
       )}
     </section>

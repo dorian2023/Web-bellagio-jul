@@ -800,12 +800,12 @@ export const CATALOGS_DATA = [
     "category": "dormitorios",
     "categoryName": "Dormitorios",
     "title": "Cama Sofia",
-    "subtitle": "",
-    "description": "",
-    "materials": "",
-    "dimensions": "",
+    "subtitle": "Dormitorio de vanguardia",
+    "description": "Dormitorio de vanguardia",
+    "materials": "Estructura de madera de pino seca al horno, tapizado en tela / bipiel con perfilería de alta gama",
+    "dimensions": "Matrimonial, Queen, King",
     "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/ba78f829-4999-4122-ae1b-558bcaec6093-1789341492398.webp",
-    "availableColors": []
+    "availableColors": ["Varios"]
   },
   {
     "id": "26ec5238-d851-4f29-9219-e95435b3a7ba",

@@ -7,6 +7,7 @@ import WhatsAppWidget from '@/src/components/shared/WhatsAppWidget';
 import InquiryFloatingCart from '@/src/components/catalog/InquiryFloatingCart';
 import CookieConsentBanner from '@/src/components/shared/CookieConsentBanner';
 import LuxuryNavigationLoader from '@/src/components/shared/LuxuryNavigationLoader';
+import ConciergeChat from '@/src/components/concierge/ConciergeChat';
 
 export const viewport: Viewport = {
   width: 'device-width',
@@ -53,7 +54,7 @@ export const metadata: Metadata = {
     url: 'https://mueblesbellagio.com',
     siteName: 'Muebles Bellagio',
     title: 'Muebles Bellagio | Colecciones Exclusivas de Mobiliario de Lujo',
-    description: 'Descubre colecciones exclusivas de alta ebanistería y diseño contemporáneo para tu hogar u oficina en Caracas.',
+    description: 'Descubre colecciones exclusivas de mobiliario de alta calidad y diseño contemporáneo para tu hogar u oficina en Caracas.',
     images: [
       {
         url: '/images/hero-poster.webp',
@@ -142,6 +143,7 @@ export default function RootLayout({
         <Footer />
         <WhatsAppWidget />
         <InquiryFloatingCart />
+        <ConciergeChat />
         <CookieConsentBanner />
       </body>
     </html>

@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: CategoryPageProps): Promise<M
     },
     openGraph: {
       title: `${category.name} de Lujo en Caracas | Muebles Bellagio`,
-      description: `Colección de ${category.name} con acabados de alta ebanistería. Showrooms en Caracas, Venezuela.`,
+      description: `Colección de ${category.name} con acabados de alta calidad. Showrooms en Caracas, Venezuela.`,
       url: `https://mueblesbellagio.com/catalogo/${category.id}`,
       images: ['/images/hero-poster.webp']
     }

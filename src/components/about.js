@@ -39,7 +39,7 @@ export function renderAbout() {
               <span class="gold-text">Distinción & Confort</span>
             </h2>
             <p style="margin-bottom: var(--space-4);">
-              En <strong>Muebles Bellagio</strong> concebimos cada pieza como una obra de arte funcional. Combinamos técnicas de ebanistería tradicional con las últimas tendencias de diseño internacional y una selección de productos importados de excelente calidad.
+              En <strong>Muebles Bellagio</strong> concebimos cada pieza con los más altos estándares de calidad. Combinamos técnicas de fabricación de primera con las últimas tendencias de diseño internacional y una cuidada selección de productos importados de excelente calidad.
             </p>
 
 

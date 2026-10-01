@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Catálogo Bellagio en Caracas | Muebles Bellagio',
-    description: 'Explora nuestra gama de alta ebanistería, sofás, comedores y dormitorios en Caracas.',
+    description: 'Explora nuestra gama de mobiliario de alta calidad, sofás, comedores y dormitorios en Caracas.',
     url: 'https://mueblesbellagio.com/catalogo',
     images: ['/images/hero-poster.webp']
   }

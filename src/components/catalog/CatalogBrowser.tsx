@@ -642,7 +642,7 @@ export default function CatalogBrowser({
                             {isOutOfStock ? (
                               <span className="stock-subtitle-out">Temporalmente no disponible</span>
                             ) : (
-                              product.subtitle || (product.materials ? `Material: ${product.materials.slice(0, 45)}...` : 'Alta Ebanistería Bellagio')
+                              product.subtitle || (product.materials ? `Material: ${product.materials.slice(0, 45)}...` : 'Mobiliario Bellagio de Alta Calidad')
                             )}
                           </p>
                         </div>

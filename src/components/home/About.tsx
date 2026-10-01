@@ -143,7 +143,7 @@ export default function About() {
             </h2>
 
             <p className="editorial-lead-p">
-              En <strong>Muebles Bellagio</strong> creamos mobiliario de ultra-lujo a la medida de los hogares venezolanos. Fusionamos ebanistería artesanal, materiales de resistencia superior y colecciones importadas con sistemas eléctricos reclinables.
+              En <strong>Muebles Bellagio</strong> creamos mobiliario de alta calidad y distinción a la medida de los hogares venezolanos. Fusionamos acabados de primera, materiales de resistencia superior con los más altos estándares del mercado y colecciones importadas de lujo.
             </p>
 
             {/* 3 Real Product Pillars */}

@@ -32,7 +32,7 @@ const FABRIC_SWATCHES: FabricSwatch[] = [
   {
     id: 'cuero-cognac',
     name: 'Cuero Genuino Coñac',
-    type: 'Colección Alta Ebanistería',
+    type: 'Colección de Alta Gama',
     colorHex: '#8C5835',
     imgUrl: 'https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1000&q=85',
     dimensions: '3.00m × 2.20m'

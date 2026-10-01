@@ -67,7 +67,7 @@ export default function StoreGrid({ isStandalonePage = false }: StoreGridProps) 
             Nuestras Tiendas &amp; <span className="gold-text">Showrooms en Caracas</span>
           </h1>
           <p className="section-subtitle">
-            Descubre la alta ebanistería de Muebles Bellagio en persona. Tres espacios exclusivos diseñados para inspirar tus proyectos de interiorismo con asesoría de maestros artesanos.
+            Descubre el mobiliario de alta calidad de Muebles Bellagio en persona. Tres espacios exclusivos diseñados para inspirar tus proyectos de interiorismo con asesoría personalizada.
           </p>
         </header>
 

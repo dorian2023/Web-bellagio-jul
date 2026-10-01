@@ -51,8 +51,8 @@ export function setupCatalogsEvents() {
   let phase = 0, frame = 0, previous = 0, visible = false, hovered = false;
   let width = gallery.clientWidth, height = gallery.clientHeight;
   function paint() {
-    gallery.classList.toggle('is-static', reduced.matches || cards.length < 2);
-    if (reduced.matches || cards.length < 2) {
+    gallery.classList.toggle('is-static', cards.length < 2);
+    if (cards.length < 2) {
       cards.forEach(card => card.removeAttribute('style'));
       return;
     }

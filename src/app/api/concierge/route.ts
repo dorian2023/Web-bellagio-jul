@@ -7,7 +7,6 @@ interface ChatMessage {
   content: string;
 }
 
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 // System instructions for the Bellagio Concierge Advisor
 function buildSystemPrompt(products: Product[]): string {
@@ -46,9 +45,12 @@ FORMATO DE RESPUESTA:
 
 export async function POST(req: NextRequest) {
   try {
-    if (!GEMINI_API_KEY) {
+    const apiKey = process.env.GEMINI_API_KEY;
+
+    if (!apiKey) {
+      console.error('❌ [Concierge API] GEMINI_API_KEY no está configurada en las variables de entorno de Vercel/Servidor.');
       return NextResponse.json(
-        { error: 'Clave de Gemini API no configurada en el servidor.' },
+        { error: 'Clave de Gemini API no configurada en las variables de entorno de Vercel.' },
         { status: 500 }
       );
     }
@@ -88,12 +90,12 @@ export async function POST(req: NextRequest) {
 
     for (const modelName of candidateModels) {
       try {
-        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${GEMINI_API_KEY}`;
+        const geminiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${apiKey}`;
         const response = await fetch(geminiUrl, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-goog-api-key': GEMINI_API_KEY
+            'x-goog-api-key': apiKey
           },
           body: JSON.stringify({
             systemInstruction: {

@@ -80,12 +80,7 @@ export default function FeaturedCatalogs() {
     const container = orbitContainerRef.current;
     if (!container || items.length < 2) return;
 
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (prefersReducedMotion.matches) {
-      container.classList.add('is-static');
-      return;
-    }
-
+    // Always run the 3D orbit carousel for all users
     container.classList.remove('is-static');
 
     const animate = (time: number) => {

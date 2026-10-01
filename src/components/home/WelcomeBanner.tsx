@@ -6,8 +6,8 @@ import { fetchCatalog } from '@/src/lib/supabase';
 import { Product } from '@/src/types/catalog';
 import { CATALOGS_DATA } from '@/src/data/catalogs';
 
-// Set to 800ms for fast testing feedback upon reload
-const SHOW_DELAY_MS = 800;
+// Display timing: shows smoothly right after arrival on the home page
+const SHOW_DELAY_MS = 600;
 const CAROUSEL_INTERVAL_MS = 3800;
 
 interface CarouselProduct {
@@ -24,7 +24,7 @@ export function WelcomeBanner() {
   const [prevIndex, setPrevIndex] = useState<number | null>(null);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Show banner on every page load during testing/design review
+  // Show banner whenever the user arrives at the homepage
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsVisible(true);

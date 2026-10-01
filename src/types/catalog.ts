@@ -26,6 +26,7 @@ export interface Product {
   youtubeUrl?: string;
   galleryImages?: string[];
   origin?: 'nacional' | 'importado';
+  stockStatus?: 'disponible' | 'agotado';
 }
 
 export interface StoreLocation {

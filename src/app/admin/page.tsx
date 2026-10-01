@@ -33,6 +33,7 @@ export default function AdminPage() {
     title: string;
     category: string;
     origin: 'nacional' | 'importado';
+    stockStatus: 'disponible' | 'agotado';
     description: string;
     materials: string;
     dimensions: string;
@@ -43,6 +44,7 @@ export default function AdminPage() {
     title: '',
     category: 'sofas',
     origin: 'nacional',
+    stockStatus: 'disponible',
     description: '',
     materials: '',
     dimensions: '',
@@ -103,6 +105,7 @@ export default function AdminPage() {
       title: '',
       category: 'sofas',
       origin: 'nacional',
+      stockStatus: 'disponible',
       description: '',
       materials: '',
       dimensions: '',
@@ -120,6 +123,7 @@ export default function AdminPage() {
       title: prod.title,
       category: prod.category,
       origin: prod.origin || (prod.title?.toLowerCase().includes('imp') ? 'importado' : 'nacional'),
+      stockStatus: prod.stockStatus || 'disponible',
       description: prod.description || '',
       materials: prod.materials || '',
       dimensions: prod.dimensions || '',
@@ -224,6 +228,7 @@ export default function AdminPage() {
         title: formData.title,
         category: formData.category,
         origin: formData.origin || 'nacional',
+        stockStatus: formData.stockStatus || 'disponible',
         description: formData.description,
         materials: formData.materials,
         dimensions: formData.dimensions,
@@ -445,6 +450,66 @@ export default function AdminPage() {
                   >
                     <ImportedGlobeIcon width={16} height={16} />
                     <span>Producto Importado</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Stock Status Toggle — /impeccable Operate mode */}
+              <div className="form-group" style={{ marginBottom: 'var(--space-4)' }}>
+                <label className="form-label">Estado de Inventario</label>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, stockStatus: 'disponible' })}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: 'var(--radius-md)',
+                      border: formData.stockStatus === 'disponible' ? '2px solid #22c55e' : '1px solid var(--color-border)',
+                      background: formData.stockStatus === 'disponible' ? 'rgba(34, 197, 94, 0.12)' : 'var(--color-bg-surface-elevated)',
+                      color: formData.stockStatus === 'disponible' ? '#4ade80' : 'var(--color-text-secondary)',
+                      cursor: 'pointer',
+                      fontWeight: 700,
+                      fontSize: '0.86rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease',
+                      boxShadow: formData.stockStatus === 'disponible' ? '0 0 12px rgba(34, 197, 94, 0.2)' : 'none'
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M5 8l2 2 4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span>Disponible</span>
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={() => setFormData({ ...formData, stockStatus: 'agotado' })}
+                    style={{
+                      padding: '10px 14px',
+                      borderRadius: 'var(--radius-md)',
+                      border: formData.stockStatus === 'agotado' ? '2px solid #ef4444' : '1px solid var(--color-border)',
+                      background: formData.stockStatus === 'agotado' ? 'rgba(239, 68, 68, 0.12)' : 'var(--color-bg-surface-elevated)',
+                      color: formData.stockStatus === 'agotado' ? '#f87171' : 'var(--color-text-secondary)',
+                      cursor: 'pointer',
+                      fontWeight: 700,
+                      fontSize: '0.86rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '8px',
+                      transition: 'all 0.2s ease',
+                      boxShadow: formData.stockStatus === 'agotado' ? '0 0 12px rgba(239, 68, 68, 0.2)' : 'none'
+                    }}
+                  >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+                      <path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                    </svg>
+                    <span>Agotado</span>
                   </button>
                 </div>
               </div>
@@ -839,6 +904,28 @@ export default function AdminPage() {
                           {photoCount > 1 && (
                             <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
                               • {photoCount} fotos
+                            </span>
+                          )}
+                          {prod.stockStatus === 'agotado' && (
+                            <span style={{
+                              fontSize: '0.68rem',
+                              padding: '2px 8px',
+                              borderRadius: 'var(--radius-full)',
+                              background: 'rgba(239, 68, 68, 0.15)',
+                              color: '#f87171',
+                              border: '1px solid rgba(239, 68, 68, 0.3)',
+                              fontWeight: 700,
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              letterSpacing: '0.03em',
+                              textTransform: 'uppercase' as const
+                            }}>
+                              <svg width="10" height="10" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="8" cy="8" r="7" stroke="currentColor" strokeWidth="1.5" />
+                                <path d="M5.5 5.5l5 5M10.5 5.5l-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+                              </svg>
+                              Agotado
                             </span>
                           )}
                         </div>

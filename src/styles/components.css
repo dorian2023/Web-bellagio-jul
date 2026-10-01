@@ -2050,6 +2050,11 @@
   width: 100%;
 }
 
+.vip-modal-actions.is-out-of-stock-actions {
+  grid-template-columns: 1fr;
+  max-width: 100%;
+}
+
 @media (max-width: 600px) {
   .vip-modal-actions {
     grid-template-columns: 1fr;
@@ -2061,15 +2066,15 @@
   width: 100%;
   min-width: 0;
   min-height: 48px;
-  padding: 0 1rem;
+  padding: 0 1.2rem;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   font-family: var(--font-accent);
-  font-size: 0.86rem;
+  font-size: 0.82rem;
   font-weight: 700;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   border-radius: var(--radius-md);
   white-space: nowrap;
@@ -3868,6 +3873,92 @@
   color: #60a5fa !important;
   border: 1px solid rgba(96, 165, 250, 0.35) !important;
 }
+
+/* ==========================================================================
+   Stock Status & Out-of-Stock Styling (/impeccable Quiet Luxury Standards)
+   ========================================================================== */
+
+/* Product Card — Out of Stock Treatment */
+.product-card.is-out-of-stock {
+  filter: saturate(0.75) opacity(0.88);
+  transition: filter 0.3s cubic-bezier(0.16, 1, 0.3, 1), transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.product-card.is-out-of-stock:hover {
+  filter: saturate(0.92) opacity(1);
+}
+
+.stock-badge-pill-card {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(18, 18, 22, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #fca5a5;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4), 0 0 10px rgba(239, 68, 68, 0.15);
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-accent);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.stock-badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 6px #ef4444;
+}
+
+.product-card-sold-out-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(10, 10, 12, 0.1) 0%, rgba(10, 10, 12, 0.35) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+.stock-subtitle-out {
+  color: #f87171 !important;
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+}
+
+/* Modal Out-of-Stock Badges & CTA */
+.vip-stock-badge-out {
+  background: rgba(239, 68, 68, 0.14) !important;
+  color: #fca5a5 !important;
+  border: 1px solid rgba(239, 68, 68, 0.35) !important;
+  font-weight: 700 !important;
+}
+
+.vip-whatsapp-btn-out {
+  background: linear-gradient(135deg, #18181b 0%, #0d0d10 100%) !important;
+  color: #e4e4e7 !important;
+  border: 1px solid rgba(255, 255, 255, 0.18) !important;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.45) !important;
+  font-size: 0.8rem !important;
+  letter-spacing: 0.04em !important;
+  padding: 0 1.4rem !important;
+}
+
+.vip-whatsapp-btn-out:hover {
+  background: linear-gradient(135deg, #27272a 0%, #18181b 100%) !important;
+  color: #ffffff !important;
+  border-color: rgba(212, 175, 55, 0.45) !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6), 0 0 16px rgba(212, 175, 55, 0.15) !important;
+}
+
 
 
 

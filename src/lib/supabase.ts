@@ -52,7 +52,8 @@ export function normalizeProduct(row: any): Product {
     availableColors,
     youtubeUrl: row.youtube_url || row.youtubeUrl || row.video_url || row.videoUrl || '',
     galleryImages: Array.isArray(row.gallery_images) ? row.gallery_images : (Array.isArray(row.galleryImages) ? row.galleryImages : []),
-    origin
+    origin,
+    stockStatus: (row.stock_status === 'agotado') ? 'agotado' : 'disponible'
   };
 }
 
@@ -154,6 +155,7 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
     youtube_url: productData.youtubeUrl || '',
     gallery_images: Array.isArray(productData.galleryImages) ? productData.galleryImages : [],
     origin: productData.origin || 'nacional',
+    stock_status: productData.stockStatus || 'disponible',
     published: !!productData.published
   };
 
@@ -165,20 +167,27 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
       .select('*, categories(name, slug)')
       .single();
 
-    // Fallback if 'origin' column has not been added to Supabase table yet
-    if (error && error.message && error.message.includes("'origin' column")) {
-      const { origin: _omitted, ...fallbackPayload } = payload;
-      const retryResult = await supabase
-        .from('products')
-        .update(fallbackPayload)
-        .eq('id', idToUpdate)
-        .select('*, categories(name, slug)')
-        .single();
-      data = retryResult.data;
-      error = retryResult.error;
+    // Fallback: strip unknown columns (origin, stock_status) if Supabase schema is not yet updated
+    if (error) {
+      console.warn('Error al actualizar en Supabase, intentando fallback de columnas:', error);
+      const errMsg = (error.message || '').toLowerCase();
+      if (errMsg.includes('origin') || errMsg.includes('stock_status') || errMsg.includes('column')) {
+        const { origin: _o, stock_status: _s, ...fallbackPayload } = payload;
+        const retryResult = await supabase
+          .from('products')
+          .update(fallbackPayload)
+          .eq('id', idToUpdate)
+          .select('*, categories(name, slug)')
+          .single();
+        data = retryResult.data;
+        error = retryResult.error;
+      }
     }
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase update final error:', error);
+      throw error;
+    }
     cachedCatalogData = null;
     catalogCacheTimestamp = 0;
     return normalizeProduct(data);
@@ -189,19 +198,26 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
       .select('*, categories(name, slug)')
       .single();
 
-    // Fallback if 'origin' column has not been added to Supabase table yet
-    if (error && error.message && error.message.includes("'origin' column")) {
-      const { origin: _omitted, ...fallbackPayload } = payload;
-      const retryResult = await supabase
-        .from('products')
-        .insert(fallbackPayload)
-        .select('*, categories(name, slug)')
-        .single();
-      data = retryResult.data;
-      error = retryResult.error;
+    // Fallback: strip unknown columns (origin, stock_status) if Supabase schema is not yet updated
+    if (error) {
+      console.warn('Error al insertar en Supabase, intentando fallback de columnas:', error);
+      const errMsg = (error.message || '').toLowerCase();
+      if (errMsg.includes('origin') || errMsg.includes('stock_status') || errMsg.includes('column')) {
+        const { origin: _o, stock_status: _s, ...fallbackPayload } = payload;
+        const retryResult = await supabase
+          .from('products')
+          .insert(fallbackPayload)
+          .select('*, categories(name, slug)')
+          .single();
+        data = retryResult.data;
+        error = retryResult.error;
+      }
     }
 
-    if (error) throw error;
+    if (error) {
+      console.error('Supabase insert final error:', error);
+      throw error;
+    }
     cachedCatalogData = null;
     catalogCacheTimestamp = 0;
     return normalizeProduct(data);

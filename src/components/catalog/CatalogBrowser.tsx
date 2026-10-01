@@ -578,62 +578,78 @@ export default function CatalogBrowser({
                 className="dedicated-catalog-grid" 
                 id="dedicatedCatalogGrid"
               >
-                {paginatedProducts.map((product, idx) => (
-                  <article
-                    key={product.id}
-                    className="product-card catalog-card-entrance"
-                    style={{ animationDelay: `${(idx % 12) * 40}ms` }}
-                    onClick={() => setSelectedProduct(product)}
-                    onMouseMove={handleCardMouseMove}
-                    onMouseLeave={handleCardMouseLeave}
-                    role="button"
-                    tabIndex={0}
-                    aria-label={`Ver detalle de ${product.title}`}
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        setSelectedProduct(product);
-                      }
-                    }}
-                  >
-                    <div className="product-image-box">
-                      <span className="product-category-badge">
-                        {product.categoryName}
-                      </span>
-
-                      {product.galleryImages && product.galleryImages.length > 1 && (
-                        <span className="product-angles-count-badge" title={`${product.galleryImages.length} ángulos disponibles`}>
-                          📷 {product.galleryImages.length} vistas
+                {paginatedProducts.map((product, idx) => {
+                  const isOutOfStock = product.stockStatus === 'agotado';
+                  return (
+                    <article
+                      key={product.id}
+                      className={`product-card catalog-card-entrance ${isOutOfStock ? 'is-out-of-stock' : ''}`}
+                      style={{ animationDelay: `${(idx % 12) * 40}ms` }}
+                      onClick={() => setSelectedProduct(product)}
+                      onMouseMove={handleCardMouseMove}
+                      onMouseLeave={handleCardMouseLeave}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`Ver detalle de ${product.title}${isOutOfStock ? ' (Agotado)' : ''}`}
+                      onKeyDown={(e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                          e.preventDefault();
+                          setSelectedProduct(product);
+                        }
+                      }}
+                    >
+                      <div className="product-image-box">
+                        <span className="product-category-badge">
+                          {product.categoryName}
                         </span>
-                      )}
 
-                      <img
-                        src={product.image}
-                        alt={product.title}
-                        className="product-img"
-                        loading="lazy"
-                        width={400}
-                        height={400}
-                      />
+                        {isOutOfStock ? (
+                          <div className="stock-badge-pill-card" aria-label="Producto agotado">
+                            <span className="stock-badge-dot"></span>
+                            <span>Agotado</span>
+                          </div>
+                        ) : null}
 
-                      <div className="product-card-hover-action" aria-hidden="true">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                          <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
-                          <circle cx="12" cy="12" r="3" />
-                        </svg>
+                        {product.galleryImages && product.galleryImages.length > 1 && !isOutOfStock && (
+                          <span className="product-angles-count-badge" title={`${product.galleryImages.length} ángulos disponibles`}>
+                            📷 {product.galleryImages.length} vistas
+                          </span>
+                        )}
+
+                        <img
+                          src={product.image}
+                          alt={product.title}
+                          className="product-img"
+                          loading="lazy"
+                          width={400}
+                          height={400}
+                        />
+
+                        {isOutOfStock && <div className="product-card-sold-out-shade" aria-hidden="true" />}
+
+                        <div className="product-card-hover-action" aria-hidden="true">
+                          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+                            <circle cx="12" cy="12" r="3" />
+                          </svg>
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="product-info">
-                      <div className="product-copy">
-                        <h3 className="product-title">{product.title}</h3>
-                        <p className="product-subtitle">
-                          {product.subtitle || (product.materials ? `Material: ${product.materials.slice(0, 45)}...` : 'Alta Ebanistería Bellagio')}
-                        </p>
+                      <div className="product-info">
+                        <div className="product-copy">
+                          <h3 className="product-title">{product.title}</h3>
+                          <p className="product-subtitle">
+                            {isOutOfStock ? (
+                              <span className="stock-subtitle-out">Temporalmente no disponible</span>
+                            ) : (
+                              product.subtitle || (product.materials ? `Material: ${product.materials.slice(0, 45)}...` : 'Alta Ebanistería Bellagio')
+                            )}
+                          </p>
+                        </div>
                       </div>
-                    </div>
-                  </article>
-                ))}
+                    </article>
+                  );
+                })}
               </div>
 
               {/* Luxury Catalog Pagination Controls */}

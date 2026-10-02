@@ -43,8 +43,57 @@ FORMATO DE RESPUESTA:
 - Al final de tu recomendación, invita cordialmente a cotizar o agendar una cita en showroom mediante WhatsApp.`;
 }
 
+// Rate limiting storage: map IP -> timestamps
+const rateLimitMap = new Map<string, number[]>();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minuto
+const MAX_REQUESTS_PER_WINDOW = 12; // Máximo 12 peticiones por minuto por IP
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = rateLimitMap.get(ip) || [];
+  
+  // Limpiar timestamps fuera de la ventana
+  const recentTimestamps = timestamps.filter(time => now - time < RATE_LIMIT_WINDOW_MS);
+  
+  if (recentTimestamps.length >= MAX_REQUESTS_PER_WINDOW) {
+    rateLimitMap.set(ip, recentTimestamps);
+    return true;
+  }
+  
+  recentTimestamps.push(now);
+  rateLimitMap.set(ip, recentTimestamps);
+  return false;
+}
+
+// Limpieza periódica de memoria cada 5 minutos
+if (typeof setInterval !== 'undefined') {
+  setInterval(() => {
+    const now = Date.now();
+    rateLimitMap.forEach((timestamps, ip) => {
+      const active = timestamps.filter(t => now - t < RATE_LIMIT_WINDOW_MS);
+      if (active.length === 0) {
+        rateLimitMap.delete(ip);
+      } else {
+        rateLimitMap.set(ip, active);
+      }
+    });
+  }, 5 * 60 * 1000);
+}
+
 export async function POST(req: NextRequest) {
   try {
+    // 0. Rate limiting por IP
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
+                     req.headers.get('x-real-ip') || 
+                     'anonymous';
+
+    if (isRateLimited(clientIp)) {
+      return NextResponse.json(
+        { error: 'Ha alcanzado el límite de consultas por minuto. Por favor, espere un momento antes de continuar.' },
+        { status: 429 }
+      );
+    }
+
     const apiKey = process.env.GEMINI_API_KEY;
 
     if (!apiKey) {
@@ -55,11 +104,28 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    const body = await req.json();
-    const messages: ChatMessage[] = body.messages || [];
+    const body = await req.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'Payload de solicitud inválido.' }, { status: 400 });
+    }
 
-    if (!messages || messages.length === 0) {
+    const rawMessages: ChatMessage[] = Array.isArray(body.messages) ? body.messages : [];
+
+    if (rawMessages.length === 0) {
       return NextResponse.json({ error: 'No se enviaron mensajes.' }, { status: 400 });
+    }
+
+    // Validación y sanitización estricta de mensajes (previene Prompt Injection masivo y ataques de payload)
+    const sanitizedMessages = rawMessages
+      .slice(-8) // Conservar solo los últimos 8 mensajes de contexto
+      .map((msg) => ({
+        role: msg.role === 'assistant' ? 'assistant' : 'user',
+        content: typeof msg.content === 'string' ? msg.content.trim().slice(0, 800) : ''
+      }))
+      .filter((msg) => msg.content.length > 0);
+
+    if (sanitizedMessages.length === 0) {
+      return NextResponse.json({ error: 'El mensaje no contiene texto válido.' }, { status: 400 });
     }
 
     // 1. Fetch live catalog to ground the LLM
@@ -69,8 +135,8 @@ export async function POST(req: NextRequest) {
     // 2. Format history for Gemini API
     const contents: any[] = [];
 
-    // Append conversation messages
-    messages.forEach((msg) => {
+    // Append sanitized conversation messages
+    sanitizedMessages.forEach((msg) => {
       contents.push({
         role: msg.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: msg.content }]

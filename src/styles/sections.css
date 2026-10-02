@@ -3593,22 +3593,38 @@
 
 .product-card {
   position: relative;
+  display: flex;
+  flex-direction: column;
   min-height: 0;
   padding: 0;
-  border-radius: var(--radius-lg);
+  border-radius: 18px;
   overflow: hidden;
-  border: 1px solid var(--color-border-subtle);
-  background: var(--color-bg-surface-elevated);
-  transition: transform var(--transition-slow), border-color var(--transition-normal), box-shadow var(--transition-slow);
+  border: 1px solid rgba(197, 165, 90, 0.22);
+  background: var(--color-bg-surface-elevated, #16161a);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease;
   cursor: pointer;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="light"] .product-card {
+  background: #ffffff;
+  border-color: rgba(197, 165, 90, 0.25);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.04);
 }
 
 .product-card:hover {
-  border-color: rgba(197, 165, 90, 0.4);
+  border-color: var(--gold-400);
   box-shadow:
-    0 16px 48px rgba(0, 0, 0, 0.25),
-    0 0 0 1px rgba(197, 165, 90, 0.15);
-  transform: translateY(-4px);
+    0 20px 48px rgba(0, 0, 0, 0.16),
+    0 0 0 1px rgba(197, 165, 90, 0.35);
+  transform: translateY(-6px);
+}
+
+[data-theme="light"] .product-card:hover {
+  border-color: var(--gold-500);
+  box-shadow:
+    0 20px 48px rgba(197, 165, 90, 0.16),
+    0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 .product-image-box {
@@ -3618,18 +3634,17 @@
   aspect-ratio: 1 / 1;
   min-height: 0;
   overflow: hidden;
-  background: #000;
+  background: #ffffff;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+[data-theme="dark"] .product-image-box {
+  background: #18181c;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .product-image-box::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.08) 12%, transparent 42%, rgba(0, 0, 0, 0.78) 100%);
-  pointer-events: none;
+  display: none;
 }
 
 .product-img {
@@ -3640,41 +3655,52 @@
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
-  background: #f2f0eb;
+  background: #ffffff;
   display: block;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+  padding: 0;
+  margin: 0;
+  transition: transform 0.75s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+}
+
+[data-theme="dark"] .product-img {
+  background: transparent;
 }
 
 .product-card:hover .product-img {
-  transform: scale(1.03);
+  transform: scale(1.05);
 }
 
-.product-category-badge {
+.product-origin-icon-badge {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  background: rgba(0, 0, 0, 0.75);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  color: var(--gold-300);
-  border: 1px solid rgba(212, 175, 55, 0.4);
-  padding: 4px 12px;
-  border-radius: var(--radius-full);
-  font-family: var(--font-sans);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+  top: 12px;
+  left: 12px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(197, 165, 90, 0.45);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   z-index: 3;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
-[data-theme="light"] .product-category-badge {
-  background: rgba(255, 255, 255, 0.9);
-  color: var(--gold-800);
-  border-color: rgba(170, 134, 56, 0.4);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+[data-theme="dark"] .product-origin-icon-badge {
+  background: rgba(22, 22, 28, 0.88);
+  border-color: rgba(212, 175, 55, 0.5);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  color: var(--gold-300);
+}
+
+.product-card:hover .product-origin-icon-badge {
+  transform: scale(1.06);
+  border-color: var(--gold-400);
 }
 
 /* Gallery of Art Card Entrance Animation */
@@ -3708,28 +3734,28 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 44px;
-  height: 44px;
+  width: 46px;
+  height: 46px;
   padding: 0;
   border-radius: 50%;
   background: rgba(18, 18, 22, 0.88);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border: 1px solid var(--gold-400);
   color: var(--gold-200);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5), 0 0 20px rgba(197, 165, 90, 0.3);
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5), 0 0 22px rgba(197, 165, 90, 0.35);
   opacity: 0;
   visibility: hidden;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   z-index: 4;
   pointer-events: none;
 }
 
 [data-theme="light"] .product-card-hover-action {
-  background: rgba(255, 255, 255, 0.94);
+  background: rgba(255, 255, 255, 0.95);
   color: var(--gold-700, #886722);
   border-color: var(--gold-500, #C5A55A);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 15px rgba(197, 165, 90, 0.25);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12), 0 0 18px rgba(197, 165, 90, 0.28);
 }
 
 .product-card:hover .product-card-hover-action {
@@ -3738,40 +3764,66 @@
   transform: translate(-50%, -50%) scale(1);
 }
 
+/* Atelier Editorial Information Suite */
 .product-info {
-  position: absolute;
-  inset: auto 0 0;
-  z-index: 3;
-  padding: 3.5rem var(--space-5) var(--space-5);
+  position: relative;
+  padding: 16px 18px 20px;
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
-  background: linear-gradient(180deg, transparent, rgba(12, 12, 13, 0.88) 32%, rgba(12, 12, 13, 0.98));
+  justify-content: center;
+  background: var(--color-bg-surface-elevated, #16161b);
 }
 
-.product-copy {
+[data-theme="light"] .product-info {
+  background: #ffffff;
+}
+
+.product-copy-centered {
   min-width: 0;
-  overflow-wrap: anywhere;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 4px;
 }
 
-.product-title {
-  font-size: 1.2rem;
+.product-title-centered {
+  font-size: 1.15rem;
   font-family: var(--font-serif);
   font-weight: 700;
-  line-height: 1.2;
+  line-height: 1.25;
   letter-spacing: -0.01em;
-  margin-bottom: var(--space-1);
-  color: #fff;
+  margin: 0;
+  text-align: center;
+  color: #ffffff;
+  width: 100%;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
-.product-subtitle {
-  font-size: 0.85rem;
-  color: rgba(255, 255, 255, 0.62);
-  line-height: 1.5;
+[data-theme="light"] .product-title-centered {
+  color: #121215;
 }
 
-[data-theme=light] .product-info {
-  background: linear-gradient(180deg, transparent, rgba(18, 18, 18, 0.76) 32%, rgba(18, 18, 18, 0.94));
+.product-subtitle-centered {
+  font-size: 0.82rem;
+  font-family: var(--font-sans);
+  color: rgba(255, 255, 255, 0.65);
+  line-height: 1.4;
+  margin: 0;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+[data-theme="light"] .product-subtitle-centered {
+  color: #63636c;
 }
 
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
@@ -3966,12 +4018,12 @@
   }
 
   .product-info {
-    padding: 2.5rem 10px 10px;
-    gap: 6px;
+    padding: 12px 14px 14px;
+    gap: 8px;
   }
 
   .product-copy {
-    min-height: 56px;
+    min-height: auto;
   }
 
   .product-title {
@@ -4803,7 +4855,8 @@
   }
 
   .product-info {
-    padding: 3rem var(--space-4) var(--space-4);
+    padding: 14px 16px 16px;
+    gap: 10px;
   }
 
   .product-title {

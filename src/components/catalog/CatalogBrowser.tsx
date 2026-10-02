@@ -599,8 +599,16 @@ export default function CatalogBrowser({
                       }}
                     >
                       <div className="product-image-box">
-                        <span className="product-category-badge">
-                          {product.categoryName}
+                        <span 
+                          className="product-origin-icon-badge" 
+                          title={product.origin === 'importado' ? 'Producto Importado' : 'Hecho en Venezuela'}
+                          aria-label={product.origin === 'importado' ? 'Producto Importado' : 'Hecho en Venezuela'}
+                        >
+                          {product.origin === 'importado' ? (
+                            <ImportedGlobeIcon width={17} height={17} />
+                          ) : (
+                            <VenezuelaFlagIcon width={20} height={13} />
+                          )}
                         </span>
 
                         {isOutOfStock ? (
@@ -609,12 +617,6 @@ export default function CatalogBrowser({
                             <span>Agotado</span>
                           </div>
                         ) : null}
-
-                        {product.galleryImages && product.galleryImages.length > 1 && !isOutOfStock && (
-                          <span className="product-angles-count-badge" title={`${product.galleryImages.length} ángulos disponibles`}>
-                            📷 {product.galleryImages.length} vistas
-                          </span>
-                        )}
 
                         <img
                           src={product.image}
@@ -636,15 +638,17 @@ export default function CatalogBrowser({
                       </div>
 
                       <div className="product-info">
-                        <div className="product-copy">
-                          <h3 className="product-title">{product.title}</h3>
-                          <p className="product-subtitle">
-                            {isOutOfStock ? (
+                        <div className="product-copy product-copy-centered">
+                          <h3 className="product-title product-title-centered">{product.title}</h3>
+                          {isOutOfStock ? (
+                            <p className="product-subtitle product-subtitle-centered">
                               <span className="stock-subtitle-out">Temporalmente no disponible</span>
-                            ) : (
-                              product.subtitle || (product.materials ? `Material: ${product.materials.slice(0, 45)}...` : 'Mobiliario Bellagio de Alta Calidad')
-                            )}
-                          </p>
+                            </p>
+                          ) : (product.subtitle || product.materials) ? (
+                            <p className="product-subtitle product-subtitle-centered">
+                              {product.subtitle || (product.materials ? `${product.materials.slice(0, 60)}` : '')}
+                            </p>
+                          ) : null}
                         </div>
                       </div>
                     </article>

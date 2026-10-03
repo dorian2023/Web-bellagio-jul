@@ -13,8 +13,8 @@ function buildSystemPrompt(products: Product[]): string {
   // Ground the model with 100% of the live catalog in a token-efficient compact schema
   const productContext = products.map((p) => {
     const stock = p.stockStatus === 'agotado' ? 'ESTADO: AGOTADO' : 'ESTADO: DISPONIBLE';
-    const orig = p.origin === 'importado' 
-      ? 'ORIGEN: IMPORTADO (Pieza importada terminada, medidas estándar fijas, NO se modifica en taller)' 
+    const orig = p.origin === 'importado'
+      ? 'ORIGEN: IMPORTADO (Pieza importada terminada, medidas estándar fijas, NO se modifica en taller)'
       : 'ORIGEN: NACIONAL (Fabricación artesanal directa en taller Bellagio Caracas, 100% personalizable a medida exacta, telas y acabados)';
     const dims = p.dimensions ? `Medidas: "${p.dimensions}"` : 'Medidas: "A medida"';
     const mats = p.materials ? `Material: "${p.materials}"` : '';
@@ -67,15 +67,15 @@ const MAX_REQUESTS_PER_WINDOW = 15; // Máximo 15 peticiones por minuto por IP
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
   const timestamps = rateLimitMap.get(ip) || [];
-  
+
   // Limpiar timestamps fuera de la ventana
   const recentTimestamps = timestamps.filter(time => now - time < RATE_LIMIT_WINDOW_MS);
-  
+
   if (recentTimestamps.length >= MAX_REQUESTS_PER_WINDOW) {
     rateLimitMap.set(ip, recentTimestamps);
     return true;
   }
-  
+
   recentTimestamps.push(now);
   rateLimitMap.set(ip, recentTimestamps);
   return false;
@@ -99,9 +99,9 @@ if (typeof setInterval !== 'undefined') {
 export async function POST(req: NextRequest) {
   try {
     // 0. Rate limiting por IP
-    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || 
-                     req.headers.get('x-real-ip') || 
-                     'anonymous';
+    const clientIp = req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
+      req.headers.get('x-real-ip') ||
+      'anonymous';
 
     if (isRateLimited(clientIp)) {
       return NextResponse.json(

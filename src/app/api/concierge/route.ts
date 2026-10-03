@@ -10,43 +10,59 @@ interface ChatMessage {
 
 // System instructions for the Bellagio Concierge Advisor
 function buildSystemPrompt(products: Product[]): string {
-  const productContext = products.slice(0, 120).map((p) => {
-    return `- ID: ${p.id} | Nombre: "${p.title}" | Categoría: ${p.categoryName} (${p.category}) | Origen: ${p.origin || 'nacional'} | Estado: ${p.stockStatus || 'disponible'} | Materiales: ${p.materials || 'Maderas nobles y acabados de lujo'} | Medidas: ${p.dimensions || 'A consultar'} | Colores: ${(p.availableColors || []).join(', ') || 'Variados'} | Imagen: ${p.image}`;
+  // Ground the model with 100% of the live catalog in a token-efficient compact schema
+  const productContext = products.map((p) => {
+    const stock = p.stockStatus === 'agotado' ? 'ESTADO: AGOTADO' : 'ESTADO: DISPONIBLE';
+    const orig = p.origin === 'importado' 
+      ? 'ORIGEN: IMPORTADO (Pieza importada terminada, medidas estándar fijas, NO se modifica en taller)' 
+      : 'ORIGEN: NACIONAL (Fabricación artesanal directa en taller Bellagio Caracas, 100% personalizable a medida exacta, telas y acabados)';
+    const dims = p.dimensions ? `Medidas: "${p.dimensions}"` : 'Medidas: "A medida"';
+    const mats = p.materials ? `Material: "${p.materials}"` : '';
+    const desc = p.description ? `Desc: "${p.description}"` : '';
+    const colors = (p.availableColors || []).length > 0 ? `Colores: ${p.availableColors.join(', ')}` : '';
+    const details = [stock, orig, dims, mats, desc, colors].filter(Boolean).join(' | ');
+    return `[ID: ${p.id}] "${p.title}" | Cat: ${p.categoryName} (${p.category}) | ${details}`;
   }).join('\n');
 
-  return `Eres "Asistente Bellagio", el Asesor Senior de Diseño de Interiores y Mobiliario de Alta Calidad de Muebles Bellagio en Caracas, Venezuela.
+  return `Eres "Asistente Bellagio", el Asesor Senior de Ventas y Mobiliario de Lujo de Muebles Bellagio en Caracas, Venezuela.
 
-TU MISIÓN:
-Asesorar con extrema elegancia, conocimiento y amabilidad a los clientes que visitan nuestra tienda web, responder sus dudas sobre muebles, estilos, materiales y sedes físicas, y guiarlos hacia productos de calidad hechos con los más altos estándares del mercado venezolano, así como piezas importadas de primer nivel, orientándolos a una cotización personalizada vía WhatsApp o visita a nuestros showrooms.
+TU ROL DE VENDEDOR DE ALTO IMPACTO:
+Eres un vendedor de showroom de ultra-lujo: directo al grano, empático, sofisticado y altamente enfocado en cerrar la venta. El cliente busca respuestas rápidas, precisas y piezas reales de nuestro catálogo.
 
-TONO Y PERSONALIDAD:
-- Exclusivo, cortés, sobrio, respetuoso y altamente profesional ("Quiet Luxury").
-- Habla en español elegante y acogedor. Trata al cliente con aprecio ("un placer saludarle", "con gusto le asesoro").
-- NUNCA inventes precios numéricos directos (explica que cada pieza se personaliza en acabados y telas, por lo que las cotizaciones formales se entregan con gusto por WhatsApp).
-- NUNCA inventes productos que no estén en el catálogo de Bellagio.
+REGLAS ESTRICTAS DE NEGOCIO Y COMUNICACIÓN:
+1. DISPONIBILIDAD & STOCK:
+   - Prioriza siempre piezas con "ESTADO: DISPONIBLE".
+   - Si un producto dice "ESTADO: AGOTADO", no lo ofrezcas como entrega inmediata. Si el cliente pregunta específicamente por un modelo agotado, aclárale con honestidad que está agotado, y si es Nacional ofrécele confeccionarlo por encargo en taller, o recomiéndale una alternativa similar disponible.
 
-INFORMACIÓN DE SHOWROOMS OFICIALES EN CARACAS:
-1. Sede Principal (Bellagio JK): Avenida Comercio, Caracas.
-2. Showroom Bellagio Mobili (2 Showrooms): Bella Vista, vía La Yaguara, C.C. Davinci.
-3. Showroom Bellagio Collezione (Casa Mall - 2 Showrooms): C.C. Casa Mall, Nivel Galería, Urb. El Cafetal.
-WhatsApp Oficial: +58 414-1536516
+2. DISTINCIÓN CLARA ENTRE IMPORTADOS Y FABRICACIÓN NACIONAL:
+   - PRODUCTOS IMPORTADOS: Son piezas exclusivas de importación ya terminadas. NO las fabricamos nosotros y tienen medidas estándar fijas de fábrica (NO se alteran dimensiones).
+   - PRODUCTOS NACIONALES (Hecho en Venezuela): Fabricación artesanal directa en nuestro taller propio en Caracas. ¡Estos SÍ se confeccionan y personalizan 100% a la medida exacta del cliente, orientación en L, maderas y telas (lino, bouclé, terciopelo, antifluido pet-friendly)!
 
-ESTADO DE DISPONIBILIDAD:
-- Si un producto tiene Estado "agotado", infórmale al cliente que está temporalmente agotado y que con gusto se puede consultar la fecha del próximo lote o encargar bajo pedido con nuestros artesanos.
+3. DISTINCIÓN EXACTA DE FORMAS Y GEOMETRÍAS:
+   - Comedores y Mesas: Distingue rigurosamente entre Circular/Redondo (diámetro), Rectangular, Cuadrado, Ovalado y Extensible. Nunca digas que un modelo rectangular es circular.
+   - Sofás: Distingue entre 1 puesto (poltrona), 2 puestos (loveseat), 3 puestos, 4 puestos, Modular en L / Esquinero con Canapé, y Sofacama.
+   - Camas: Individual, Matrimonial, Queen, King.
 
-CATÁLOGO REAL EN VIVO (${products.length} PIEZAS):
+4. RESPUESTAS CORTAS Y DIRECTAS (MÁXIMO 1 A 2 PÁRRAFOS BREVES, 60-110 PALABRAS TOTAL):
+   - Ve directo a la respuesta en la primera línea. Cero charlas filosóficas o teorías de decoración.
+   - Si buscan una forma o medida específica (ej: "comedor circular", "sofá 2.20m"):
+     a) Recomienda las piezas del catálogo que coincidan exactamente (ej: para circular, el "Comedor J-020 Extensible").
+     b) Si no hay más modelos con esa forma prefabricada, explica brevemente: "En nuestro taller en Caracas confeccionamos a medida comedores con tope circular en el diámetro exacto que requieras (1.20m, 1.40m, etc.)".
+     c) Puedes sugerir 1 o 2 modelos más del catálogo como alternativas o bases adaptables, aclarando su formato real.
+   - Cierra siempre invitando amablemente a continuar por WhatsApp (+58 414-1536516) para cotización y muestras, o visitar nuestros showrooms en Caracas (Casa Mall en El Cafetal, C.C. Davinci en La Yaguara o Av. Comercio).
+
+CATÁLOGO REAL EN VIVO (${products.length} PIEZAS DISPONIBLES):
 ${productContext}
 
-FORMATO DE RESPUESTA:
-- Responde de forma clara, concisa y atractiva (máximo 2 a 3 párrafos cortos).
-- Si mencionas o recomiendas productos específicos del catálogo, usa su nombre exacto.
-- Al final de tu recomendación, invita cordialmente a cotizar o agendar una cita en showroom mediante WhatsApp.`;
+FORMATO OBLIGATORIO DE RESPUESTA:
+[Párrafo 1 y 2 concisos con la recomendación directa, opciones a medida y llamada a cotizar por WhatsApp (+58 414-1536516)]
+<<<IDS: id_1, id_2>>>`;
 }
 
 // Rate limiting storage: map IP -> timestamps
 const rateLimitMap = new Map<string, number[]>();
 const RATE_LIMIT_WINDOW_MS = 60 * 1000; // 1 minuto
-const MAX_REQUESTS_PER_WINDOW = 12; // Máximo 12 peticiones por minuto por IP
+const MAX_REQUESTS_PER_WINDOW = 15; // Máximo 15 peticiones por minuto por IP
 
 function isRateLimited(ip: string): boolean {
   const now = Date.now();
@@ -115,12 +131,12 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'No se enviaron mensajes.' }, { status: 400 });
     }
 
-    // Validación y sanitización estricta de mensajes (previene Prompt Injection masivo y ataques de payload)
+    // Validación y sanitización estricta de mensajes
     const sanitizedMessages = rawMessages
-      .slice(-8) // Conservar solo los últimos 8 mensajes de contexto
+      .slice(-10) // Conservar los últimos 10 mensajes de contexto
       .map((msg) => ({
         role: msg.role === 'assistant' ? 'assistant' : 'user',
-        content: typeof msg.content === 'string' ? msg.content.trim().slice(0, 800) : ''
+        content: typeof msg.content === 'string' ? msg.content.trim().slice(0, 1000) : ''
       }))
       .filter((msg) => msg.content.length > 0);
 
@@ -128,7 +144,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'El mensaje no contiene texto válido.' }, { status: 400 });
     }
 
-    // 1. Fetch live catalog to ground the LLM
+    // 1. Fetch live catalog to ground the LLM with 100% of data
     const { products } = await fetchCatalog();
     const systemPrompt = buildSystemPrompt(products);
 
@@ -143,15 +159,15 @@ export async function POST(req: NextRequest) {
       });
     });
 
-    // 3. Call Google Gemini API with fallback models and systemInstruction
+    // 3. Call Google Gemini API with current active models
     const candidateModels = [
       'gemini-3.8-flash',
       'gemini-3.5-flash',
+      'gemini-3.0-flash',
       'gemini-2.5-flash',
-      'gemini-2.0-flash-exp',
-      'gemini-1.5-flash-latest'
+      'gemini-2.5-pro'
     ];
-    let reply = '';
+    let rawReply = '';
     let apiSuccess = false;
 
     for (const modelName of candidateModels) {
@@ -170,7 +186,7 @@ export async function POST(req: NextRequest) {
             contents,
             generationConfig: {
               temperature: 0.7,
-              maxOutputTokens: 800,
+              maxOutputTokens: 2048, // Generous limit to guarantee complete answers without truncation
               topP: 0.95
             }
           })
@@ -178,8 +194,8 @@ export async function POST(req: NextRequest) {
 
         if (response.ok) {
           const data = await response.json();
-          reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
-          if (reply) {
+          rawReply = data?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+          if (rawReply) {
             apiSuccess = true;
             break;
           }
@@ -192,21 +208,45 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (!apiSuccess || !reply) {
+    if (!apiSuccess || !rawReply) {
       return NextResponse.json(
         { error: 'No pudimos contactar al Asesor de Bellagio en este momento.' },
         { status: 502 }
       );
     }
 
-    // 4. Identify if any products were mentioned to return quick recommendation cards
-    const mentionedProducts = products
-      .filter((p) => reply.toLowerCase().includes(p.title.toLowerCase()))
-      .slice(0, 3);
+    // 4. Extract structured <<<IDS: id1, id2, ...>>> tags or fallback [RECOMENDADOS: ...]
+    const recommendedIds: string[] = [];
+    const delimiterMatch = rawReply.match(/<<<IDS:\s*([^>]+)>>>/i) || rawReply.match(/\[(?:RECOMENDADOS|IDS_RECOMENDADOS):\s*([^\]]+)\]/i);
+
+    if (delimiterMatch && delimiterMatch[1]) {
+      const ids = delimiterMatch[1].split(',').map((id) => id.trim().replace(/['"]/g, ''));
+      ids.forEach((id) => {
+        if (id && !recommendedIds.includes(id)) {
+          recommendedIds.push(id);
+        }
+      });
+    }
+
+    // Clean any delimiter tags from user-facing text cleanly
+    let cleanReply = rawReply
+      .replace(/<<<IDS:\s*[^>]+>>>/gi, '')
+      .replace(/\[(?:RECOMENDADOS|IDS_RECOMENDADOS):\s*[^\]]+\]/gi, '')
+      .trim();
+
+    // 5. Match actual Product objects by ID
+    let matchedProducts = products.filter((p) => recommendedIds.includes(String(p.id)));
+
+    // Fallback if no IDs matched: search by exact/fuzzy title in the text
+    if (matchedProducts.length === 0) {
+      matchedProducts = products
+        .filter((p) => cleanReply.toLowerCase().includes(p.title.toLowerCase()))
+        .slice(0, 3);
+    }
 
     return NextResponse.json({
-      reply,
-      products: mentionedProducts
+      reply: cleanReply,
+      products: matchedProducts.slice(0, 3)
     });
   } catch (error: any) {
     console.error('Error en Concierge API route:', error);

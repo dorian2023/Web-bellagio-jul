@@ -60,6 +60,7 @@ fix-html.js
 generate-logo.js
 test-*.js
 test-*.ts
+test-*.mjs
 scratch/
 temp/
 tmp/
@@ -68,6 +69,10 @@ tmp/
 *.bak
 *.old
 *.orig
+*.doc
+*.docx
+public/guia-plantillas-*
+plantillas_admin_*
 *~
 
 # 7. Testing & Coverage

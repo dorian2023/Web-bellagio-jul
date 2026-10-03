@@ -4389,25 +4389,66 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: 3px;
 }
 
 .concierge-rec-info strong,
+.concierge-rec-title,
 [data-theme="light"] .concierge-rec-info strong {
-  font-size: 0.84rem;
+  font-size: 0.86rem;
   color: #1A1A1C;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
   font-family: var(--font-serif);
+  font-weight: 700;
+}
+
+.concierge-rec-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.concierge-rec-meta span {
+  font-size: 0.68rem;
+  color: var(--gold-700);
   font-weight: 600;
 }
 
-.concierge-rec-info span,
-[data-theme="light"] .concierge-rec-info span {
-  font-size: 0.7rem;
-  color: var(--gold-700);
+.concierge-rec-dim-badge {
+  font-size: 0.64rem !important;
+  font-family: var(--font-sans);
+  background: rgba(197, 165, 90, 0.15);
+  color: var(--gold-800) !important;
+  border: 1px solid rgba(197, 165, 90, 0.3);
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
   font-weight: 600;
+  white-space: nowrap;
+}
+
+[data-theme="dark"] .concierge-rec-card {
+  background: rgba(25, 25, 32, 0.85);
+  border-color: rgba(212, 175, 55, 0.25);
+}
+
+[data-theme="dark"] .concierge-rec-card:hover {
+  background: rgba(32, 32, 42, 0.95);
+  border-color: var(--gold-400);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+}
+
+[data-theme="dark"] .concierge-rec-info strong,
+[data-theme="dark"] .concierge-rec-title {
+  color: #ffffff;
+}
+
+[data-theme="dark"] .concierge-rec-dim-badge {
+  background: rgba(212, 175, 55, 0.2);
+  color: var(--gold-300) !important;
+  border-color: rgba(212, 175, 55, 0.4);
 }
 
 .concierge-rec-arrow,

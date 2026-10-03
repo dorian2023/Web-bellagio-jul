@@ -14,10 +14,10 @@ interface Message {
 }
 
 const QUICK_PROMPTS = [
-  '🛋️ ¿Qué sofás tienen disponibles?',
-  '📍 ¿Dónde están ubicadas las tiendas?',
-  '🪵 ¿Qué maderas y telas utilizan?',
-  '✨ ¿Cómo cotizar un comedor a medida?'
+  '🛋️ Sofás de 3 puestos con medidas',
+  '📏 ¿Fabrican muebles a mi medida exacta?',
+  '🍽️ Comedores para 6 y 8 personas',
+  '📍 Sedes y Showrooms en Caracas'
 ];
 
 export default function ConciergeChat() {
@@ -26,7 +26,7 @@ export default function ConciergeChat() {
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Bienvenido a Muebles Bellagio. Soy su Asesor de Diseño en línea. ¿En qué pieza o espacio exclusivo le gustaría que le oriente hoy?',
+      content: 'Bienvenido a Muebles Bellagio. Soy su Asesor Senior de Diseño e Interiorismo. Indíqueme qué ambiente o medidas busca (ej: "sofá de 3 puestos de 2.20m", "comedor de 8 personas") y con gusto le orientaré con piezas exactas de nuestro catálogo o fabricación personalizada a medida.',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -198,7 +198,7 @@ export default function ConciergeChat() {
                   {/* Recommended Products Mini Cards */}
                   {msg.products && msg.products.length > 0 && (
                     <div className="concierge-product-recommendations">
-                      <span className="concierge-rec-tag">Piezas recomendadas:</span>
+                      <span className="concierge-rec-tag">Piezas recomendadas de nuestro catálogo:</span>
                       <div className="concierge-rec-list">
                         {msg.products.map((p) => (
                           <div
@@ -207,13 +207,26 @@ export default function ConciergeChat() {
                             onClick={() => setSelectedProduct(p)}
                             role="button"
                             tabIndex={0}
+                            title={`Ver ficha completa de ${p.title}`}
                           >
-                            <img src={p.image} alt={p.title} className="concierge-rec-img" />
+                            <img 
+                              src={p.image || '/images/hero-poster.webp'} 
+                              alt={p.title} 
+                              className="concierge-rec-img"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = '/images/hero-poster.webp';
+                              }}
+                            />
                             <div className="concierge-rec-info">
-                              <strong>{p.title}</strong>
-                              <span>{p.categoryName} {p.stockStatus === 'agotado' ? '• (Agotado)' : ''}</span>
+                              <strong className="concierge-rec-title">{p.title}</strong>
+                              <div className="concierge-rec-meta">
+                                <span>{p.categoryName}</span>
+                                {p.dimensions && (
+                                  <span className="concierge-rec-dim-badge">📏 {p.dimensions}</span>
+                                )}
+                              </div>
                             </div>
-                            <span className="concierge-rec-arrow">→</span>
+                            <span className="concierge-rec-arrow" aria-hidden="true">→</span>
                           </div>
                         ))}
                       </div>

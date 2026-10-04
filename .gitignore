@@ -72,6 +72,9 @@ tmp/
 *.doc
 *.docx
 public/guia-plantillas-*
+public/PROMPT_*
+PROMPT_*
+prompt_*
 plantillas_admin_*
 *~
 

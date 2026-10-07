@@ -54,7 +54,10 @@ docs/
 architecture/
 guidelines/
 
-# 6. Scripts Auxiliares, Pruebas y Temporales de Desarrollo
+# 6. Scripts Auxiliares, Informes Locales y Pruebas
+INFORME_*
+informe_*
+*.pdf
 fix-css.js
 fix-html.js
 generate-logo.js

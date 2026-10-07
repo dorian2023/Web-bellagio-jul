@@ -1,14 +1,12 @@
 /**
- * @file security.js
- * @description Security utilities: XSS escaping, input sanitization, rate limiting, and honeypot validation.
+ * @file security.ts
+ * @description Security utilities: XSS escaping, input sanitization, rate limiting, and validation.
  */
 
 /**
  * Escapes unsafe characters to prevent Cross-Site Scripting (XSS).
- * @param {string} str - Raw input string.
- * @returns {string} - Escaped safe string.
  */
-export function escapeHTML(str) {
+export function escapeHTML(str: string): string {
   if (!str || typeof str !== 'string') return '';
   return str
     .replace(/&/g, '&amp;')
@@ -21,20 +19,16 @@ export function escapeHTML(str) {
 
 /**
  * Sanitizes generic user text input.
- * @param {string} input 
- * @returns {string}
  */
-export function sanitizeInput(input) {
+export function sanitizeInput(input: string): string {
   if (typeof input !== 'string') return '';
   return input.trim().slice(0, 2000);
 }
 
 /**
  * Validates email format using RFC 5322 compatible regex.
- * @param {string} email 
- * @returns {boolean}
  */
-export function validateEmail(email) {
+export function validateEmail(email: string): boolean {
   if (!email || typeof email !== 'string') return false;
   const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
   return emailRegex.test(email.trim());
@@ -42,10 +36,8 @@ export function validateEmail(email) {
 
 /**
  * Validates international phone format.
- * @param {string} phone 
- * @returns {boolean}
  */
-export function validatePhone(phone) {
+export function validatePhone(phone: string): boolean {
   if (!phone || typeof phone !== 'string') return false;
   const cleanPhone = phone.replace(/[\s\-\(\)\+]/g, '');
   return cleanPhone.length >= 7 && cleanPhone.length <= 16 && /^\d+$/.test(cleanPhone);
@@ -53,12 +45,10 @@ export function validatePhone(phone) {
 
 /**
  * Creates an in-memory client-side rate limiter.
- * @param {number} cooldownMs - Minimum time in milliseconds between allowed calls.
- * @returns {() => boolean} - Returns true if allowed, false if rate limited.
  */
-export function createRateLimiter(cooldownMs = 30000) {
+export function createRateLimiter(cooldownMs = 30000): () => boolean {
   let lastExecution = 0;
-  return function isAllowed() {
+  return function isAllowed(): boolean {
     const now = Date.now();
     if (now - lastExecution < cooldownMs) {
       return false;

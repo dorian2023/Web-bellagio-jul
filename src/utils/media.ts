@@ -1,17 +1,15 @@
 /**
- * @file media.js
+ * @file media.ts
  * @description Media helper utilities for video embed URL resolution, thumbnails, and sanitization.
  */
 
 /**
  * Extracts the YouTube Video ID from any standard, short, or shorts YouTube URL.
- * @param {string} url - YouTube URL or ID
- * @returns {string|null} - YouTube Video ID or null
  */
-export function extractYouTubeId(url) {
+export function extractYouTubeId(url?: string | null): string | null {
   if (!url || typeof url !== 'string') return null;
   const trimmed = url.trim();
-  
+
   // Match youtube.com/shorts/ID
   const shortsMatch = trimmed.match(/(?:youtube\.com\/shorts\/)([a-zA-Z0-9_-]{11})/);
   if (shortsMatch) return shortsMatch[1];
@@ -34,10 +32,8 @@ export function extractYouTubeId(url) {
 
 /**
  * Returns a high quality thumbnail URL for a YouTube video.
- * @param {string} urlOrId 
- * @returns {string|null}
  */
-export function getYouTubeThumbnailUrl(urlOrId) {
+export function getYouTubeThumbnailUrl(urlOrId?: string | null): string | null {
   const videoId = extractYouTubeId(urlOrId);
   if (!videoId) return null;
   return `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
@@ -45,11 +41,8 @@ export function getYouTubeThumbnailUrl(urlOrId) {
 
 /**
  * Returns a secure autoplay-ready lightweight YouTube embed URL using the privacy-enhanced youtube-nocookie domain.
- * @param {string} urlOrId - YouTube video URL or ID.
- * @param {boolean} autoplay - Whether to autoplay in loop/mute mode.
- * @returns {string|null}
  */
-export function getYouTubeEmbedUrl(urlOrId, autoplay = true) {
+export function getYouTubeEmbedUrl(urlOrId?: string | null, autoplay = true): string | null {
   const videoId = extractYouTubeId(urlOrId);
   if (!videoId) return null;
 
@@ -67,4 +60,3 @@ export function getYouTubeEmbedUrl(urlOrId, autoplay = true) {
 
   return `https://www.youtube-nocookie.com/embed/${videoId}?${params.toString()}`;
 }
-

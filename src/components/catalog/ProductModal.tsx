@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { Product } from '@/src/types/catalog';
-import { isProductSelected, toggleProductSelection } from '@/src/utils/inquiry-cart.js';
-import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/src/utils/media.js';
+import { isProductSelected, toggleProductSelection } from '@/src/utils/inquiry-cart';
+import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/src/utils/media';
 import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
 import { fetchCatalog } from '@/src/lib/supabase';
 import { CATALOGS_DATA } from '@/src/data/catalogs';

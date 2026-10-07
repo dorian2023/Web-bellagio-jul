@@ -1,11 +1,10 @@
 /**
  * @file stats.ts
- * @description Credibility statistics data for Muebles Bellagio.
+ * @description Key performance and brand credibility statistics for Bellagio.
  */
 
 export interface StatItem {
   value: number;
-  displayValue: string;
   suffix: string;
   label: string;
   description: string;
@@ -15,35 +14,26 @@ export interface StatItem {
 export const STATS_DATA: StatItem[] = [
   {
     value: 17,
-    displayValue: '17',
     suffix: '',
     label: 'Años de Trayectoria',
-    description: '17 años de maestría en el mercado mobiliario de alta gama en Venezuela',
-    badge: 'Tradición'
+    description: '17 años en el mercado mobiliario venezolano'
   },
   {
     value: 100,
-    displayValue: '100',
     suffix: '%',
     label: 'Diseño Exclusivo',
-    description: 'Diseño exclusivo y productos importados de autor y excelente calidad',
-    badge: 'Exclusividad'
+    description: 'Diseño exclusivo y productos importados de excelente calidad'
   },
   {
     value: 10000,
-    displayValue: '10.000',
     suffix: '+',
     label: 'Espacios Transformados',
-    description: 'Más de 10.000 habitaciones, salas y comedores entregados a satisfacción',
-    badge: 'Confianza'
+    description: 'Más de 10.000 habitaciones, salas y comedores de nuestros clientes'
   },
   {
     value: 3,
-    displayValue: '3',
     suffix: ' meses',
     label: 'Servicio de Postventa',
-    description: 'Te acompañamos: atención directa de fábrica durante los 3 meses siguientes a la entrega',
-    badge: 'Garantía Total'
+    description: 'Te acompañamos después de tu compra: atención de defectos de fábrica durante los 3 meses siguientes a la entrega de tu producto.'
   }
 ];
-

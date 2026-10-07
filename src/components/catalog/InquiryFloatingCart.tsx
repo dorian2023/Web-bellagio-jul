@@ -4,7 +4,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { CATALOGS_DATA } from '@/src/data/catalogs';
 import { Product } from '@/src/types/catalog';
 import { fetchCatalog } from '@/src/lib/supabase';
-import { toggleProductSelection, clearAllSelections } from '@/src/utils/inquiry-cart.js';
+import { toggleProductSelection, clearAllSelections } from '@/src/utils/inquiry-cart';
 
 const WHATSAPP_NUMBER = '584141536516';
 

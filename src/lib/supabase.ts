@@ -8,10 +8,20 @@ import { createClient } from '@supabase/supabase-js';
 import { Product, Category } from '@/src/types/catalog';
 import { CATALOGS_DATA, CATEGORIES_DATA } from '@/src/data/catalogs';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://vjtjwifynfzdjkdpruty.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'sb_publishable_J8wyvsMDU4uwf7tNXxZ9xQ_8CW4Dwue';
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+if (!supabaseUrl || !supabaseAnonKey) {
+  if (typeof window !== 'undefined') {
+    console.warn('⚠️ [Supabase] NEXT_PUBLIC_SUPABASE_URL o NEXT_PUBLIC_SUPABASE_ANON_KEY no están definidas en las variables de entorno.');
+  }
+}
+
+// Initialize Supabase client (using dummy values during SSR pre-rendering if env is missing)
+export const supabase = createClient(
+  supabaseUrl || 'https://placeholder-project.supabase.co',
+  supabaseAnonKey || 'placeholder-anon-key'
+);
 
 /**
  * Normalizes a raw Supabase product row into the frontend Product interface

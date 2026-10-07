@@ -88,9 +88,25 @@ export default function AdminPage() {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setAuthError('');
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setAuthError('Credenciales incorrectas. Verifica tu correo y contraseña.');
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase.auth.signInWithPassword({ 
+        email: email.trim(), 
+        password 
+      });
+      if (error) {
+        if (error.message.includes('Invalid login credentials')) {
+          setAuthError('Credenciales incorrectas. Verifica que tu correo y contraseña coincidan con tu usuario en Supabase.');
+        } else if (error.message.includes('Email not confirmed')) {
+          setAuthError('El correo electrónico no ha sido confirmado aún en Supabase.');
+        } else {
+          setAuthError(`Error de autenticación: ${error.message}`);
+        }
+      }
+    } catch (err: any) {
+      setAuthError(`Error de conexión con Supabase: ${err?.message || 'Error desconocido'}`);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 

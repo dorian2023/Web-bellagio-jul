@@ -8,19 +8,22 @@ import { createClient } from '@supabase/supabase-js';
 import { Product, Category } from '@/src/types/catalog';
 import { CATALOGS_DATA, CATEGORIES_DATA } from '@/src/data/catalogs';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
+const DEFAULT_SUPABASE_URL = 'https://vjtjwifynfzdjkdpruty.supabase.co';
+const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_J8wyvsMDU4uwf7tNXxZ9xQ_8CW4Dwue';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  if (typeof window !== 'undefined') {
-    console.warn('⚠️ [Supabase] NEXT_PUBLIC_SUPABASE_URL o NEXT_PUBLIC_SUPABASE_ANON_KEY no están definidas en las variables de entorno.');
-  }
-}
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || DEFAULT_SUPABASE_ANON_KEY;
 
-// Initialize Supabase client (using dummy values during SSR pre-rendering if env is missing)
+// Initialize Supabase client with robust connection handling
 export const supabase = createClient(
-  supabaseUrl || 'https://placeholder-project.supabase.co',
-  supabaseAnonKey || 'placeholder-anon-key'
+  supabaseUrl,
+  supabaseAnonKey,
+  {
+    auth: {
+      persistSession: typeof window !== 'undefined',
+      autoRefreshToken: typeof window !== 'undefined',
+    }
+  }
 );
 
 /**
@@ -74,11 +77,18 @@ const CATALOG_CACHE_TTL_MS = 60 * 1000; // 60 seconds TTL
 
 /**
  * Fetches published products and active categories from Supabase with in-memory caching and deduplication,
- * falling back gracefully to local catalog data if the database is unreachable.
+ * falling back gracefully to local catalog data if the database is unreachable or missing environment variables.
  */
 export async function fetchCatalog(): Promise<{ products: Product[]; categories: Category[] }> {
   const now = Date.now();
   if (cachedCatalogData && (now - catalogCacheTimestamp < CATALOG_CACHE_TTL_MS)) {
+    return cachedCatalogData;
+  }
+
+  // If credentials are not provided (e.g. during clean Vercel builds without env vars configured), fallback immediately in 0ms
+  if (!supabaseUrl || !supabaseAnonKey || supabaseUrl.includes('placeholder')) {
+    cachedCatalogData = { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
+    catalogCacheTimestamp = Date.now();
     return cachedCatalogData;
   }
 
@@ -102,7 +112,9 @@ export async function fetchCatalog(): Promise<{ products: Product[]; categories:
 
       if (pError || !dbProducts || dbProducts.length === 0) {
         console.warn('Usando catálogo local:', pError?.message || 'Sin productos en DB');
-        return { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
+        cachedCatalogData = { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
+        catalogCacheTimestamp = Date.now();
+        return cachedCatalogData;
       }
 
       const normalizedProducts: Product[] = dbProducts.map(normalizeProduct);
@@ -126,8 +138,10 @@ export async function fetchCatalog(): Promise<{ products: Product[]; categories:
       catalogCacheTimestamp = Date.now();
       return cachedCatalogData;
     } catch (err) {
-      console.error('Error cargando catálogo Supabase:', err);
-      return { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
+      console.warn('Fallback a catálogo local Bellagio:', (err as any)?.message || err);
+      cachedCatalogData = { products: CATALOGS_DATA, categories: CATEGORIES_DATA };
+      catalogCacheTimestamp = Date.now();
+      return cachedCatalogData;
     } finally {
       inflightCatalogPromise = null;
     }

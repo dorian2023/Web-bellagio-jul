@@ -141,6 +141,111 @@ interface ProductModalProps {
   allProducts?: Product[];
 }
 
+function AngleThumbnailButton({
+  imgUrl,
+  idx,
+  isSelected,
+  isLoadingAngle,
+  productTitle,
+  onClick,
+}: {
+  imgUrl: string;
+  idx: number;
+  isSelected: boolean;
+  isLoadingAngle?: boolean;
+  productTitle: string;
+  onClick: () => void;
+}) {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  // Reset loaded state when image source changes
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [imgUrl]);
+
+  return (
+    <button
+      type="button"
+      className={`product-angle-thumb-btn ${isSelected ? 'active' : ''} ${isLoadingAngle ? 'is-loading-active-angle' : ''}`}
+      onClick={onClick}
+      aria-label={`Ver foto ${idx + 1}`}
+      title={`Foto ${idx + 1}`}
+      style={{ position: 'relative' }}
+    >
+      {!isLoaded && (
+        <div className="vip-thumb-skeleton-loader" aria-hidden="true">
+          <div className="vip-thumb-spinner-dot" />
+        </div>
+      )}
+      {isLoadingAngle && (
+        <div className="vip-thumb-active-loader" aria-hidden="true">
+          <div className="vip-thumb-spinner-dot" />
+        </div>
+      )}
+      <Image
+        src={imgUrl}
+        alt={`${productTitle} ${idx + 1}`}
+        fill
+        sizes="54px"
+        quality={40}
+        style={{
+          objectFit: 'cover',
+          opacity: isLoaded ? 1 : 0,
+          transition: 'opacity 0.2s ease',
+        }}
+        onLoad={() => setIsLoaded(true)}
+      />
+    </button>
+  );
+}
+
+function SimilarProductCardButton({
+  item,
+  onClick,
+}: {
+  item: Product;
+  onClick: () => void;
+}) {
+  const [isLoaded, setIsLoaded] = useState<boolean>(false);
+
+  useEffect(() => {
+    setIsLoaded(false);
+  }, [item.image]);
+
+  return (
+    <button
+      type="button"
+      className="similar-product-card"
+      onClick={onClick}
+      title={`Ver ${item.title}`}
+    >
+      <div className="similar-img-box" style={{ position: 'relative' }}>
+        {!isLoaded && (
+          <div className="vip-thumb-skeleton-loader" aria-hidden="true">
+            <div className="vip-thumb-spinner-dot" />
+          </div>
+        )}
+        <Image
+          src={item.image || '/images/hero-poster.webp'}
+          alt={item.title}
+          fill
+          sizes="78px"
+          quality={45}
+          style={{
+            objectFit: 'contain',
+            opacity: isLoaded ? 1 : 0,
+            transition: 'opacity 0.2s ease',
+          }}
+          onLoad={() => setIsLoaded(true)}
+        />
+      </div>
+      <span className="similar-title" title={item.title}>
+        {item.title}
+      </span>
+    </button>
+  );
+}
+
 export default function ProductModal({
   product: initialProduct,
   onClose,
@@ -150,6 +255,7 @@ export default function ProductModal({
   const [activeProduct, setActiveProduct] = useState<Product | null>(initialProduct);
   const [catalogList, setCatalogList] = useState<Product[]>(allProducts);
   const [mediaTab, setMediaTab] = useState<'photo' | 'video'>('photo');
+  const [isAngleLoading, setIsAngleLoading] = useState<boolean>(false);
   const [isVideoLoading, setIsVideoLoading] = useState<boolean>(true);
   const [isFullscreenZoom, setIsFullscreenZoom] = useState<boolean>(false);
   const [fullscreenScale, setFullscreenScale] = useState<number>(1.0);
@@ -158,6 +264,13 @@ export default function ProductModal({
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
   const [isSwitchingProduct, setIsSwitchingProduct] = useState<boolean>(false);
   const [switchingTitle, setSwitchingTitle] = useState<string>('');
+
+  const handleSelectAngle = (idx: number) => {
+    if (idx !== selectedImageIndex) {
+      setIsAngleLoading(true);
+      setSelectedImageIndex(idx);
+    }
+  };
 
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const fullscreenStageRef = useRef<HTMLDivElement | null>(null);
@@ -253,10 +366,23 @@ export default function ProductModal({
   const isDirectVideo = Boolean(videoUrl && (videoUrl.endsWith('.mp4') || videoUrl.endsWith('.webm') || videoUrl.includes('/videos/')));
   const hasVideo = Boolean(youtubeEmbedUrl || isDirectVideo);
 
+  // Preload secondary angle images in the browser cache so switching is instantaneous
+  useEffect(() => {
+    if (allImages.length > 1 && typeof window !== 'undefined') {
+      allImages.forEach((url) => {
+        if (url && url !== '/images/hero-poster.webp') {
+          const preloadImg = new window.Image();
+          preloadImg.src = url;
+        }
+      });
+    }
+  }, [allImages]);
+
   // Sync selection state with inquiry cart and reset media tab on product change
   useEffect(() => {
     setMediaTab('photo');
     setIsVideoLoading(true);
+    setIsAngleLoading(false);
     setSelectedImageIndex(0);
     if (product) {
       setIsMarked(isProductSelected(product.id));
@@ -611,15 +737,28 @@ export default function ProductModal({
                   </div>
                 ) : (
                   <>
+                    {isAngleLoading && (
+                      <div className="vip-angle-loading-pill" aria-live="polite">
+                        <div className="vip-angle-loader-spinner" />
+                        <span>Cargando ángulo...</span>
+                      </div>
+                    )}
                     <Image 
+                      key={`${product.id}-angle-${selectedImageIndex}-${currentDisplayImage}`}
                       src={currentDisplayImage || '/images/hero-poster.webp'} 
                       alt={`${product.title} - Ángulo ${selectedImageIndex + 1}`} 
                       className="lightbox-img main-product-img"
                       fill
-                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 750px"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 70vw, 900px"
                       quality={92}
                       priority
-                      style={{ objectFit: 'contain' }}
+                      style={{ 
+                        objectFit: 'contain',
+                        opacity: isAngleLoading ? 0.75 : 1,
+                        transition: 'opacity 0.2s ease',
+                      }}
+                      onLoad={() => setIsAngleLoading(false)}
+                      onError={() => setIsAngleLoading(false)}
                     />
 
                     {/* Fullscreen HD Expand Button (Icon-Only) */}
@@ -645,29 +784,17 @@ export default function ProductModal({
               {allImages.length > 1 && mediaTab === 'photo' && (
                 <div className="product-angle-gallery" aria-label="Galería de ángulos del producto">
                   <div className="product-angle-track">
-                    {allImages.map((imgUrl, idx) => {
-                      const isSelected = idx === selectedImageIndex;
-                      return (
-                        <button
-                          key={idx}
-                          type="button"
-                          className={`product-angle-thumb-btn ${isSelected ? 'active' : ''}`}
-                          onClick={() => setSelectedImageIndex(idx)}
-                          aria-label={`Ver foto ${idx + 1}`}
-                          title={`Foto ${idx + 1}`}
-                          style={{ position: 'relative' }}
-                        >
-                          <Image 
-                            src={imgUrl} 
-                            alt={`${product.title} ${idx + 1}`} 
-                            fill
-                            sizes="80px"
-                            quality={80}
-                            style={{ objectFit: 'cover' }}
-                          />
-                        </button>
-                      );
-                    })}
+                    {allImages.map((imgUrl, idx) => (
+                      <AngleThumbnailButton
+                        key={`${product.id}-thumb-${idx}-${imgUrl}`}
+                        imgUrl={imgUrl}
+                        idx={idx}
+                        isSelected={idx === selectedImageIndex}
+                        isLoadingAngle={idx === selectedImageIndex && isAngleLoading}
+                        productTitle={product.title}
+                        onClick={() => handleSelectAngle(idx)}
+                      />
+                    ))}
                   </div>
                 </div>
               )}
@@ -811,27 +938,11 @@ export default function ProductModal({
                   >
                     <div className="similar-products-track" ref={similarTrackRef}>
                       {similarProducts.map((item) => (
-                        <button
+                        <SimilarProductCardButton
                           key={item.id}
-                          type="button"
-                          className="similar-product-card"
+                          item={item}
                           onClick={() => handleSelectSimilar(item)}
-                          title={`Ver ${item.title}`}
-                        >
-                          <div className="similar-img-box" style={{ position: 'relative' }}>
-                            <Image 
-                              src={item.image || '/images/hero-poster.webp'} 
-                              alt={item.title} 
-                              fill
-                              sizes="78px"
-                              quality={80}
-                              style={{ objectFit: 'contain' }}
-                            />
-                          </div>
-                          <span className="similar-title" title={item.title}>
-                            {item.title}
-                          </span>
-                        </button>
+                        />
                       ))}
                     </div>
                   </div>

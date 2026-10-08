@@ -3425,6 +3425,119 @@
 }
 
 
+/* VIP Thumbnail Luxury Shimmer Loader */
+.vip-thumb-skeleton-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(
+    110deg,
+    rgba(245, 240, 230, 0.7) 8%,
+    rgba(255, 255, 255, 0.95) 18%,
+    rgba(245, 240, 230, 0.7) 33%
+  );
+  background-size: 200% 100%;
+  animation: vipShimmer 1.4s linear infinite;
+  border-radius: 7px;
+  z-index: 2;
+  transition: opacity 0.3s ease;
+}
+
+[data-theme="dark"] .vip-thumb-skeleton-loader {
+  background: linear-gradient(
+    110deg,
+    rgba(30, 30, 35, 0.8) 8%,
+    rgba(45, 45, 52, 0.95) 18%,
+    rgba(30, 30, 35, 0.8) 33%
+  );
+  background-size: 200% 100%;
+}
+
+@keyframes vipShimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.vip-thumb-spinner-dot {
+  width: 14px;
+  height: 14px;
+  border: 1.5px solid rgba(197, 165, 90, 0.3);
+  border-top-color: var(--gold-500, #C5A55A);
+  border-radius: 50%;
+  animation: vipSpinRing 0.8s linear infinite;
+}
+
+/* Active Angle Loading State on Thumbnail */
+.product-angle-thumb-btn.is-loading-active-angle {
+  border-color: var(--gold-400);
+  box-shadow: 0 0 0 2px var(--gold-400), 0 0 12px rgba(212, 175, 55, 0.4);
+}
+
+.vip-thumb-active-loader {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(2px);
+  z-index: 3;
+  border-radius: 7px;
+}
+
+[data-theme="dark"] .vip-thumb-active-loader {
+  background: rgba(18, 18, 22, 0.7);
+}
+
+/* Floating Angle Loading Indicator Pill (Quiet Luxury) */
+.vip-angle-loading-pill {
+  position: absolute;
+  top: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 15;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background: rgba(20, 20, 26, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35), 0 0 15px rgba(212, 175, 55, 0.15);
+  color: var(--gold-300, #E6CA65);
+  font-family: var(--font-accent);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  animation: vipFadeInUp 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  pointer-events: none;
+}
+
+.vip-angle-loader-spinner {
+  width: 13px;
+  height: 13px;
+  border: 1.5px solid rgba(212, 175, 55, 0.3);
+  border-top-color: var(--gold-400, #D4AF37);
+  border-radius: 50%;
+  animation: vipSpinRing 0.75s linear infinite;
+}
+
+@keyframes vipFadeInUp {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -8px) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, 0) scale(1);
+  }
+}
+
 /* Fullscreen HD Angles Row */
 .fullscreen-hd-angles-row {
   display: flex;

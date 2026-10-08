@@ -1,10 +1,13 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { CATALOGS_DATA } from '@/src/data/catalogs';
 import { Product } from '@/src/types/catalog';
 import { fetchCatalog } from '@/src/lib/supabase';
 import { toggleProductSelection, clearAllSelections } from '@/src/utils/inquiry-cart';
+import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
 
 const WHATSAPP_NUMBER = '584141536516';
 
@@ -149,16 +152,19 @@ export default function InquiryFloatingCart() {
 
     if (trimmedName) {
       msg += `👤 *Cliente:* ${trimmedName}\n`;
-      msg += `Hola, deseo cotizar formalmente las siguientes piezas que seleccioné en su página web:\n\n`;
+      msg += `Hola, deseo cotizar formalmente las siguientes piezas que seleccioné en su catálogo web:\n\n`;
     } else {
-      msg += `Hola Muebles Bellagio, deseo cotizar las siguientes piezas que seleccioné en su página web:\n\n`;
+      msg += `Hola Muebles Bellagio, deseo cotizar formalmente las siguientes piezas que seleccioné en su catálogo web:\n\n`;
     }
 
     selectedProducts.forEach((item, idx) => {
       msg += `${idx + 1}. *${item.title}*\n`;
-      msg += `   📂 Categoría: ${item.categoryName}\n`;
+      msg += `   📂 Categoría: ${item.categoryName || item.category || 'Muebles'}\n`;
       if (item.dimensions && item.dimensions.trim().length > 0 && item.dimensions.trim() !== 'A convenir') {
         msg += `   📐 Medidas: ${item.dimensions}\n`;
+      }
+      if (item.materials && item.materials.trim().length > 0) {
+        msg += `   ✨ Materiales: ${item.materials}\n`;
       }
       msg += `\n`;
     });
@@ -166,10 +172,10 @@ export default function InquiryFloatingCart() {
     msg += `📦 *Total de piezas:* ${selectedProducts.length}\n`;
 
     if (customNote.trim()) {
-      msg += `\n💬 *Notas / Solicitud especial:* ${customNote.trim()}\n`;
+      msg += `\n💬 *Notas / Requerimientos especiales:* ${customNote.trim()}\n`;
     }
 
-    msg += `\nPor favor, confirmar disponibilidad, opciones de acabados y tiempos de entrega. ¡Muchas gracias!`;
+    msg += `\nPor favor, confirmar disponibilidad, opciones de acabados en tienda y cotización. ¡Muchas gracias!`;
 
     return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
   }, [selectedProducts, customerName, customNote]);
@@ -180,7 +186,7 @@ export default function InquiryFloatingCart() {
 
   return (
     <>
-      {/* Floating Inquiry Button */}
+      {/* Floating Inquiry Button (Mobile Top-Right & Desktop Floating Dock) */}
       <button
         type="button"
         className={`inquiry-cart-fab ${count > 0 ? 'visible' : ''}`}
@@ -189,22 +195,24 @@ export default function InquiryFloatingCart() {
         aria-label={`Ver mi selección de ${count} ${count === 1 ? 'pieza' : 'piezas'}`}
         title="Ver mi selección de piezas"
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-          aria-hidden="true"
-        >
-          <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-          <line x1="3" y1="6" x2="21" y2="6"></line>
-          <path d="M16 10a4 4 0 0 1-8 0"></path>
-        </svg>
+        <div className="inquiry-fab-icon-box">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <path d="M16 10a4 4 0 0 1-8 0"></path>
+          </svg>
+        </div>
 
         <span className="inquiry-fab-text">Mi Selección</span>
         <span className="fab-count-badge">{count}</span>
@@ -220,7 +228,7 @@ export default function InquiryFloatingCart() {
         aria-label="Resumen de selección de piezas"
       >
         <div
-          className="inquiry-modal-container"
+          className="inquiry-modal-container vip-cart-sheet"
           onClick={(e) => e.stopPropagation()}
         >
           {/* Mobile Sheet Drag Handle */}
@@ -229,92 +237,156 @@ export default function InquiryFloatingCart() {
           </div>
 
           {/* Modal Header */}
-          <header className="inquiry-modal-header">
-            <div className="inquiry-modal-header-text">
-              <h2>Tu Selección de Piezas</h2>
-              <p>
-                {selectedProducts.length}{' '}
-                {selectedProducts.length === 1
-                  ? 'pieza seleccionada'
-                  : 'piezas seleccionadas'}
-              </p>
+          <header className="inquiry-modal-header vip-cart-header">
+            <div className="vip-cart-header-left">
+              <div className="vip-cart-brand-kicker">
+                <span className="vip-cart-kicker-spark">✨</span>
+                <span>COTIZACIÓN EXCLUSIVA</span>
+              </div>
+              <h2 className="vip-cart-title">Tu Selección Bellagio</h2>
+              <div className="vip-cart-status-row">
+                <span className="vip-cart-count-pill">
+                  {selectedProducts.length}{' '}
+                  {selectedProducts.length === 1 ? 'pieza lista' : 'piezas listas'}
+                </span>
+                {selectedProducts.length > 0 && (
+                  <button
+                    type="button"
+                    className="vip-cart-clear-link"
+                    onClick={handleClearAll}
+                    title="Vaciar toda la selección"
+                  >
+                    Vaciar lista
+                  </button>
+                )}
+              </div>
             </div>
 
             <button
               type="button"
-              className="inquiry-modal-close-btn"
+              className="inquiry-modal-close-btn vip-cart-close"
               onClick={() => setIsOpen(false)}
               aria-label="Cerrar ventana de selección"
               title="Cerrar (Esc)"
             >
-              ✕
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
             </button>
           </header>
 
           {/* Modal Body: Selected Products List */}
-          <div className="inquiry-modal-body" id="inquiryModalBody">
+          <div className="inquiry-modal-body vip-cart-body" id="inquiryModalBody">
             {selectedProducts.length === 0 ? (
-              <div className="inquiry-empty-state">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="48"
-                  height="48"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                >
-                  <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
-                  <line x1="3" y1="6" x2="21" y2="6"></line>
-                  <path d="M16 10a4 4 0 0 1-8 0"></path>
-                </svg>
-                <h3>Aún no has seleccionado piezas</h3>
+              <div className="inquiry-empty-state vip-cart-empty">
+                <div className="vip-cart-empty-icon-ring">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="32"
+                    height="32"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="1.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"></path>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <path d="M16 10a4 4 0 0 1-8 0"></path>
+                  </svg>
+                </div>
+                <h3>Tu selección está vacía</h3>
                 <p>
-                  Explora el catálogo y marca las piezas que te gusten tocando
-                  el botón <strong>"Marcar Producto"</strong> en cada ficha.
+                  Explora nuestras colecciones y marca tus muebles preferidos tocando el botón{' '}
+                  <strong>"Marcar Producto"</strong> para armar tu cotización.
                 </p>
+                <Link
+                  href="/catalogo"
+                  className="vip-cart-empty-cta"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Explorar Catálogo
+                </Link>
               </div>
             ) : (
-              <div className="inquiry-products-grid">
+              <div className="inquiry-products-grid vip-cart-items-grid">
                 {selectedProducts.map((item, idx) => (
                   <div 
                     key={item.id} 
-                    className="inquiry-product-card inquiry-card-animated"
-                    style={{ animationDelay: `${idx * 45}ms` }}
+                    className="inquiry-product-card vip-cart-item-card"
+                    style={{ animationDelay: `${idx * 40}ms` }}
                   >
-                    <div className="inquiry-product-img-wrapper">
-                      <img
-                        src={item.image}
+                    {/* Item Image Stage */}
+                    <div className="vip-cart-item-img-box">
+                      <Image
+                        src={item.image || '/images/hero-poster.webp'}
                         alt={item.title}
-                        loading="lazy"
-                        width={90}
-                        height={90}
+                        fill
+                        sizes="90px"
+                        quality={75}
+                        style={{ objectFit: 'contain' }}
                       />
                     </div>
 
-                    <div className="inquiry-product-info">
-                      <h4 className="inquiry-product-title">{item.title}</h4>
-                      {item.dimensions && item.dimensions.trim().length > 0 && item.dimensions.trim() !== 'A convenir' && (
-                        <div className="inquiry-product-dims-badge">
-                          <span className="inquiry-dims-icon" aria-hidden="true">📐</span>
-                          <span className="inquiry-dims-text">{item.dimensions}</span>
+                    {/* Item Info */}
+                    <div className="vip-cart-item-info">
+                      <div className="vip-cart-item-top-row">
+                        <span className="vip-cart-item-category">
+                          {item.categoryName || item.category || 'Mobiliario'}
+                        </span>
+                        {item.origin && (
+                          <span className="vip-cart-item-origin">
+                            {item.origin === 'importado' ? (
+                              <>
+                                <ImportedGlobeIcon width={11} height={11} />
+                                <span>Importado</span>
+                              </>
+                            ) : (
+                              <>
+                                <VenezuelaFlagIcon width={12} height={8} />
+                                <span>Nacional</span>
+                              </>
+                            )}
+                          </span>
+                        )}
+                      </div>
+
+                      <h4 className="vip-cart-item-title" title={item.title}>
+                        {item.title}
+                      </h4>
+
+                      {item.dimensions && item.dimensions.trim().length > 0 && item.dimensions.trim() !== 'A convenir' ? (
+                        <div className="vip-cart-item-spec">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <circle cx="12" cy="12" r="10"/>
+                            <polyline points="12 6 12 12 16 14"/>
+                          </svg>
+                          <span>{item.dimensions}</span>
                         </div>
-                      )}
+                      ) : item.materials ? (
+                        <div className="vip-cart-item-spec">
+                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+                          </svg>
+                          <span className="vip-cart-spec-truncate">{item.materials}</span>
+                        </div>
+                      ) : null}
                     </div>
 
+                    {/* Remove Action Button */}
                     <button
                       type="button"
-                      className="inquiry-remove-btn"
+                      className="vip-cart-remove-btn"
                       onClick={(e) => handleRemove(item.id, e)}
                       aria-label={`Eliminar ${item.title} de mi selección`}
-                      title="Eliminar de mi selección"
+                      title="Quitar de la lista"
                     >
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
+                        width="14"
+                        height="14"
                         viewBox="0 0 24 24"
                         fill="none"
                         stroke="currentColor"
@@ -334,41 +406,21 @@ export default function InquiryFloatingCart() {
 
           {/* Modal Footer: Customer Name, Notes & WhatsApp Action */}
           {selectedProducts.length > 0 && (
-            <footer className="inquiry-modal-footer">
-              <div className="inquiry-footer-top">
-                <button
-                  type="button"
-                  className="inquiry-clear-btn"
-                  onClick={handleClearAll}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="14"
-                    height="14"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <polyline points="3 6 5 6 21 6"></polyline>
-                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                  </svg>
-                  Vaciar lista
-                </button>
-              </div>
-
-              {/* Customer Inputs Form */}
-              <div className="inquiry-form-fields">
-                <div className="inquiry-form-group">
-                  <label htmlFor="inquiryCustomerName" className="inquiry-field-label">
-                    <span className="inquiry-label-icon">👤</span> Tu Nombre y Apellido:
+            <footer className="inquiry-modal-footer vip-cart-footer">
+              {/* Luxury Form Fields */}
+              <div className="vip-cart-form">
+                <div className="vip-cart-field">
+                  <label htmlFor="inquiryCustomerName" className="vip-cart-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                      <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                    <span>Nombre y Apellido (Opcional)</span>
                   </label>
                   <input
                     type="text"
                     id="inquiryCustomerName"
-                    className="inquiry-input"
+                    className="vip-cart-input"
                     placeholder="Ej. Carlos Mendoza"
                     maxLength={80}
                     value={customerName}
@@ -377,14 +429,18 @@ export default function InquiryFloatingCart() {
                   />
                 </div>
 
-                <div className="inquiry-form-group">
-                  <label htmlFor="inquiryCustomNote" className="inquiry-field-label">
-                    <span className="inquiry-label-icon">📝</span> Nota o requerimientos adicionales (opcional):
+                <div className="vip-cart-field">
+                  <label htmlFor="inquiryCustomNote" className="vip-cart-label">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                      <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                    </svg>
+                    <span>Notas o Medidas Especiales (Opcional)</span>
                   </label>
                   <textarea
                     id="inquiryCustomNote"
-                    className="inquiry-textarea"
-                    placeholder="Medidas especiales de tu espacio, colores de tapicería, solicitud de visita al showroom..."
+                    className="vip-cart-textarea"
+                    placeholder="Medidas personalizadas, telas, visitas al showroom de Caracas..."
                     rows={2}
                     maxLength={400}
                     value={customNote}
@@ -394,27 +450,29 @@ export default function InquiryFloatingCart() {
               </div>
 
               {/* Primary WhatsApp Conversion CTA */}
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="btn btn-whatsapp btn-lg inquiry-send-btn"
-                onClick={handleSendWhatsApp}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
+              <div className="vip-cart-cta-box">
+                <a
+                  href={whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="vip-cart-whatsapp-btn"
+                  onClick={handleSendWhatsApp}
                 >
-                  <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
-                </svg>
-                <span>
-                  Cotizar Selección ({selectedProducts.length}{' '}
-                  {selectedProducts.length === 1 ? 'pieza' : 'piezas'}) por WhatsApp
-                </span>
-              </a>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-5.805 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z" />
+                  </svg>
+                  <span>
+                    Cotizar Selección ({selectedProducts.length}{' '}
+                    {selectedProducts.length === 1 ? 'Pieza' : 'Piezas'}) por WhatsApp
+                  </span>
+                </a>
+              </div>
             </footer>
           )}
         </div>

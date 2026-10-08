@@ -156,6 +156,8 @@ export default function ProductModal({
   const [fullscreenPos, setFullscreenPos] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
   const [isMarked, setIsMarked] = useState<boolean>(false);
   const [selectedImageIndex, setSelectedImageIndex] = useState<number>(0);
+  const [isSwitchingProduct, setIsSwitchingProduct] = useState<boolean>(false);
+  const [switchingTitle, setSwitchingTitle] = useState<string>('');
 
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const fullscreenStageRef = useRef<HTMLDivElement | null>(null);
@@ -190,16 +192,41 @@ export default function ProductModal({
 
   const product = activeProduct;
 
-  // Filter similar products by matching category
+  // Filter similar products: prioritizes matching category, complements with other pieces to ensure a rich selection
   const similarProducts = useMemo(() => {
     if (!product || !catalogList.length) return [];
-    return catalogList.filter(
+    
+    // 1. Same category items (excluding current product)
+    const sameCategoryItems = catalogList.filter(
       (p) =>
         p.category === product.category &&
         p.id !== product.id &&
         p.image &&
         p.image.trim().length > 0
     );
+
+    // 2. If same category has fewer than 8 items, complement with matching luxury pieces from catalog
+    if (sameCategoryItems.length < 8) {
+      const otherItems = catalogList.filter(
+        (p) =>
+          p.category !== product.category &&
+          p.id !== product.id &&
+          p.image &&
+          p.image.trim().length > 0
+      );
+      const seen = new Set(sameCategoryItems.map((p) => p.id));
+      const combined = [...sameCategoryItems];
+      for (const item of otherItems) {
+        if (!seen.has(item.id)) {
+          seen.add(item.id);
+          combined.push(item);
+        }
+        if (combined.length >= 10) break;
+      }
+      return combined;
+    }
+
+    return sameCategoryItems;
   }, [product, catalogList]);
 
   // Extract all distinct images for gallery (Cover + extra angles)
@@ -349,25 +376,29 @@ export default function ProductModal({
     }, durationMs);
   }, []);
 
-  // Smooth continuous auto-scroll to the left for similar products
+  // Smooth continuous auto-scroll for similar products
   useEffect(() => {
     const track = similarTrackRef.current;
     if (!track || similarProducts.length <= 2) return;
 
     let animFrameId: number;
     let lastTime: number | null = null;
-    const speed = 0.45; // Smooth luxury velocity (~27px/s)
+    let direction = 1; // 1 = forward, -1 = reverse
+    const speed = 0.55;
 
     const step = (time: number) => {
       if (!isSimilarPausedRef.current && track) {
         if (lastTime !== null) {
           const delta = Math.min((time - lastTime) / 16.67, 2);
-          track.scrollLeft += speed * delta;
-
-          // Seamless infinite wrap around half width
-          const halfScroll = track.scrollWidth / 2;
-          if (halfScroll > 0 && track.scrollLeft >= halfScroll) {
-            track.scrollLeft -= halfScroll;
+          const maxScroll = track.scrollWidth - track.clientWidth;
+          
+          if (maxScroll > 5) {
+            track.scrollLeft += speed * delta * direction;
+            if (track.scrollLeft >= maxScroll - 2) {
+              direction = -1;
+            } else if (track.scrollLeft <= 2) {
+              direction = 1;
+            }
           }
         }
         lastTime = time;
@@ -392,10 +423,21 @@ export default function ProductModal({
   };
 
   const handleSelectSimilar = (item: Product) => {
-    setActiveProduct(item);
-    if (onSelectProduct) {
-      onSelectProduct(item);
-    }
+    if (activeProduct?.id === item.id) return;
+    setSwitchingTitle(item.title);
+    setIsSwitchingProduct(true);
+
+    setTimeout(() => {
+      setActiveProduct(item);
+      setSelectedImageIndex(0);
+      setMediaTab('photo');
+      if (onSelectProduct) {
+        onSelectProduct(item);
+      }
+      setTimeout(() => {
+        setIsSwitchingProduct(false);
+      }, 350);
+    }, 320);
   };
 
   const handleScrollPrev = () => {
@@ -434,6 +476,37 @@ export default function ProductModal({
         aria-labelledby="modalProductTitle"
       >
         <div className="lightbox-container vip-modal" onClick={(e) => e.stopPropagation()}>
+          {/* Luxury Product Transition Curtain Loader */}
+          <div 
+            className={`vip-product-transition-overlay ${isSwitchingProduct ? 'is-active' : ''}`}
+            aria-hidden={!isSwitchingProduct}
+            role="status"
+            aria-live="polite"
+          >
+            <div className="vip-transition-card">
+              <div className="vip-transition-logo-badge">
+                <div className="vip-transition-spin-ring" aria-hidden="true" />
+                <div className="vip-transition-inner-crest">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="vip-transition-meta">
+                <span className="vip-transition-eyebrow">MUEBLES BELLAGIO CARACAS</span>
+                <h4 className="vip-transition-title">
+                  {switchingTitle ? `Cargando ${switchingTitle}...` : 'Cargando pieza exclusiva...'}
+                </h4>
+                <p className="vip-transition-subtext">Preparando detalles, dimensiones y galería HD</p>
+              </div>
+
+              <div className="vip-transition-progress-track">
+                <div className="vip-transition-progress-bar" />
+              </div>
+            </div>
+          </div>
+
           {/* Close Button */}
           <button 
             type="button" 
@@ -737,19 +810,23 @@ export default function ProductModal({
                     onTouchStart={() => { pauseAutoScrollTemporarily(5000); }}
                   >
                     <div className="similar-products-track" ref={similarTrackRef}>
-                      {(similarProducts.length > 2 
-                        ? [...similarProducts, ...similarProducts] 
-                        : similarProducts
-                      ).map((item, index) => (
+                      {similarProducts.map((item) => (
                         <button
-                          key={`${item.id}-${index}`}
+                          key={item.id}
                           type="button"
                           className="similar-product-card"
                           onClick={() => handleSelectSimilar(item)}
                           title={`Ver ${item.title}`}
                         >
-                          <div className="similar-img-box">
-                            <img src={item.image} alt={item.title} loading="lazy" />
+                          <div className="similar-img-box" style={{ position: 'relative' }}>
+                            <Image 
+                              src={item.image || '/images/hero-poster.webp'} 
+                              alt={item.title} 
+                              fill
+                              sizes="78px"
+                              quality={80}
+                              style={{ objectFit: 'contain' }}
+                            />
                           </div>
                           <span className="similar-title" title={item.title}>
                             {item.title}

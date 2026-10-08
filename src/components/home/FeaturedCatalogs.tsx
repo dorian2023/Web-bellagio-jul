@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { CATALOGS_DATA } from '@/src/data/catalogs';
 import { Product } from '@/src/types/catalog';
 import ProductModal from '@/src/components/catalog/ProductModal';
@@ -157,13 +158,13 @@ export default function FeaturedCatalogs() {
               onClick={() => setSelectedProduct(item)}
               aria-label={`Ver ${item.title}`}
             >
-              <img
-                src={item.image}
+              <Image
+                src={item.image || '/images/hero-poster.webp'}
                 alt={item.title}
-                loading="lazy"
-                decoding="async"
-                width={720}
-                height={720}
+                fill
+                sizes="(max-width: 768px) 100vw, 400px"
+                quality={88}
+                style={{ objectFit: 'cover' }}
               />
               <span className="collection-orbit-caption">
                 <small>{item.categoryName}</small>

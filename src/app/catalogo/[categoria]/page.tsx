@@ -6,7 +6,9 @@ import { CATEGORIES_DATA } from '@/src/data/catalogs';
 import CatalogBrowser from '@/src/components/catalog/CatalogBrowser';
 import { fetchCatalog } from '@/src/lib/supabase';
 
-export const revalidate = 60;
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
 
 interface CategoryPageProps {
   params: {

@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
+import Image from 'next/image';
 import { Product } from '@/src/types/catalog';
 import { isProductSelected, toggleProductSelection } from '@/src/utils/inquiry-cart';
 import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/src/utils/media';
@@ -537,10 +538,15 @@ export default function ProductModal({
                   </div>
                 ) : (
                   <>
-                    <img 
-                      src={currentDisplayImage} 
+                    <Image 
+                      src={currentDisplayImage || '/images/hero-poster.webp'} 
                       alt={`${product.title} - Ángulo ${selectedImageIndex + 1}`} 
                       className="lightbox-img main-product-img"
+                      fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 750px"
+                      quality={92}
+                      priority
+                      style={{ objectFit: 'contain' }}
                     />
 
                     {/* Fullscreen HD Expand Button (Icon-Only) */}
@@ -576,8 +582,16 @@ export default function ProductModal({
                           onClick={() => setSelectedImageIndex(idx)}
                           aria-label={`Ver foto ${idx + 1}`}
                           title={`Foto ${idx + 1}`}
+                          style={{ position: 'relative' }}
                         >
-                          <img src={imgUrl} alt={`${product.title} ${idx + 1}`} loading="lazy" />
+                          <Image 
+                            src={imgUrl} 
+                            alt={`${product.title} ${idx + 1}`} 
+                            fill
+                            sizes="80px"
+                            quality={80}
+                            style={{ objectFit: 'cover' }}
+                          />
                         </button>
                       );
                     })}

@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { CATEGORIES_DATA as DEFAULT_CATEGORIES, CATALOGS_DATA as DEFAULT_PRODUCTS } from '@/src/data/catalogs';
 import { Product, Category } from '@/src/types/catalog';
 import ProductModal from '@/src/components/catalog/ProductModal';
@@ -619,13 +620,15 @@ export default function CatalogBrowser({
                           </div>
                         ) : null}
 
-                        <img
-                          src={product.image}
+                        <Image
+                          src={product.image || '/images/hero-poster.webp'}
                           alt={product.title}
                           className="product-img"
-                          loading="lazy"
-                          width={400}
-                          height={400}
+                          fill
+                          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1400px) 33vw, 400px"
+                          quality={88}
+                          priority={idx < 4}
+                          loading={idx < 4 ? undefined : 'lazy'}
                         />
 
                         {isOutOfStock && <div className="product-card-sold-out-shade" aria-hidden="true" />}

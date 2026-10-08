@@ -544,7 +544,7 @@ export default function ProductModal({
 
   const handleToggleMark = () => {
     if (!product) return;
-    const updatedState = toggleProductSelection(product.id);
+    const updatedState = toggleProductSelection(product.id, product);
     setIsMarked(updatedState);
   };
 

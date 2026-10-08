@@ -382,13 +382,6 @@
 .btn:not(:disabled):hover::before,
 .btn:not(:disabled):focus-visible::before { left: 132%; }
 
-@media (max-width: 640px) {
-  .inquiry-cart-fab {
-    right: 16px;
-    bottom: 82px;
-  }
-}
-
 /* 3. Inquiry Modal Backdrop & Container */
 .inquiry-modal-backdrop {
   position: fixed;
@@ -396,7 +389,7 @@
   background: rgba(0, 0, 0, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
-  z-index: 10001;
+  z-index: 100020;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -743,22 +736,44 @@
 /* Mobile Adjustments for Inquiry Cart */
 @media (max-width: 768px) {
   .inquiry-cart-fab {
-    bottom: calc(16px + var(--safe-bottom, 0px));
-    left: calc(16px + var(--safe-left, 0px));
-    right: auto;
+    position: fixed;
+    top: calc(14px + env(safe-area-inset-top, 0px));
+    right: 16px;
+    bottom: auto;
+    left: auto;
     width: auto;
-    height: 48px;
-    min-height: 48px;
-    padding: 0 16px 0 14px;
-    gap: 8px;
+    height: 40px;
+    min-height: 40px;
+    padding: 0 14px 0 11px;
+    gap: 7px;
     border-radius: var(--radius-full);
+    z-index: 1005;
+    background: linear-gradient(135deg, #ECC86B 0%, #D4AF37 50%, #B08D3C 100%);
+    border: 1.5px solid rgba(255, 255, 255, 0.75);
     box-shadow: 
-      0 8px 24px rgba(212, 175, 55, 0.45),
+      0 4px 18px rgba(212, 175, 55, 0.5),
       0 2px 8px rgba(0, 0, 0, 0.25);
+    display: none;
+  }
+
+  .inquiry-cart-fab.visible {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .inquiry-cart-fab svg {
+    width: 17px;
+    height: 17px;
+    color: #0A0A0E;
+    stroke-width: 2.2;
   }
 
   .inquiry-fab-text {
     display: inline-block;
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #0A0A0E;
   }
 
   .inquiry-cart-fab .fab-count-badge {
@@ -766,8 +781,12 @@
     min-width: 20px;
     height: 20px;
     font-size: 0.72rem;
+    font-weight: 800;
     padding: 0 5px;
-    border-width: 1px;
+    border: 1.5px solid #FFFFFF;
+    background: #E63946;
+    color: #FFFFFF;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
   }
 
   .inquiry-modal-backdrop {

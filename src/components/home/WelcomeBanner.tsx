@@ -9,6 +9,8 @@ import { CATALOGS_DATA } from '@/src/data/catalogs';
 // Display timing: shows smoothly right after arrival on the home page
 const SHOW_DELAY_MS = 600;
 const CAROUSEL_INTERVAL_MS = 4000;
+const STORAGE_KEY = 'bellagio_welcome_banner_last_seen';
+const ONE_DAY_MS = 24 * 60 * 60 * 1000; // 24 hours (1 vez por día)
 
 interface CarouselProduct {
   id: string;
@@ -48,10 +50,29 @@ export function WelcomeBanner() {
   const [isLoadingCatalog, setIsLoadingCatalog] = useState(true);
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
-  // Show banner smoothly right after arrival on the homepage
+  // Show banner smoothly right after arrival on the homepage (máximo 1 vez cada 24 horas)
   useEffect(() => {
+    try {
+      const lastSeen = localStorage.getItem(STORAGE_KEY);
+      if (lastSeen) {
+        const lastSeenTime = parseInt(lastSeen, 10);
+        const now = Date.now();
+        if (!isNaN(lastSeenTime) && now - lastSeenTime < ONE_DAY_MS) {
+          // Ya se mostró en las últimas 24 horas, no abrir
+          return;
+        }
+      }
+    } catch {
+      // Ignorar en entornos con localStorage bloqueado
+    }
+
     const timer = setTimeout(() => {
       setIsVisible(true);
+      try {
+        localStorage.setItem(STORAGE_KEY, Date.now().toString());
+      } catch {
+        // Ignorar
+      }
     }, SHOW_DELAY_MS);
 
     return () => clearTimeout(timer);
@@ -131,6 +152,11 @@ export function WelcomeBanner() {
 
   const handleClose = useCallback(() => {
     setIsVisible(false);
+    try {
+      localStorage.setItem(STORAGE_KEY, Date.now().toString());
+    } catch {
+      // Ignorar
+    }
   }, []);
 
   // Close on Escape key

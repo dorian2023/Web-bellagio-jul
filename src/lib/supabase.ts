@@ -8,11 +8,20 @@ import { createClient } from '@supabase/supabase-js';
 import { Product, Category } from '@/src/types/catalog';
 import { CATALOGS_DATA, CATEGORIES_DATA } from '@/src/data/catalogs';
 
-const DEFAULT_SUPABASE_URL = 'https://vjtjwifynfzdjkdpruty.supabase.co';
-const DEFAULT_SUPABASE_ANON_KEY = 'sb_publishable_J8wyvsMDU4uwf7tNXxZ9xQ_8CW4Dwue';
+const OFFICIAL_SUPABASE_URL = 'https://vjtjwifynfzdjkdpruty.supabase.co';
+const OFFICIAL_SUPABASE_ANON_KEY = 'sb_publishable_J8wyvsMDU4uwf7tNXxZ9xQ_8CW4Dwue';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || DEFAULT_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || DEFAULT_SUPABASE_ANON_KEY;
+// Prioritize official production database and guard against legacy/deprecated project ('yxtazqlqwhsxppsipwet')
+let resolvedUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || OFFICIAL_SUPABASE_URL;
+let resolvedKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || OFFICIAL_SUPABASE_ANON_KEY;
+
+if (!resolvedUrl || resolvedUrl.includes('yxtazqlqwhsxppsipwet') || resolvedUrl.includes('placeholder')) {
+  resolvedUrl = OFFICIAL_SUPABASE_URL;
+  resolvedKey = OFFICIAL_SUPABASE_ANON_KEY;
+}
+
+const supabaseUrl = resolvedUrl;
+const supabaseAnonKey = resolvedKey;
 
 // Initialize Supabase client with robust connection handling
 export const supabase = createClient(

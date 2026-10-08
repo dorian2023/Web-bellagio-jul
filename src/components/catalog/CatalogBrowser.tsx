@@ -63,9 +63,8 @@ export default function CatalogBrowser({
 
   const megaDropdownRef = useRef<HTMLDivElement | null>(null);
 
-  // Sync latest live data from Supabase if not provided by server
+  // Sync latest live data from Supabase in background (SWR pattern)
   useEffect(() => {
-    if (initialProducts && initialProducts.length > 0) return;
     let isMounted = true;
     fetchCatalog().then(({ products, categories }) => {
       if (!isMounted) return;
@@ -75,11 +74,13 @@ export default function CatalogBrowser({
       if (categories && categories.length > 0) {
         setCategoriesList(categories);
       }
+    }).catch(err => {
+      console.warn('Error revalidando catálogo:', err);
     });
     return () => {
       isMounted = false;
     };
-  }, [initialProducts]);
+  }, []);
 
   // Origin statistics
   const originStats = useMemo(() => {

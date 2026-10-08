@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { fetchCatalog } from '@/src/lib/supabase';
 import { Product } from '@/src/types/catalog';
+import { retrieveDynamicCandidates } from '@/src/services/concierge-search';
 
 interface ChatMessage {
   role: 'user' | 'assistant' | 'system';
@@ -9,9 +10,9 @@ interface ChatMessage {
 
 
 // System instructions for the Bellagio Concierge Advisor
-function buildSystemPrompt(products: Product[]): string {
-  // Ground the model with 100% of the live catalog in a token-efficient compact schema
-  const productContext = products.map((p) => {
+function buildSystemPrompt(candidates: Product[], totalCatalogCount: number): string {
+  // Ground the model with dynamically scored and retrieved relevant candidates
+  const productContext = candidates.map((p) => {
     const stock = p.stockStatus === 'agotado' ? 'ESTADO: AGOTADO' : 'ESTADO: DISPONIBLE';
     const orig = p.origin === 'importado'
       ? 'ORIGEN: IMPORTADO (Pieza importada terminada, medidas estándar fijas, NO se modifica en taller)'
@@ -25,33 +26,46 @@ function buildSystemPrompt(products: Product[]): string {
   }).join('\n');
 
   return `Eres "Asistente Bellagio", el Asesor Senior de Ventas y Mobiliario de Lujo de Muebles Bellagio en Caracas, Venezuela.
+Nuestro catálogo maestro cuenta con más de ${totalCatalogCount} piezas exclusivas en base de datos e inventario de showroom.
 
 TU ROL DE VENDEDOR DE ALTO IMPACTO:
 Eres un vendedor de showroom de ultra-lujo: directo al grano, empático, sofisticado y altamente enfocado en cerrar la venta. El cliente busca respuestas rápidas, precisas y piezas reales de nuestro catálogo.
 
 REGLAS ESTRICTAS DE NEGOCIO Y COMUNICACIÓN:
-1. DISPONIBILIDAD & STOCK:
-   - Prioriza siempre piezas con "ESTADO: DISPONIBLE".
-   - Si un producto dice "ESTADO: AGOTADO", no lo ofrezcas como entrega inmediata. Si el cliente pregunta específicamente por un modelo agotado, aclárale con honestidad que está agotado, y si es Nacional ofrécele confeccionarlo por encargo en taller, o recomiéndale una alternativa similar disponible.
+1. DISPONIBILIDAD & VERIFICACIÓN EXACTA EN CATÁLOGO:
+   - Todo producto que figure en el listado del CATÁLOGO con "ESTADO: DISPONIBLE" EXISTE y está ACTIVO para exhibición, venta y entrega inmediata/confección.
+   - NUNCA digas que un producto "no se encuentra disponible en inventario" o "no está en exhibición" si figura en la lista con ESTADO: DISPONIBLE. Si el cliente pregunta por él (ej: "Mesa de centro Glitter"), confírmale de inmediato con entusiasmo que SÍ lo tenemos disponible, explica sus características y ofrécelo.
+   - Solo si el producto indica explícitamente "ESTADO: AGOTADO", aclárale con honestidad que está agotado, y si es Nacional ofrécele fabricarlo por encargo en taller o una alternativa similar.
 
-2. DISTINCIÓN CLARA ENTRE IMPORTADOS Y FABRICACIÓN NACIONAL:
-   - PRODUCTOS IMPORTADOS: Son piezas exclusivas de importación ya terminadas. NO las fabricamos nosotros y tienen medidas estándar fijas de fábrica (NO se alteran dimensiones).
-   - PRODUCTOS NACIONALES (Hecho en Venezuela): Fabricación artesanal directa en nuestro taller propio en Caracas. ¡Estos SÍ se confeccionan y personalizan 100% a la medida exacta del cliente, orientación en L, maderas y telas (lino, bouclé, terciopelo, antifluido pet-friendly)!
+2. EQUIVALENCIAS SEMÁNTICAS DE MATERIALES Y PIEZAS (MUY IMPORTANTE):
+   - VIDRIO / CRISTAL / ESPEJO: Si el cliente pregunta por mesas de vidrio, mesas de cristal o superficies reflectantes brillantes, asocia de inmediato la "Mesa de centro Glitter" (cuenta con estructura de madera y tope de espejo pulido reflectante de lujo). Además, aclara que en nuestro taller en Caracas fabricamos mesas personalizadas con tope de vidrio o cristal templado en las medidas que desee.
+   - PIEDRA SINTERIZADA / MÁRMOL / PORCELÁNICO: Para mesas con piedra sinterizada (como Susy, Granada, YZ061), resalta que es la tecnología de superficie mineral de ultra-lujo resistente al rayado y altas temperaturas.
+   - TELAS DE ALTA GAMA: Bouclé, lino, terciopelo (velvet) y telas antifluido pet-friendly para sofás y poltronas a medida.
 
-3. DISTINCIÓN EXACTA DE FORMAS Y GEOMETRÍAS:
+3. DISTINCIÓN CLARA ENTRE IMPORTADOS Y FABRICACIÓN NACIONAL:
+   - PRODUCTOS IMPORTADOS: Piezas exclusivas de importación terminadas. NO las modificamos; medidas fijas de fábrica.
+   - PRODUCTOS NACIONALES (Hecho en Venezuela): Fabricación artesanal directa en nuestro taller propio en Caracas. ¡Estos SÍ se confeccionan y personalizan 100% a la medida exacta del cliente, orientación en L, maderas y telas!
+
+4. DISTINCIÓN EXACTA DE FORMAS Y GEOMETRÍAS:
    - Comedores y Mesas: Distingue rigurosamente entre Circular/Redondo (diámetro), Rectangular, Cuadrado, Ovalado y Extensible. Nunca digas que un modelo rectangular es circular.
    - Sofás: Distingue entre 1 puesto (poltrona), 2 puestos (loveseat), 3 puestos, 4 puestos, Modular en L / Esquinero con Canapé, y Sofacama.
    - Camas: Individual, Matrimonial, Queen, King.
 
-4. RESPUESTAS CORTAS Y DIRECTAS (MÁXIMO 1 A 2 PÁRRAFOS BREVES, 60-110 PALABRAS TOTAL):
+5. RESPUESTAS CORTAS Y DIRECTAS (MÁXIMO 1 A 2 PÁRRAFOS BREVES, 60-110 PALABRAS TOTAL):
    - Ve directo a la respuesta en la primera línea. Cero charlas filosóficas o teorías de decoración.
-   - Si buscan una forma o medida específica (ej: "comedor circular", "sofá 2.20m"):
-     a) Recomienda las piezas del catálogo que coincidan exactamente (ej: para circular, el "Comedor J-020 Extensible").
-     b) Si no hay más modelos con esa forma prefabricada, explica brevemente: "En nuestro taller en Caracas confeccionamos a medida comedores con tope circular en el diámetro exacto que requieras (1.20m, 1.40m, etc.)".
-     c) Puedes sugerir 1 o 2 modelos más del catálogo como alternativas o bases adaptables, aclarando su formato real.
-   - Cierra siempre invitando amablemente a continuar por WhatsApp (+58 414-1536516) para cotización y muestras, o visitar nuestros showrooms en Caracas (Casa Mall en El Cafetal, C.C. Davinci en La Yaguara o Av. Comercio).
+   - Si buscan una forma, material o modelo específico:
+     a) Recomienda las piezas del catálogo que coincidan (ej: para espejo/vidrio, la "Mesa de centro Glitter"; para circular, el "Comedor J-020 Extensible").
+     b) Si requieren medidas o detalles especiales, recuerda: "En nuestro taller propio en Caracas confeccionamos y adaptamos piezas a sus medidas exactas".
+   - Cierra siempre invitando amablemente a continuar por WhatsApp (+58 414-1536516) para cotización inmediata, o a visitar nuestras 5 tiendas en Caracas (Sede Principal Bellagio JK en Av. Comercio, C.C. Davinci o C.C. Casa Mall).
 
-CATÁLOGO REAL EN VIVO (${products.length} PIEZAS DISPONIBLES):
+6. NUESTRAS 5 TIENDAS EN 3 UBICACIONES EN CARACAS (REGLA ESTRICTA DE UBICACIONES):
+   Muebles Bellagio cuenta con un total de 5 TIENDAS / SHOWROOMS distribuidos en 3 UBICACIONES ESTRATÉGICAS en Caracas. NUNCA menciones solo dos o te olvides de la sede matriz. Las 3 ubicaciones y 5 tiendas son:
+   1) SEDE PRINCIPAL (Bellagio JK): Avenida Comercio, Caracas. (Nuestra tienda principal y centro de manufactura con taller propio).
+   2) SHOWROOM BELLAGIO MOBILI (C.C. Davinci): Av. Comercio de Bella Vista, vía La Yaguara, C.C. Davinci. (Cuenta con 2 SHOWROOMS de exhibición).
+   3) SHOWROOM BELLAGIO COLLEZIONE (C.C. Casa Mall): Nivel Galería, Urb. El Cafetal / Los Naranjos. (Cuenta con 2 SHOWROOMS de ultra-lujo).
+   Cuando el cliente pregunte por sedes, tiendas, showrooms o ubicaciones, explica exactamente: "Contamos con 5 tiendas en 3 ubicaciones estratégicas de Caracas: nuestra Sede Principal Bellagio JK en Av. Comercio, 2 showrooms en C.C. Davinci (La Yaguara) y 2 showrooms en C.C. Casa Mall (El Cafetal)".
+
+PIEZAS DESTACADAS Y COINCIDENTES PARA ESTA CONSULTA (${candidates.length} seleccionadas de ${totalCatalogCount} piezas activas):
 ${productContext}
 
 FORMATO OBLIGATORIO DE RESPUESTA:
@@ -144,9 +158,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'El mensaje no contiene texto válido.' }, { status: 400 });
     }
 
-    // 1. Fetch live catalog to ground the LLM with 100% of data
+    // 1. Fetch live catalog
     const { products } = await fetchCatalog();
-    const systemPrompt = buildSystemPrompt(products);
+
+    // 2. Extract user query context to dynamically retrieve the most relevant candidates
+    const userTexts = sanitizedMessages
+      .filter((m) => m.role === 'user')
+      .map((m) => m.content);
+
+    // Retrieve top 16 candidates using semantic synonym matching & scoring (<10ms)
+    const { candidates } = retrieveDynamicCandidates(products, userTexts, 16);
+    const systemPrompt = buildSystemPrompt(candidates, products.length);
 
     // 2. Format history for Gemini API
     const contents: any[] = [];
@@ -162,10 +184,7 @@ export async function POST(req: NextRequest) {
     // 3. Call Google Gemini API with current active models
     const candidateModels = [
       'gemini-3.8-flash',
-      'gemini-3.5-flash',
-      'gemini-3.0-flash',
-      'gemini-2.5-flash',
-      'gemini-2.5-pro'
+      'gemini-3.5-flash'
     ];
     let rawReply = '';
     let apiSuccess = false;
@@ -237,11 +256,31 @@ export async function POST(req: NextRequest) {
     // 5. Match actual Product objects by ID
     let matchedProducts = products.filter((p) => recommendedIds.includes(String(p.id)));
 
-    // Fallback if no IDs matched: search by exact/fuzzy title in the text
+    // Fallback 1: match by product title inside assistant reply
     if (matchedProducts.length === 0) {
+      const lowerReply = cleanReply.toLowerCase();
       matchedProducts = products
-        .filter((p) => cleanReply.toLowerCase().includes(p.title.toLowerCase()))
+        .filter((p) => lowerReply.includes(p.title.toLowerCase()))
         .slice(0, 3);
+    }
+
+    // Fallback 2: if assistant reply didn't explicitly match, match by keywords in last user message
+    if (matchedProducts.length === 0) {
+      const lastUserMsg = [...sanitizedMessages].reverse().find((m) => m.role === 'user')?.content.toLowerCase() || '';
+      if (lastUserMsg) {
+        matchedProducts = products
+          .filter((p) => {
+            const lowerTitle = p.title.toLowerCase();
+            const lowerMat = (p.materials || '').toLowerCase();
+            return lastUserMsg.includes(lowerTitle) || (lowerTitle.split(' ').some((word) => word.length > 4 && lastUserMsg.includes(word)));
+          })
+          .slice(0, 3);
+      }
+    }
+
+    // Fallback 3: if still no direct match, use top scored candidates
+    if (matchedProducts.length === 0 && candidates.length > 0) {
+      matchedProducts = candidates.slice(0, 3);
     }
 
     return NextResponse.json({

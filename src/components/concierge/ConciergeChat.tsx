@@ -26,7 +26,7 @@ export default function ConciergeChat() {
     {
       id: 'welcome',
       role: 'assistant',
-      content: 'Bienvenido a Muebles Bellagio. Soy su Asesor Senior de Diseño e Interiorismo. Indíqueme qué ambiente o medidas busca (ej: "sofá de 3 puestos de 2.20m", "comedor de 8 personas") y con gusto le orientaré con piezas exactas de nuestro catálogo o fabricación personalizada a medida.',
+      content: 'Bienvenido a Muebles Bellagio en Caracas. Soy su Asesor de Diseño. ¿Qué espacio o pieza desea transformar hoy? Con gusto le oriento con nuestro catálogo exclusivo o fabricación artesanal a medida.',
       timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     }
   ]);
@@ -222,7 +222,9 @@ export default function ConciergeChat() {
                               <div className="concierge-rec-meta">
                                 <span>{p.categoryName}</span>
                                 {p.dimensions && (
-                                  <span className="concierge-rec-dim-badge">📏 {p.dimensions}</span>
+                                  <span className="concierge-rec-dim-badge" title={`Medidas: ${p.dimensions}`}>
+                                    📏 {p.dimensions}
+                                  </span>
                                 )}
                               </div>
                             </div>

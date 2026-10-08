@@ -1,7 +1,7 @@
 /**
  * @file catalogs.ts
  * @description Real catalog and categories data synchronized with Supabase database for Muebles Bellagio.
- * Total products: 229.
+ * Total products: 233.
  */
 
 import { Category, Product } from '@/src/types/catalog';
@@ -10,7 +10,7 @@ export const CATEGORIES_DATA: Category[] = [
   {
     "id": "todos",
     "name": "Todas las Categorías",
-    "count": 229
+    "count": 233
   },
   {
     "id": "box-spring",
@@ -50,7 +50,7 @@ export const CATEGORIES_DATA: Category[] = [
   {
     "id": "mesas-de-centro",
     "name": "Mesas de Centro",
-    "count": 2
+    "count": 5
   },
   {
     "id": "mesas-de-noche",
@@ -85,7 +85,7 @@ export const CATEGORIES_DATA: Category[] = [
   {
     "id": "sofas",
     "name": "Sofas",
-    "count": 57
+    "count": 58
   },
   {
     "id": "taburete",
@@ -100,6 +100,88 @@ export const CATEGORIES_DATA: Category[] = [
 ];
 
 export const CATALOGS_DATA: Product[] = [
+  {
+    "id": "c6e88f54-defc-400a-ba7d-90652061c881",
+    "category": "mesas-de-centro",
+    "categoryName": "Mesas de Centro",
+    "title": "Mesa de centro Glitter",
+    "subtitle": "",
+    "description": "",
+    "materials": "Estructura de madera, tope de espejo.",
+    "dimensions": "",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791426394571-rygy4h-34450.png",
+    "availableColors": [
+      "A convenir"
+    ],
+    "youtubeUrl": "",
+    "galleryImages": [
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791426394571-rygy4h-34450.png"
+    ],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "4d09b4fa-6241-4277-b6e6-9f4eaa3bfbbd",
+    "category": "mesas-de-centro",
+    "categoryName": "Mesas de Centro",
+    "title": "Mesa de centro Susy",
+    "subtitle": "",
+    "description": "",
+    "materials": "Estructura metálica con tope de piedra sinterizada.",
+    "dimensions": "",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424653297-76zb3f-34448.png",
+    "availableColors": [],
+    "youtubeUrl": "",
+    "galleryImages": [
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424653297-76zb3f-34448.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424656328-7u3dyt-34446.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424657961-p3vzob-34447.png"
+    ],
+    "origin": "importado",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "832eb99a-3c0f-4eb5-af0b-3654c15f9a5e",
+    "category": "mesas-de-centro",
+    "categoryName": "Mesas de Centro",
+    "title": "Mesa de centro Granada",
+    "subtitle": "",
+    "description": "",
+    "materials": "Estructura de madera con tope de piedra sinterizada",
+    "dimensions": "",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424211943-g5cq88-34440.png",
+    "availableColors": [
+      "A convenir"
+    ],
+    "youtubeUrl": "",
+    "galleryImages": [
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424211943-g5cq88-34440.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424214657-8iasbb-34442.png"
+    ],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "3b221d75-855c-4208-b484-14a791693d65",
+    "category": "sofas",
+    "categoryName": "Sofas",
+    "title": "Sofa Capri",
+    "subtitle": "",
+    "description": "",
+    "materials": "Estructura de madera tapizado en tela o bipiel con patas metálicas.",
+    "dimensions": "",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421992998-dbwqgv-34431.png",
+    "availableColors": [
+      "A convenir"
+    ],
+    "youtubeUrl": "",
+    "galleryImages": [
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421992998-dbwqgv-34431.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421996480-oow3pj-34433.png"
+    ],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
   {
     "id": "e9a3fe89-61b1-4936-94b9-73d5f246f315",
     "category": "taburete",
@@ -1271,88 +1353,6 @@ export const CATALOGS_DATA: Product[] = [
       "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790647045749-q05mih-30790.png",
       "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790647049600-ba6onf-30791.png"
     ],
-    "origin": "nacional",
-    "stockStatus": "disponible"
-  },
-  {
-    "id": "1caaf23a-53a6-4591-83a3-66472fe7a56e",
-    "category": "sofas",
-    "categoryName": "Sofas",
-    "title": "Modular Beatriz",
-    "subtitle": "",
-    "description": "",
-    "materials": "",
-    "dimensions": "",
-    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1789949993063-v8pukct.png",
-    "availableColors": [],
-    "youtubeUrl": "https://youtube.com/shorts/BU7TLu2gZLo?feature=share",
-    "galleryImages": [],
-    "origin": "nacional",
-    "stockStatus": "disponible"
-  },
-  {
-    "id": "2a3a28cd-7026-4608-8a7d-25e60fc86972",
-    "category": "sofas",
-    "categoryName": "Sofas",
-    "title": "Sofá Broklyn",
-    "subtitle": "",
-    "description": "Sofa 3 puestos",
-    "materials": "Estructura de madera de pino seco al horno, tapizado en tela o bipiel con patas metálicas.",
-    "dimensions": "Sofá 2 puestos: 1.50 x 0.90 metros, Sofa 3 puestos: 2.00 x  0.90 metros",
-    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1789950163570-cmd6mwi.png",
-    "availableColors": [
-      "Varios"
-    ],
-    "youtubeUrl": "https://youtube.com/shorts/zv4UPQ0uq9w",
-    "galleryImages": [],
-    "origin": "nacional",
-    "stockStatus": "disponible"
-  },
-  {
-    "id": "2e4c9167-028a-42ea-af52-46099b1a1d0c",
-    "category": "sofas",
-    "categoryName": "Sofas",
-    "title": "Modular Boston",
-    "subtitle": "",
-    "description": "",
-    "materials": "",
-    "dimensions": "",
-    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1789950778206-43i5rac.png",
-    "availableColors": [],
-    "youtubeUrl": "",
-    "galleryImages": [],
-    "origin": "nacional",
-    "stockStatus": "disponible"
-  },
-  {
-    "id": "1dc102f1-d2f5-42c4-b98a-dde81d2f67da",
-    "category": "mesas-de-noche",
-    "categoryName": "Mesas de Noche",
-    "title": "Mesa de noche London",
-    "subtitle": "",
-    "description": "",
-    "materials": "",
-    "dimensions": "",
-    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790100657071-rq9q4wz.png",
-    "availableColors": [],
-    "youtubeUrl": "",
-    "galleryImages": [],
-    "origin": "nacional",
-    "stockStatus": "disponible"
-  },
-  {
-    "id": "f5af94d6-23ca-4690-929f-4c41b5280c35",
-    "category": "sofas",
-    "categoryName": "Sofas",
-    "title": "Modular Dubai",
-    "subtitle": "",
-    "description": "",
-    "materials": "",
-    "dimensions": "",
-    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790100752334-jbj3kkw.png",
-    "availableColors": [],
-    "youtubeUrl": "",
-    "galleryImages": [],
     "origin": "nacional",
     "stockStatus": "disponible"
   },
@@ -2808,23 +2808,18 @@ export const CATALOGS_DATA: Product[] = [
     "stockStatus": "disponible"
   },
   {
-    "id": "413e8cdd-b444-4b48-a9ad-9bf19ba5565f",
-    "category": "sofacamas",
-    "categoryName": "Sofacamas",
-    "title": "Sofa cama Siena 2",
+    "id": "6858ae89-374f-41e6-9d5e-f287f560dcdd",
+    "category": "sofas",
+    "categoryName": "Sofas",
+    "title": "Modular Marbella",
     "subtitle": "",
     "description": "",
-    "materials": "",
-    "dimensions": "",
-    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445792658-g8aev0-30178.png",
+    "materials": "Estructura de madera de pino seco al horno, tapizado en tela con patas metálicas.",
+    "dimensions": "3 puestos + Canapes: 3.00 X 2.10 Metros.",
+    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/ab8a2c55-a245-4f33-af59-b21f98257844-1789156515433.webp",
     "availableColors": [],
-    "youtubeUrl": "",
-    "galleryImages": [
-      "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445792658-g8aev0-30178.png",
-      "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445807150-6gsgga-30179.png",
-      "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445818300-o8ffe9-30180.png",
-      "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445836344-mf7wna-30181.png"
-    ],
+    "youtubeUrl": "https://youtube.com/shorts/J9wl5N-vK94",
+    "galleryImages": [],
     "origin": "nacional",
     "stockStatus": "disponible"
   },
@@ -3272,18 +3267,25 @@ export const CATALOGS_DATA: Product[] = [
     "stockStatus": "disponible"
   },
   {
-    "id": "6858ae89-374f-41e6-9d5e-f287f560dcdd",
-    "category": "sofas",
-    "categoryName": "Sofas",
-    "title": "Modular Marbella",
+    "id": "0ec9d4ce-705e-47fd-9acd-5fa08f9ed6f8",
+    "category": "sofacamas",
+    "categoryName": "Sofacamas",
+    "title": "Sofa cama Lumy",
     "subtitle": "",
     "description": "",
-    "materials": "Estructura de madera de pino seco al horno, tapizado en tela con patas metálicas.",
-    "dimensions": "3 puestos + Canapes: 3.00 X 2.10 Metros.",
-    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/ab8a2c55-a245-4f33-af59-b21f98257844-1789156515433.webp",
-    "availableColors": [],
-    "youtubeUrl": "https://youtube.com/shorts/J9wl5N-vK94",
-    "galleryImages": [],
+    "materials": "Estructura metálica y de madera de pino seca al horno, tapizado en bipiel / tela con patas metálicas.",
+    "dimensions": "Normal: 0.95 x 1.80 metros. Extendido: 1.90 x 1.80 metros.",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250076268-fnnwoo-33674.png",
+    "availableColors": [
+      "A convenir"
+    ],
+    "youtubeUrl": "",
+    "galleryImages": [
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250076268-fnnwoo-33674.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250079448-ppmxzk-33671.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250080881-h4h3zb-33668.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250082626-yeyesq-33675.png"
+    ],
     "origin": "nacional",
     "stockStatus": "disponible"
   },
@@ -3380,24 +3382,43 @@ export const CATALOGS_DATA: Product[] = [
     "stockStatus": "disponible"
   },
   {
-    "id": "0ec9d4ce-705e-47fd-9acd-5fa08f9ed6f8",
-    "category": "sofacamas",
-    "categoryName": "Sofacamas",
-    "title": "Sofa cama Lumy",
+    "id": "c5dccc77-e08c-45cc-8791-4d492443c7d5",
+    "category": "taburete",
+    "categoryName": "Taburete",
+    "title": "Silla Bar Anastasia",
     "subtitle": "",
     "description": "",
-    "materials": "Estructura metálica y de madera de pino seca al horno, tapizado en bipiel / tela con patas metálicas.",
-    "dimensions": "Normal: 0.95 x 1.80 metros. Extendido: 1.90 x 1.80 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250076268-fnnwoo-33674.png",
+    "materials": "Estructura metálica tapizado en bipiel",
+    "dimensions": "",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420309451-rqeuhh-34427.png",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250076268-fnnwoo-33674.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250079448-ppmxzk-33671.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250080881-h4h3zb-33668.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250082626-yeyesq-33675.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420309451-rqeuhh-34427.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420312099-9q2ma2-34428.png"
+    ],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "413e8cdd-b444-4b48-a9ad-9bf19ba5565f",
+    "category": "sofacamas",
+    "categoryName": "Sofacamas",
+    "title": "Sofa cama Siena 2",
+    "subtitle": "",
+    "description": "",
+    "materials": "",
+    "dimensions": "",
+    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445792658-g8aev0-30178.png",
+    "availableColors": [],
+    "youtubeUrl": "",
+    "galleryImages": [
+      "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445792658-g8aev0-30178.png",
+      "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445807150-6gsgga-30179.png",
+      "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445818300-o8ffe9-30180.png",
+      "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790445836344-mf7wna-30181.png"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -4099,22 +4120,6 @@ export const CATALOGS_DATA: Product[] = [
     "stockStatus": "disponible"
   },
   {
-    "id": "c5dccc77-e08c-45cc-8791-4d492443c7d5",
-    "category": "taburete",
-    "categoryName": "Taburete",
-    "title": "Silla Bar Anastasia",
-    "subtitle": "",
-    "description": "",
-    "materials": "",
-    "dimensions": "",
-    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/31401b9a-9268-447c-8ade-5048139f599e-1789346434049.webp",
-    "availableColors": [],
-    "youtubeUrl": "",
-    "galleryImages": [],
-    "origin": "nacional",
-    "stockStatus": "disponible"
-  },
-  {
     "id": "3cc4387e-5780-4244-9551-bb2d8ea08b1b",
     "category": "taburete",
     "categoryName": "Taburete",
@@ -4302,6 +4307,88 @@ export const CATALOGS_DATA: Product[] = [
     "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1789949694691-9zvkct1.png",
     "availableColors": [],
     "youtubeUrl": "https://youtube.com/shorts/hlhckV5sklM",
+    "galleryImages": [],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "1caaf23a-53a6-4591-83a3-66472fe7a56e",
+    "category": "sofas",
+    "categoryName": "Sofas",
+    "title": "Modular Beatriz",
+    "subtitle": "",
+    "description": "",
+    "materials": "",
+    "dimensions": "",
+    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1789949993063-v8pukct.png",
+    "availableColors": [],
+    "youtubeUrl": "https://youtube.com/shorts/BU7TLu2gZLo?feature=share",
+    "galleryImages": [],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "2a3a28cd-7026-4608-8a7d-25e60fc86972",
+    "category": "sofas",
+    "categoryName": "Sofas",
+    "title": "Sofá Broklyn",
+    "subtitle": "",
+    "description": "Sofa 3 puestos",
+    "materials": "Estructura de madera de pino seco al horno, tapizado en tela o bipiel con patas metálicas.",
+    "dimensions": "Sofá 2 puestos: 1.50 x 0.90 metros, Sofa 3 puestos: 2.00 x  0.90 metros",
+    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1789950163570-cmd6mwi.png",
+    "availableColors": [
+      "Varios"
+    ],
+    "youtubeUrl": "https://youtube.com/shorts/zv4UPQ0uq9w",
+    "galleryImages": [],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "2e4c9167-028a-42ea-af52-46099b1a1d0c",
+    "category": "sofas",
+    "categoryName": "Sofas",
+    "title": "Modular Boston",
+    "subtitle": "",
+    "description": "",
+    "materials": "",
+    "dimensions": "",
+    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1789950778206-43i5rac.png",
+    "availableColors": [],
+    "youtubeUrl": "",
+    "galleryImages": [],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "1dc102f1-d2f5-42c4-b98a-dde81d2f67da",
+    "category": "mesas-de-noche",
+    "categoryName": "Mesas de Noche",
+    "title": "Mesa de noche London",
+    "subtitle": "",
+    "description": "",
+    "materials": "",
+    "dimensions": "",
+    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790100657071-rq9q4wz.png",
+    "availableColors": [],
+    "youtubeUrl": "",
+    "galleryImages": [],
+    "origin": "nacional",
+    "stockStatus": "disponible"
+  },
+  {
+    "id": "f5af94d6-23ca-4690-929f-4c41b5280c35",
+    "category": "sofas",
+    "categoryName": "Sofas",
+    "title": "Modular Dubai",
+    "subtitle": "",
+    "description": "",
+    "materials": "",
+    "dimensions": "",
+    "image": "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790100752334-jbj3kkw.png",
+    "availableColors": [],
+    "youtubeUrl": "",
     "galleryImages": [],
     "origin": "nacional",
     "stockStatus": "disponible"

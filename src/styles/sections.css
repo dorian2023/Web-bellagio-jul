@@ -711,7 +711,7 @@
 .editorial-seal-badge {
   position: absolute;
   top: 18px;
-  left: 18px;
+  right: 18px;
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -985,7 +985,7 @@
 
   .editorial-seal-badge {
     top: 12px;
-    left: 12px;
+    right: 12px;
     padding: 0.35rem 0.65rem;
   }
 

@@ -82,8 +82,8 @@ export default function About() {
             {/* Main Architectural Hero Image */}
             <div className="editorial-main-frame">
               <img
-                src="https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=1200&q=85"
-                alt="Salón moderno con mobiliario Bellagio en Caracas"
+                src="/images/inicio_pagina.png"
+                alt="Salón de lujo con sofá seccional Bellagio en Caracas"
                 className="editorial-main-img"
                 width={650}
                 height={520}

@@ -40,10 +40,18 @@ export function normalizeColorVariants(raw: unknown): ProductColorVariant[] {
       id: typeof v.id === 'string' && v.id ? v.id : `color-${idx}`,
       name: typeof v.name === 'string' ? v.name.trim().slice(0, 60) : '',
       hexColor: sanitizeHexColor(v.hexColor),
-      images: Array.isArray(v.images) ? v.images.filter((u): u is string => typeof u === 'string' && u.length > 0) : [],
+      images: Array.isArray(v.images) ? v.images.filter((u): u is string => typeof u === 'string' && u.length > 0).map(fixLegacyPngUrl) : [],
       usesMainGallery: v.usesMainGallery === true,
     }))
     .filter((v) => v.name.length > 0 && (v.usesMainGallery || v.images.length > 0));
+}
+
+function fixLegacyPngUrl(url: any): string {
+  if (typeof url !== 'string') return '';
+  if (url.includes('vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/') && url.endsWith('.png')) {
+    return url.replace(/\.png$/, '.webp');
+  }
+  return url;
 }
 
 /**
@@ -72,6 +80,10 @@ export function normalizeProduct(row: any): Product {
     availableColors = row.availableColors.split(',').map((s: string) => s.trim()).filter(Boolean);
   }
 
+  const rawImages: string[] = Array.isArray(row.gallery_images) 
+    ? row.gallery_images 
+    : (Array.isArray(row.galleryImages) ? row.galleryImages : []);
+
   return {
     id: row.id,
     category: row.category_id || row.category || 'sofas',
@@ -81,10 +93,10 @@ export function normalizeProduct(row: any): Product {
     description: row.description || '',
     materials: row.materials || '',
     dimensions: row.dimensions || '',
-    image: row.image_url || row.image || '/images/hero-poster.webp',
+    image: fixLegacyPngUrl(row.image_url || row.image || '/images/hero-poster.webp'),
     availableColors,
     youtubeUrl: row.youtube_url || row.youtubeUrl || row.video_url || row.videoUrl || '',
-    galleryImages: Array.isArray(row.gallery_images) ? row.gallery_images : (Array.isArray(row.galleryImages) ? row.galleryImages : []),
+    galleryImages: rawImages.map(fixLegacyPngUrl).filter(Boolean),
     origin,
     stockStatus: (row.stock_status === 'agotado') ? 'agotado' : 'disponible',
     materialCatalogs: row.material_catalogs || row.materialCatalogs || undefined,

@@ -109,13 +109,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera, tope de espejo.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791426394571-rygy4h-34450.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791426394571-rygy4h-34450.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791426394571-rygy4h-34450.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791426394571-rygy4h-34450.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -129,13 +129,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica con tope de piedra sinterizada.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424653297-76zb3f-34448.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424653297-76zb3f-34448.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424653297-76zb3f-34448.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424656328-7u3dyt-34446.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424657961-p3vzob-34447.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424653297-76zb3f-34448.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424656328-7u3dyt-34446.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424657961-p3vzob-34447.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -149,14 +149,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera con tope de piedra sinterizada",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424211943-g5cq88-34440.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424211943-g5cq88-34440.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424211943-g5cq88-34440.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424214657-8iasbb-34442.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424211943-g5cq88-34440.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791424214657-8iasbb-34442.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -170,14 +170,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera tapizado en tela o bipiel con patas metálicas.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421992998-dbwqgv-34431.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421992998-dbwqgv-34431.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421992998-dbwqgv-34431.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421996480-oow3pj-34433.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421992998-dbwqgv-34431.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791421996480-oow3pj-34433.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -196,8 +196,8 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "",
     "galleryImages": [
       "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791413408751-osz0dj-34388.webp",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791413410135-lhkv55-34411.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791413416076-dhxz58-34410.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791413410135-lhkv55-34411.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791413416076-dhxz58-34410.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -211,16 +211,16 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera tapizado en tela o bipiel.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411540350-7oivav-34324.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411540350-7oivav-34324.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411540350-7oivav-34324.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411543471-h6zuf7-34325.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411545520-rnh6p2-34326.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411547365-72n7u5-34331.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411540350-7oivav-34324.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411543471-h6zuf7-34325.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411545520-rnh6p2-34326.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791411547365-72n7u5-34331.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -234,16 +234,16 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera tapizado en tela / bipiel",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399575637-b4l512-34322.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399575637-b4l512-34322.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399575637-b4l512-34322.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399579254-jccbd6-34320.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399582003-tz98ba-34321.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399729937-29464m-34323.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399575637-b4l512-34322.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399579254-jccbd6-34320.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399582003-tz98ba-34321.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791399729937-29464m-34323.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -257,15 +257,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera y espejo",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791398346934-p20du4-34318.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791398346934-p20du4-34318.webp",
     "availableColors": [
       "Natural",
       "centro a convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791398346934-p20du4-34318.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791398350844-ke0jti-34319.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791398346934-p20du4-34318.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791398350844-ke0jti-34319.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -279,14 +279,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica con tope de piedra sinterizada.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791397978899-9zq9g4-34317.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791397978899-9zq9g4-34317.webp",
     "availableColors": [
       "Base negra",
       "tope blanco veteado."
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791397978899-9zq9g4-34317.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791397978899-9zq9g4-34317.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -300,16 +300,16 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica tapizado en bipiel.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791396688067-aqwojq-34266.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791396688067-aqwojq-34266.webp",
     "availableColors": [
       "Gris",
       "Negro"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791396688067-aqwojq-34266.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791396691321-pdjaf7-34267.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791396693058-dkdhkt-34265.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791396688067-aqwojq-34266.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791396691321-pdjaf7-34267.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791396693058-dkdhkt-34265.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -323,15 +323,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera y metálica tapizado en tela / bipiel.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791395736315-m350oq-34260.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791395736315-m350oq-34260.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791395736315-m350oq-34260.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791395743493-ixocs1-34261.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791395747951-sv3m14-34262.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791395736315-m350oq-34260.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791395743493-ixocs1-34261.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791395747951-sv3m14-34262.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -345,15 +345,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera tapizado en tela / bipiel con patas metálicas.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393872336-buwgit-34255.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393872336-buwgit-34255.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393872336-buwgit-34255.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393876541-k67nua-34256.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393880965-t82l4m-34257.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393872336-buwgit-34255.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393876541-k67nua-34256.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393880965-t82l4m-34257.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -367,15 +367,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera tapizado en tela bipiel con patas metálicas.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393445492-p0mj0t-34251.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393445492-p0mj0t-34251.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "https://youtube.com/shorts/dtrOmjYrJ3M",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393445492-p0mj0t-34251.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393462759-5418ps-34252.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393472896-elsik5-34253.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393445492-p0mj0t-34251.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393462759-5418ps-34252.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791393472896-elsik5-34253.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -389,15 +389,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera, tapizado en tela / bipiel con patas metálicas.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791392779489-1304mw-34242.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791392779489-1304mw-34242.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791392779489-1304mw-34242.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791392786585-rmid01-34234.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791392792456-l65vwj-34243.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791392779489-1304mw-34242.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791392786585-rmid01-34234.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791392792456-l65vwj-34243.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -411,15 +411,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica y de madera, tapizado en tela / bipiel",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791391150684-c4y24b-34225.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791391150684-c4y24b-34225.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791391150684-c4y24b-34225.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791391154380-l5sa2w-34226.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791391156886-dttavo-34227.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791391150684-c4y24b-34225.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791391154380-l5sa2w-34226.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791391156886-dttavo-34227.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -433,15 +433,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390615382-lf3zsy-34218.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390615382-lf3zsy-34218.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390615382-lf3zsy-34218.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390623185-rsa4av-34219.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390635362-f6zma3-34220.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390615382-lf3zsy-34218.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390623185-rsa4av-34219.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390635362-f6zma3-34220.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -455,15 +455,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera, tapizado en tela / bipiel",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390012832-tteosf-34209.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390012832-tteosf-34209.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390012832-tteosf-34209.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390025507-npeeul-34210.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390034620-3kgioh-34215.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390012832-tteosf-34209.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390025507-npeeul-34210.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791390034620-3kgioh-34215.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -477,15 +477,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica, tapizado en tela / bipiel",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791389237940-3ac51k-34191.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791389237940-3ac51k-34191.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791389237940-3ac51k-34191.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791389245131-fyeeba-34199.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791389252290-4m75b0-34202.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791389237940-3ac51k-34191.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791389245131-fyeeba-34199.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791389252290-4m75b0-34202.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -499,15 +499,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera y metálica.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388634832-3fe77g-34187.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388634832-3fe77g-34187.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388634832-3fe77g-34187.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388643432-xzurgj-34188.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388653805-1paxsa-34189.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388634832-3fe77g-34187.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388643432-xzurgj-34188.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388653805-1paxsa-34189.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -521,14 +521,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388088392-ia22mr-34184.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388088392-ia22mr-34184.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388088392-ia22mr-34184.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388092231-pkezm0-34185.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388088392-ia22mr-34184.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388092231-pkezm0-34185.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -542,14 +542,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera tapizado en tela / bipiel.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791387493770-okfu03-34175.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791387493770-okfu03-34175.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791387493770-okfu03-34175.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791387504163-tpusnx-34179.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791387493770-okfu03-34175.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791387504163-tpusnx-34179.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -563,16 +563,16 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica, tope de piedra sinterizada con sillas tapizadas en bipiel.",
     "dimensions": "Normal: 1.40 x 0.90 metros, Extendido: 1.80 x 0.90 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281408859-e97ux3-33713.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281408859-e97ux3-33713.webp",
     "availableColors": [
       "Sillas grises"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281408859-e97ux3-33713.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281415405-crojwj-33708.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281420110-lf7390-33709.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281424614-mgu3aw-33711.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281408859-e97ux3-33713.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281415405-crojwj-33708.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281420110-lf7390-33709.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791281424614-mgu3aw-33711.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -586,15 +586,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "Altura: 1.60 metros. Ancho: 1.10 metros. Profundidad: 0.40 metros. Espejo: 1.00 x 0.85 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252662575-k55cbq-33703.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252662575-k55cbq-33703.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252662575-k55cbq-33703.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252664618-2pxjtm-33702.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252666881-qdl3bq-33704.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252662575-k55cbq-33703.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252664618-2pxjtm-33702.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252666881-qdl3bq-33704.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -608,14 +608,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "2.00 x 1.00 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252082313-i31qg5-33699.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252082313-i31qg5-33699.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252082313-i31qg5-33699.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252085487-rtuji2-33700.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252082313-i31qg5-33699.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791252085487-rtuji2-33700.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -629,13 +629,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "2.00 x 1.00 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791251730884-dcul0v-33691.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791251730884-dcul0v-33691.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791251730884-dcul0v-33691.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791251733760-thmtek-33689.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791251735092-7814hr-33690.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791251730884-dcul0v-33691.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791251733760-thmtek-33689.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791251735092-7814hr-33690.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -649,15 +649,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera de pino seca al horno, tapizado en bipiel / tela con patas metálicas.",
     "dimensions": "Sofa 2 puestos: 1.65 x 1.05 metros, Sofa 3 puestos: 2.05 x 1.05 metros",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791249005344-axm9ok-33660.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791249005344-axm9ok-33660.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "https://youtube.com/shorts/jmDandWV_kU",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791249005344-axm9ok-33660.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791249008043-7pxdcd-33661.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791249009817-065z5k-33662.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791249005344-axm9ok-33660.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791249008043-7pxdcd-33661.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791249009817-065z5k-33662.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -671,13 +671,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791248340636-1ee1j1-33649.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791248340636-1ee1j1-33649.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791248340636-1ee1j1-33649.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791248343850-gp8mpi-33650.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791248345572-agj52o-33655.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791248340636-1ee1j1-33649.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791248343850-gp8mpi-33650.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791248345572-agj52o-33655.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -691,13 +691,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791247226212-4bvz9j-33635.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791247226212-4bvz9j-33635.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791247226212-4bvz9j-33635.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791247229385-mk4qz7-33636.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791247231368-ibsci6-33637.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791247226212-4bvz9j-33635.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791247229385-mk4qz7-33636.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791247231368-ibsci6-33637.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -711,14 +711,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "Individual, Matrimonial, Queen, King. Copete Altura: 1.40 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791133715850-2n67si-33144.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791133715850-2n67si-33144.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791133715850-2n67si-33144.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791133731981-kvjtpl-33130.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791133715850-2n67si-33144.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791133731981-kvjtpl-33130.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -732,15 +732,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica y de madera tapizado en tela",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791052624265-84jo1x-32768.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791052624265-84jo1x-32768.webp",
     "availableColors": [
       "Gris oscuro"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791052624265-84jo1x-32768.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791052630275-073ubq-32765.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791052637435-m8rk1p-32764.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791052624265-84jo1x-32768.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791052630275-073ubq-32765.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791052637435-m8rk1p-32764.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -754,13 +754,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023782659-veosvv-32512.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023782659-veosvv-32512.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023782659-veosvv-32512.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023789454-xj7imu-32513.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023794576-6fg2nn-32514.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023782659-veosvv-32512.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023789454-xj7imu-32513.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023794576-6fg2nn-32514.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -774,13 +774,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "Silla de comedor con respaldo curvo envolvente, apoyabrazos integrados y asiento acolchado de bordes redondeados, acompañado de canales verticales exteriores.",
     "materials": "Asiento, respaldo y apoyabrazos tapizados y acolchados. Patas de apariencia metálica con acabado negro mate. Material de la estructura interna y composición del tapizado por confirmar",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790990363308-khd8ap-32420.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790990363308-khd8ap-32420.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790990363308-khd8ap-32420.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790990354130-urycqy-32415.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790990385338-tr1et0-32421.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790990363308-khd8ap-32420.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790990354130-urycqy-32415.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790990385338-tr1et0-32421.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -794,15 +794,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "Silla de comedor con respaldo ergonómico envolvente. Confección en pino seco al horno y tapizados resistentes a mascotas y líquidos en diversas tonalidades.",
     "materials": " Estructura interna y patas en madera de pino seco al horno con acabado en pintura laqueada o mate, tapicería en telas pet-friendly y antifluidos de alta durabilidad.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983710350-955ywf-32396.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983710350-955ywf-32396.webp",
     "availableColors": [
       "Bipiel / Telas"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983710350-955ywf-32396.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983745237-8l853v-32395.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983772206-q7q3p0-32394.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983710350-955ywf-32396.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983745237-8l853v-32395.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983772206-q7q3p0-32394.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -816,13 +816,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983491910-lvxj5m-32390.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983491910-lvxj5m-32390.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983491910-lvxj5m-32390.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983500164-o3y525-32388.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983508870-9ygd78-32389.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983491910-lvxj5m-32390.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983500164-o3y525-32388.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790983508870-9ygd78-32389.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -836,13 +836,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790971185564-5tabqc-32334.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790971185564-5tabqc-32334.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790971185564-5tabqc-32334.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790971191622-cmy01e-32335.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790971197033-96rnuh-32336.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790971185564-5tabqc-32334.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790971191622-cmy01e-32335.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790971197033-96rnuh-32336.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -856,14 +856,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936305961-4v9hno-32124.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936305961-4v9hno-32124.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936305961-4v9hno-32124.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936309705-u6s2kt-32123.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936311868-11mmlq-32122.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936314087-63ux83-32121.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936305961-4v9hno-32124.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936309705-u6s2kt-32123.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936311868-11mmlq-32122.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790936314087-63ux83-32121.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -877,13 +877,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790934694479-8gag09-32115.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790934694479-8gag09-32115.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790934694479-8gag09-32115.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790934700087-55361n-32116.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790934705069-0586nz-32117.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790934694479-8gag09-32115.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790934700087-55361n-32116.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790934705069-0586nz-32117.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -897,13 +897,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933495010-5pij3w-32110.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933495010-5pij3w-32110.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933495010-5pij3w-32110.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933498012-0ljkr0-32111.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933500074-bm0cfb-32112.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933495010-5pij3w-32110.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933498012-0ljkr0-32111.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933500074-bm0cfb-32112.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -917,13 +917,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933075963-au5v0u-32107.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933075963-au5v0u-32107.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933075963-au5v0u-32107.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933079827-4vr13d-32106.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933082370-bt59za-32108.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933075963-au5v0u-32107.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933079827-4vr13d-32106.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790933082370-bt59za-32108.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -937,13 +937,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "Sofa 3 Puestos: 2,20 X 1,00 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790932511728-sd7w2s-32102.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790932511728-sd7w2s-32102.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790932511728-sd7w2s-32102.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790932514565-uyzgjo-32103.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790932516108-qzcbdd-32097.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790932511728-sd7w2s-32102.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790932514565-uyzgjo-32103.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790932516108-qzcbdd-32097.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -957,15 +957,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Espejo, madera",
     "dimensions": "2.00 x 1.00 metros",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904867961-wxr15p-32092.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904867961-wxr15p-32092.webp",
     "availableColors": [
       "Natural",
       "Plomo"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904867961-wxr15p-32092.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904875300-o4486u-32093.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904867961-wxr15p-32092.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904875300-o4486u-32093.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -979,16 +979,16 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera",
     "dimensions": "Individual",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903555854-1hi61c-32079.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903555854-1hi61c-32079.webp",
     "availableColors": [
       "Varios"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903555854-1hi61c-32079.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903563114-b7ded2-32080.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903571613-i6fzm4-32085.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903580359-hbr6t6-32086.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903555854-1hi61c-32079.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903563114-b7ded2-32080.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903571613-i6fzm4-32085.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790903580359-hbr6t6-32086.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1002,7 +1002,7 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera ",
     "dimensions": "Individual, Matrimonial, Queen, King ",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790899062863-kp7tzs-32024.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790899062863-kp7tzs-32024.webp",
     "availableColors": [
       "Plata",
       "Negro",
@@ -1014,8 +1014,8 @@ export const CATALOGS_DATA: Product[] = [
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790899062863-kp7tzs-32024.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790899071442-yxl79p-32025.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790899062863-kp7tzs-32024.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790899071442-yxl79p-32025.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1029,13 +1029,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885904903-bvz830-31970.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885904903-bvz830-31970.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885904903-bvz830-31970.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885911758-169dxu-31971.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885916160-85vf0g-31969.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885904903-bvz830-31970.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885911758-169dxu-31971.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885916160-85vf0g-31969.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1049,15 +1049,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885434432-wyg9w6-31915.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885434432-wyg9w6-31915.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885434432-wyg9w6-31915.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885439198-hjsaw0-31937.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885443610-fomp0d-31939.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885447893-vlfawt-31938.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885451655-tc1q30-31966.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885434432-wyg9w6-31915.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885439198-hjsaw0-31937.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885443610-fomp0d-31939.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885447893-vlfawt-31938.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790885451655-tc1q30-31966.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1071,13 +1071,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790820986273-m9mc56-31653.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790820986273-m9mc56-31653.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790820986273-m9mc56-31653.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790820989983-fqlrlk-31656.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790820994252-zgfjuw-31657.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790820986273-m9mc56-31653.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790820989983-fqlrlk-31656.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790820994252-zgfjuw-31657.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1091,14 +1091,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814735711-nof0wn-31568.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814735711-nof0wn-31568.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814735711-nof0wn-31568.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814739117-bgpott-31569.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814742061-9fvvpx-31570.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814744814-nh9b2p-31571.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814735711-nof0wn-31568.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814739117-bgpott-31569.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814742061-9fvvpx-31570.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814744814-nh9b2p-31571.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1112,14 +1112,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813224821-3gku87-31545.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813224821-3gku87-31545.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813224821-3gku87-31545.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813231593-zha20p-31546.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813235573-j4v9pa-31547.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813238342-mgyupg-31548.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813224821-3gku87-31545.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813231593-zha20p-31546.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813235573-j4v9pa-31547.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790813238342-mgyupg-31548.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1133,14 +1133,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808057759-wrswzs-31523.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808057759-wrswzs-31523.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808057759-wrswzs-31523.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808063991-eqbi10-31524.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808068364-udffsn-31522.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808071742-n8zcai-31525.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808057759-wrswzs-31523.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808063991-eqbi10-31524.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808068364-udffsn-31522.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790808071742-n8zcai-31525.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1154,17 +1154,17 @@ export const CATALOGS_DATA: Product[] = [
     "description": "Reclinable, mecedora y giratoria.\nEléctrica y manual.\n",
     "materials": "Estructura metálica, tapizado en bipiel.",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807164733-2lxcd4-31517.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807164733-2lxcd4-31517.webp",
     "availableColors": [
       "Gris",
       "Negro y Beige"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807164733-2lxcd4-31517.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807169442-7w5m9u-31516.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807172418-hmvrln-31518.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807176822-p9c4om-31519.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807164733-2lxcd4-31517.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807169442-7w5m9u-31516.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807172418-hmvrln-31518.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790807176822-p9c4om-31519.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -1178,17 +1178,17 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica y de madera tapizado en tela / bipiel ",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806489662-t7fsca-31513.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806489662-t7fsca-31513.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806489662-t7fsca-31513.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806495888-qlul0c-31509.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806499216-an4wij-31512.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806501799-34dt4n-31510.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806505992-mm2oal-31511.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806489662-t7fsca-31513.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806495888-qlul0c-31509.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806499216-an4wij-31512.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806501799-34dt4n-31510.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790806505992-mm2oal-31511.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1202,13 +1202,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790800753522-j93zzw-31484.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790800753522-j93zzw-31484.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790800753522-j93zzw-31484.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790800756220-s1im2o-31485.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790800759677-j4eo04-31486.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790800753522-j93zzw-31484.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790800756220-s1im2o-31485.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790800759677-j4eo04-31486.webp"
     ],
     "origin": "importado",
     "stockStatus": "agotado"
@@ -1222,14 +1222,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761889766-c62zfe-31209.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761889766-c62zfe-31209.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761889766-c62zfe-31209.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761893623-x5wgko-31210.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761897407-67nee5-31211.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761904209-2zo84v-31212.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761889766-c62zfe-31209.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761893623-x5wgko-31210.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761897407-67nee5-31211.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790761904209-2zo84v-31212.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -1243,13 +1243,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759617587-smxpe3-31197.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759617587-smxpe3-31197.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759617587-smxpe3-31197.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759621307-9lqg3z-31198.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759625164-qxlib9-31199.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759617587-smxpe3-31197.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759621307-9lqg3z-31198.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759625164-qxlib9-31199.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1263,16 +1263,16 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica tapizado en bipiel.",
     "dimensions": "Sofa 3 puestos: 2.10 x 0.95 metros, Sofá 2 puestos: 1.85 x 0.85 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759043370-lq4dmw-31191.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759043370-lq4dmw-31191.webp",
     "availableColors": [
       "Negro y Gris."
     ],
     "youtubeUrl": "https://youtube.com/shorts/z5wzxGC5Leg",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759043370-lq4dmw-31191.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759049093-g7oil6-31192.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759052538-s8qy66-31193.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759056511-9373qe-31194.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759043370-lq4dmw-31191.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759049093-g7oil6-31192.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759052538-s8qy66-31193.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790759056511-9373qe-31194.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -1286,13 +1286,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790734605098-gevev0-31179.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790734605098-gevev0-31179.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790734605098-gevev0-31179.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790734611373-wv8zm4-31181.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790734615443-t9a4li-31180.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790734605098-gevev0-31179.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790734611373-wv8zm4-31181.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790734615443-t9a4li-31180.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1306,13 +1306,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790732285255-p06xr5-31165.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790732285255-p06xr5-31165.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790732285255-p06xr5-31165.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790732291774-nad45n-31170.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790732298489-cn0wz0-31171.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790732285255-p06xr5-31165.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790732291774-nad45n-31170.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790732298489-cn0wz0-31171.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1326,13 +1326,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790730459697-32zm42-31102.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790730459697-32zm42-31102.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790730459697-32zm42-31102.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790730470709-vcmbr8-31120.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790730476933-60jvbw-31119.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790730459697-32zm42-31102.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790730470709-vcmbr8-31120.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790730476933-60jvbw-31119.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1346,12 +1346,12 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790647045749-q05mih-30790.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790647045749-q05mih-30790.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790647045749-q05mih-30790.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790647049600-ba6onf-30791.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790647045749-q05mih-30790.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790647049600-ba6onf-30791.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -1388,9 +1388,9 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/3a22ae06-f873-43fd-b5b0-cca4cd698f38-1789346576891.webp",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791415000369-g7jv0w-34415.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791415003309-74x9c4-34414.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791415004844-l8mo81-34416.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791415000369-g7jv0w-34415.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791415003309-74x9c4-34414.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791415004844-l8mo81-34416.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -2236,12 +2236,12 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790900395815-5qlkd7-32027.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790900395815-5qlkd7-32027.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790900395815-5qlkd7-32027.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790900399144-vtpawh-32028.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790900395815-5qlkd7-32027.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790900399144-vtpawh-32028.webp",
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790172431560-vcca958.png"
     ],
     "origin": "nacional",
@@ -2968,9 +2968,9 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/2c4ffc3a-cb36-4560-8d96-efd5cf4ff8af-1789345343112.webp",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790815217061-jdcjst-31576.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790815219905-60xa0d-31578.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790815222051-yn34x5-31583.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790815217061-jdcjst-31576.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790815219905-60xa0d-31578.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790815222051-yn34x5-31583.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -3024,13 +3024,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Maderas nobles y acabados finos",
     "dimensions": "A convenir",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790760259216-tgygzj-31202.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790760259216-tgygzj-31202.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790760259216-tgygzj-31202.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790760265598-qgcvt2-31204.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790760268780-g9ftgf-31203.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790760259216-tgygzj-31202.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790760265598-qgcvt2-31204.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790760268780-g9ftgf-31203.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3049,9 +3049,9 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790188335924-vbnm3dl.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790812596558-f0stlq-31535.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790812601191-bqqhwe-31536.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790812603631-et5npb-31541.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790812596558-f0stlq-31535.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790812601191-bqqhwe-31536.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790812603631-et5npb-31541.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3065,14 +3065,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814008429-fdc8qy-31557.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814008429-fdc8qy-31557.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814008429-fdc8qy-31557.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814012255-hjig8e-31554.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814014060-hcktp6-31558.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814016104-dyilpw-31555.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814008429-fdc8qy-31557.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814012255-hjig8e-31554.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814014060-hcktp6-31558.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790814016104-dyilpw-31555.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3107,15 +3107,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817044237-aaaoeb-31588.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817044237-aaaoeb-31588.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817044237-aaaoeb-31588.png",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817044237-aaaoeb-31588.webp",
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/d8daa446-9d8f-4f4f-b502-983be267da0f-1789345490124.webp",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817047935-9ekyyu-31584.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817050864-cqlxwp-31585.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817054211-ui1d77-31586.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817047935-9ekyyu-31584.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817050864-cqlxwp-31585.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790817054211-ui1d77-31586.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3129,13 +3129,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790878643316-y3u8jo-31864.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790878643316-y3u8jo-31864.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790878643316-y3u8jo-31864.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790878648841-vdpo2g-31865.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790878654479-s74g9l-31866.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790878643316-y3u8jo-31864.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790878648841-vdpo2g-31865.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790878654479-s74g9l-31866.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3149,14 +3149,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886407571-gl28pb-31973.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886407571-gl28pb-31973.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886407571-gl28pb-31973.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886410850-k6b9kv-31974.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886412394-5elt1r-31975.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886414106-s8eimh-31980.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886407571-gl28pb-31973.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886410850-k6b9kv-31974.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886412394-5elt1r-31975.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790886414106-s8eimh-31980.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3170,7 +3170,7 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera de pino seca al horno, tapizado en bipiel / tela con patas metálicas.",
     "dimensions": "2.40m x 1.65m",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898395601-s3ddl1-32017.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898395601-s3ddl1-32017.webp",
     "availableColors": [
       "Varios",
       "Pet-friendly",
@@ -3178,10 +3178,10 @@ export const CATALOGS_DATA: Product[] = [
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898395601-s3ddl1-32017.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898402160-uf95ot-32018.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898407585-heabvt-32019.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898412911-8f21a3-32020.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898395601-s3ddl1-32017.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898402160-uf95ot-32018.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898407585-heabvt-32019.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790898412911-8f21a3-32020.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3218,8 +3218,8 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "https://youtube.com/shorts/qzHBXZL86Ms",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790178351758-4r92gw8.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904335574-odvlti-32088.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904342740-iyjjqu-32089.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904335574-odvlti-32088.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790904342740-iyjjqu-32089.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3238,8 +3238,8 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790169168850-x2hi29l.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791051737752-z56wth-32761.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791051741955-3yzbj0-32762.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791051737752-z56wth-32761.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791051741955-3yzbj0-32762.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3260,8 +3260,8 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "https://youtube.com/shorts/Uh5PnbFJOK8",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790099835195-9wnztge.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791130381156-vypnvb-33070.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791130401508-nhlx8h-33076.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791130381156-vypnvb-33070.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791130401508-nhlx8h-33076.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3275,16 +3275,16 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica y de madera de pino seca al horno, tapizado en bipiel / tela con patas metálicas.",
     "dimensions": "Normal: 0.95 x 1.80 metros. Extendido: 1.90 x 1.80 metros.",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250076268-fnnwoo-33674.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250076268-fnnwoo-33674.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250076268-fnnwoo-33674.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250079448-ppmxzk-33671.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250080881-h4h3zb-33668.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250082626-yeyesq-33675.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250076268-fnnwoo-33674.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250079448-ppmxzk-33671.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250080881-h4h3zb-33668.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250082626-yeyesq-33675.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3305,11 +3305,11 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/6a5dd809-b202-4052-9ff1-b48a48d2b11a-1789156315192.webp",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250928900-5hmuyg-33681.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250932261-xilc7x-33682.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250934378-k3oths-33683.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250936523-2wo19h-33684.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250938680-bpgyhl-33685.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250928900-5hmuyg-33681.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250932261-xilc7x-33682.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250934378-k3oths-33683.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250936523-2wo19h-33684.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791250938680-bpgyhl-33685.webp"
     ],
     "origin": "importado",
     "stockStatus": "disponible"
@@ -3330,7 +3330,7 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "https://youtube.com/shorts/7IvRTK5RSH0",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/1790172279908-zzioxxz.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791386908776-dxb7w2-33802.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791386908776-dxb7w2-33802.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3344,15 +3344,15 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura de madera tapizado en tela / bipiel.",
     "dimensions": "Individual, Matrimonial, Queen, King. Copete altura:",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388028287-bwpry4-34180.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388028287-bwpry4-34180.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388028287-bwpry4-34180.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388033961-ef1bk8-34181.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388039686-h5cjwc-34183.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388028287-bwpry4-34180.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388033961-ef1bk8-34181.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791388039686-h5cjwc-34183.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3390,14 +3390,14 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "Estructura metálica tapizado en bipiel",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420309451-rqeuhh-34427.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420309451-rqeuhh-34427.webp",
     "availableColors": [
       "A convenir"
     ],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420309451-rqeuhh-34427.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420312099-9q2ma2-34428.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420309451-rqeuhh-34427.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791420312099-9q2ma2-34428.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -3674,8 +3674,8 @@ export const CATALOGS_DATA: Product[] = [
     "youtubeUrl": "",
     "galleryImages": [
       "https://yxtazqlqwhsxppsipwet.supabase.co/storage/v1/object/public/product-images/products/5016763e-b344-44e3-a92e-23f6fb9577cc-1789341754075.webp",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023370177-x7qauk-32509.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023380388-1cx62b-32510.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023370177-x7qauk-32509.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1791023380388-1cx62b-32510.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"
@@ -4024,13 +4024,13 @@ export const CATALOGS_DATA: Product[] = [
     "description": "",
     "materials": "",
     "dimensions": "",
-    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790957699013-zhhb5r-32127.png",
+    "image": "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790957699013-zhhb5r-32127.webp",
     "availableColors": [],
     "youtubeUrl": "",
     "galleryImages": [
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790957699013-zhhb5r-32127.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790957704895-v0j6qd-32245.png",
-      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790957710523-wtspp9-32246.png"
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790957699013-zhhb5r-32127.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790957704895-v0j6qd-32245.webp",
+      "https://vjtjwifynfzdjkdpruty.supabase.co/storage/v1/object/public/product-images/products/1790957710523-wtspp9-32246.webp"
     ],
     "origin": "nacional",
     "stockStatus": "disponible"

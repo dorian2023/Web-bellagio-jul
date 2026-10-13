@@ -18,7 +18,6 @@ interface ColorVariantSelectorProps {
 
 export default function ColorVariantSelector({ variants, selectedId, onSelect }: ColorVariantSelectorProps) {
   if (variants.length === 0) return null;
-  const selected = variants.find((v) => v.id === selectedId) || null;
 
   return (
     <div className="atelier-swatch-configurator color-variant-selector" aria-label="Colores disponibles">
@@ -37,6 +36,7 @@ export default function ColorVariantSelector({ variants, selectedId, onSelect }:
       <div className="color-variant-list" role="radiogroup" aria-label="Color del mueble">
         {variants.map((variant) => {
           const isActive = variant.id === selectedId;
+          const bg = sanitizeHexColor(variant.hexColor);
           return (
             <button
               key={variant.id}
@@ -44,26 +44,26 @@ export default function ColorVariantSelector({ variants, selectedId, onSelect }:
               type="button"
               role="radio"
               aria-checked={isActive}
-              className={`color-variant-option ${isActive ? 'is-active' : ''}`}
+              className={`color-variant-circle-btn ${isActive ? 'is-active' : ''}`}
               onClick={() => onSelect(variant)}
               title={variant.name}
+              aria-label={variant.name}
             >
               <span
-                className="color-variant-dot"
-                style={{ backgroundColor: sanitizeHexColor(variant.hexColor) }}
-                aria-hidden="true"
+                className="color-variant-circle-fill"
+                style={{ backgroundColor: bg }}
               />
-              <span className="color-variant-name">{variant.name}</span>
+              {isActive && (
+                <span className="color-variant-check" aria-hidden="true">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                    <polyline points="20 6 9 17 4 12" />
+                  </svg>
+                </span>
+              )}
             </button>
           );
         })}
       </div>
-
-      {selected && (
-        <p className="color-variant-status">
-          Viendo fotos reales en <strong>{selected.name}</strong>
-        </p>
-      )}
     </div>
   );
 }

@@ -5691,60 +5691,61 @@
 
 /* ==========================================================================
    Selector de Colores Reales (colorVariants definidos en /admin)
+   Círculos puros de color sin texto (Quiet Luxury)
    ========================================================================== */
 .color-variant-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 12px;
+  margin-top: 14px;
+  align-items: center;
 }
 
-.color-variant-option {
+.color-variant-circle-btn {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  padding: 2px;
+  border: 2px solid transparent;
+  background: transparent;
+  cursor: pointer;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 14px 6px 6px;
-  border-radius: 999px;
-  border: 1px solid var(--color-border, rgba(0, 0, 0, 0.12));
-  background: var(--color-bg-surface, #fff);
-  color: var(--color-text-primary, #1a1a1a);
-  font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+  justify-content: center;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.color-variant-option:hover {
-  border-color: var(--gold-400, #c5a55a);
-  transform: translateY(-1px);
+.color-variant-circle-btn:hover {
+  transform: scale(1.1);
 }
 
-.color-variant-option:focus-visible {
+.color-variant-circle-btn:focus-visible {
   outline: 2px solid var(--gold-400, #c5a55a);
   outline-offset: 2px;
 }
 
-.color-variant-option.is-active {
+.color-variant-circle-btn.is-active {
   border-color: var(--gold-400, #c5a55a);
-  box-shadow: 0 0 0 2px rgba(197, 165, 90, 0.35);
-  background: rgba(197, 165, 90, 0.08);
+  box-shadow: 0 0 0 2px rgba(197, 165, 90, 0.35), 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.color-variant-dot {
-  width: 26px;
-  height: 26px;
+.color-variant-circle-fill {
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
-  flex-shrink: 0;
-  border: 1px solid rgba(0, 0, 0, 0.15);
+  display: block;
+  border: 1px solid rgba(0, 0, 0, 0.14);
   box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.4), inset 0 -1px 3px rgba(0, 0, 0, 0.2);
 }
 
-.color-variant-status {
-  margin: 12px 0 0;
-  font-size: 0.78rem;
-  color: var(--color-text-secondary, #666);
-}
-
-.color-variant-status strong {
-  color: var(--gold-500, #a8873a);
+.color-variant-check {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.7));
+  pointer-events: none;
 }

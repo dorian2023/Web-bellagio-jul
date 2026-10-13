@@ -2,12 +2,15 @@
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import Image from 'next/image';
-import { Product } from '@/src/types/catalog';
+import { Product, FabricColorSwatch } from '@/src/types/catalog';
 import { isProductSelected, toggleProductSelection } from '@/src/utils/inquiry-cart';
 import { getYouTubeEmbedUrl, getYouTubeThumbnailUrl } from '@/src/utils/media';
 import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
 import { fetchCatalog } from '@/src/lib/supabase';
 import { CATALOGS_DATA } from '@/src/data/catalogs';
+import FabricSwatchSelector from '@/src/components/catalog/FabricSwatchSelector';
+import ColorVariantSelector from '@/src/components/catalog/ColorVariantSelector';
+import { getDefaultCatalogsForProduct } from '@/src/data/fabric-catalogs';
 
 function CategoryIcon({ categoryId }: { categoryId: string }) {
   switch (categoryId) {
@@ -305,6 +308,46 @@ export default function ProductModal({
 
   const product = activeProduct;
 
+  // Colores reales definidos en /admin (cada uno con sus propias fotos)
+  const colorVariants = useMemo(() => product?.colorVariants ?? [], [product]);
+  const hasColorVariants = colorVariants.length > 0;
+  const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
+
+  // Por defecto: el color de la galería principal, o el primer color definido
+  useEffect(() => {
+    const defaultVariant = colorVariants.find((v) => v.usesMainGallery) || colorVariants[0];
+    setSelectedVariantId(defaultVariant ? defaultVariant.id : null);
+  }, [colorVariants]);
+
+  const selectedVariant = colorVariants.find((v) => v.id === selectedVariantId) || null;
+
+  // Compute effective fabric & wood catalogs for customizer
+  const effectiveCatalogs = useMemo(() => {
+    if (!product) return [];
+    // Los colores reales con foto tienen prioridad sobre los muestrarios genéricos
+    if (product.colorVariants && product.colorVariants.length > 0) return [];
+    if (product.materialCatalogs && product.materialCatalogs.length > 0) {
+      return product.materialCatalogs;
+    }
+    // Flagship interactive experience: enable fabric/wood catalogs for relevant piece categories
+    if (['sofas', 'sofacamas', 'poltronas', 'sillas', 'taburete', 'dormitorios', 'box-spring', 'comedores'].includes(product.category)) {
+      return getDefaultCatalogsForProduct(product.category);
+    }
+    return [];
+  }, [product]);
+
+  // Selected swatch state for real-time visualization
+  const [selectedColorSwatch, setSelectedColorSwatch] = useState<FabricColorSwatch | null>(null);
+
+  // Sync selected swatch when product or catalogs change
+  useEffect(() => {
+    if (effectiveCatalogs.length > 0 && effectiveCatalogs[0]?.colors?.length > 0) {
+      setSelectedColorSwatch(effectiveCatalogs[0].colors[0]);
+    } else {
+      setSelectedColorSwatch(null);
+    }
+  }, [effectiveCatalogs]);
+
   // Filter similar products: prioritizes matching category, complements with other pieces to ensure a rich selection
   const similarProducts = useMemo(() => {
     if (!product || !catalogList.length) return [];
@@ -343,8 +386,12 @@ export default function ProductModal({
   }, [product, catalogList]);
 
   // Extract all distinct images for gallery (Cover + extra angles)
+  // Si hay un color seleccionado con fotos propias, se muestran SOLO esas fotos.
   const allImages: string[] = useMemo(() => {
     if (!product) return [];
+    if (selectedVariant && !selectedVariant.usesMainGallery && selectedVariant.images.length > 0) {
+      return selectedVariant.images;
+    }
     const list: string[] = [];
     if (product.image) list.push(product.image);
     if (Array.isArray(product.galleryImages)) {
@@ -355,9 +402,14 @@ export default function ProductModal({
       });
     }
     return list.length > 0 ? list : ['/images/hero-poster.webp'];
-  }, [product]);
+  }, [product, selectedVariant]);
 
-  const currentDisplayImage = allImages[selectedImageIndex] || product?.image || '/images/hero-poster.webp';
+  // Opción 1 (Estándar Restoration Hardware / Galería Real):
+  // Si el swatch tiene foto real asociada en este mueble, se muestra esa foto.
+  // De lo contrario, se mantiene la foto de estudio 100% nítida y natural, sin tintes artificiales.
+  const currentDisplayImage = (selectedColorSwatch?.furnitureImage && selectedImageIndex === 0)
+    ? selectedColorSwatch.furnitureImage
+    : (allImages[selectedImageIndex] || product?.image || '/images/hero-poster.webp');
 
   // Detect video availability and posters
   const videoUrl = product?.youtubeUrl || (product as any)?.video_url || '';
@@ -588,8 +640,14 @@ export default function ProductModal({
 
   if (!product) return null;
 
+  const selectedFinishNote = (hasColorVariants && selectedVariant)
+    ? ` en color *${selectedVariant.name}*`
+    : selectedColorSwatch
+      ? ` en acabado *${selectedColorSwatch.catalogName ? `${selectedColorSwatch.catalogName} - ` : ''}${selectedColorSwatch.name}*`
+      : '';
+
   const quoteMsg = encodeURIComponent(
-    `Hola Muebles Bellagio, me interesa solicitar cotización y disponibilidad del producto: *${product.title}* (Categoría: ${product.categoryName}). ¿Podrían darme información de precios y acabados?`
+    `Hola Muebles Bellagio, me interesa solicitar cotización y disponibilidad del producto: *${product.title}* (Categoría: ${product.categoryName})${selectedFinishNote}. ¿Podrían darme información de precios y acabados?`
   );
 
   return (
@@ -891,6 +949,37 @@ export default function ProductModal({
                     </div>
                   )}
                 </div>
+              )}
+
+              {/* Colores reales con fotos propias (definidos en /admin) */}
+              {hasColorVariants && (
+                <ColorVariantSelector
+                  variants={colorVariants}
+                  selectedId={selectedVariantId}
+                  onSelect={(variant) => {
+                    if (variant.id === selectedVariantId) return;
+                    setSelectedVariantId(variant.id);
+                    setSelectedImageIndex(0);
+                    setIsAngleLoading(true);
+                  }}
+                />
+              )}
+
+              {/* Atelier de Telas, Texturas & Acabados Interactivo (Nivel RH) */}
+              {effectiveCatalogs.length > 0 && (
+                <FabricSwatchSelector
+                  materialCatalogs={effectiveCatalogs}
+                  selectedColor={selectedColorSwatch}
+                  onSelectColor={(color) => {
+                    setSelectedColorSwatch(color);
+                    setSelectedImageIndex(0);
+                    if (color.furnitureImage) {
+                      setIsAngleLoading(true);
+                      setTimeout(() => setIsAngleLoading(false), 220);
+                    }
+                  }}
+                  productTitle={product.title}
+                />
               )}
 
               {/* Dynamic Similar Products Carousel */}

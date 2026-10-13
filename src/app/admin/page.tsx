@@ -4,12 +4,10 @@ import React, { useState, useEffect } from 'react';
 import { supabase, fetchAdminProducts, saveProduct, deleteProduct, uploadProductImage } from '@/src/lib/supabase';
 import { CATEGORIES_DATA } from '@/src/data/catalogs';
 import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
-
-interface GalleryItem {
-  id: string;
-  url: string;
-  file?: File;
-}
+import ColorVariantsManager from '@/src/components/admin/ColorVariantsManager';
+import { GalleryItem, ColorVariantDraft } from '@/src/types/admin';
+import { ProductColorVariant } from '@/src/types/catalog';
+import { sanitizeHexColor } from '@/src/data/color-presets';
 
 export default function AdminPage() {
   const [session, setSession] = useState<any>(null);
@@ -55,6 +53,9 @@ export default function AdminPage() {
 
   // Gallery items state (holds existing URLs & newly selected files)
   const [galleryItems, setGalleryItems] = useState<GalleryItem[]>([]);
+
+  // Colores con fotos reales propias (ej. "Bipiel Negro" = galería principal, "Rosado" = 3 fotos)
+  const [colorVariants, setColorVariants] = useState<ColorVariantDraft[]>([]);
 
   // Check auth session
   useEffect(() => {
@@ -130,6 +131,7 @@ export default function AdminPage() {
       published: true
     });
     setGalleryItems([]);
+    setColorVariants([]);
     setUploadProgress('');
   };
 
@@ -161,6 +163,15 @@ export default function AdminPage() {
       });
     }
     setGalleryItems(loadedGallery);
+
+    const existingVariants: ProductColorVariant[] = Array.isArray(prod.colorVariants) ? prod.colorVariants : [];
+    setColorVariants(existingVariants.map((v) => ({
+      id: v.id,
+      name: v.name,
+      hexColor: v.hexColor,
+      usesMainGallery: !!v.usesMainGallery,
+      items: (v.images || []).map((url, idx) => ({ id: `${v.id}-img-${idx}`, url })),
+    })));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -236,9 +247,37 @@ export default function AdminPage() {
         }
       }
 
-      setUploadProgress('Guardando datos en la base de datos...');
       const finalMainImage = uploadedUrls[0];
       const finalGalleryImages = uploadedUrls;
+
+      // Subir fotos de cada color. Se descartan colores sin nombre o sin fotos (excepto el de la galería principal).
+      const finalColorVariants: ProductColorVariant[] = [];
+      for (const variant of colorVariants) {
+        const name = variant.name.trim().slice(0, 60);
+        if (!name) continue;
+        const images: string[] = [];
+        if (!variant.usesMainGallery) {
+          for (let i = 0; i < variant.items.length; i++) {
+            const item = variant.items[i];
+            if (item.file) {
+              setUploadProgress(`Subiendo fotos de "${name}" (${i + 1} de ${variant.items.length})...`);
+              images.push(await uploadProductImage(item.file));
+            } else {
+              images.push(item.url);
+            }
+          }
+          if (images.length === 0) continue;
+        }
+        finalColorVariants.push({
+          id: variant.id,
+          name,
+          hexColor: sanitizeHexColor(variant.hexColor),
+          images,
+          usesMainGallery: variant.usesMainGallery,
+        });
+      }
+
+      setUploadProgress('Guardando datos en la base de datos...');
 
       const payload = {
         title: formData.title,
@@ -252,6 +291,7 @@ export default function AdminPage() {
         youtubeUrl: formData.youtubeUrl,
         image: finalMainImage,
         galleryImages: finalGalleryImages,
+        colorVariants: finalColorVariants,
         published: formData.published
       };
 
@@ -564,14 +604,52 @@ export default function AdminPage() {
               </div>
 
               <div className="form-group" style={{ marginBottom: 'var(--space-4)' }}>
-                <label className="form-label">Tonos / Acabados (Separados por coma)</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+                  <label className="form-label" style={{ margin: 0 }}>Tonos & Catálogos de Telas/Maderas</label>
+                  <span style={{ fontSize: '0.72rem', color: 'var(--gold-400)', fontWeight: 600 }}>Atelier Swatches</span>
+                </div>
                 <input 
                   type="text" 
                   className="form-input" 
                   value={formData.availableColors}
                   onChange={(e) => setFormData({ ...formData, availableColors: e.target.value })}
-                  placeholder="Ej. Champagne, Nogal, Negro Marquina"
+                  placeholder="Ej. Bella Velvet, Lino Toscano, Bouclé Milán, Roble Claro"
                 />
+                
+                {/* Quick Add Fabric & Wood Library Pills */}
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.7rem', color: 'var(--color-text-secondary)' }}>Añadir Catálogo Rápido:</span>
+                  {[
+                    { label: '+ Bella Velvet (20+ tonos)', val: 'Bella Velvet' },
+                    { label: '+ Lino Toscano', val: 'Lino Toscano' },
+                    { label: '+ Bouclé Milán', val: 'Bouclé Milán' },
+                    { label: '+ Maderas Nobles', val: 'Maderas Nobles' },
+                  ].map((catPill) => (
+                    <button
+                      key={catPill.val}
+                      type="button"
+                      onClick={() => {
+                        const current = formData.availableColors ? formData.availableColors.split(',').map(s => s.trim()).filter(Boolean) : [];
+                        if (!current.includes(catPill.val)) {
+                          const updated = [...current, catPill.val].join(', ');
+                          setFormData({ ...formData, availableColors: updated });
+                        }
+                      }}
+                      style={{
+                        fontSize: '0.68rem',
+                        fontWeight: 600,
+                        padding: '3px 8px',
+                        borderRadius: '6px',
+                        background: 'rgba(197, 165, 90, 0.12)',
+                        border: '1px solid rgba(197, 165, 90, 0.28)',
+                        color: 'var(--gold-500)',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      {catPill.label}
+                    </button>
+                  ))}
+                </div>
               </div>
 
               {/* Multi-Photo Gallery & Angles Manager */}
@@ -786,6 +864,9 @@ export default function AdminPage() {
                   </div>
                 )}
               </div>
+
+              {/* Colores con fotos reales propias */}
+              <ColorVariantsManager variants={colorVariants} onChange={setColorVariants} />
 
               <div className="form-group" style={{ marginBottom: 'var(--space-4)' }}>
                 <label className="form-label">Video de YouTube (Opcional)</label>

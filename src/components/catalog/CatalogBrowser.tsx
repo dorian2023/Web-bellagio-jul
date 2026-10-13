@@ -8,6 +8,7 @@ import { Product, Category } from '@/src/types/catalog';
 import ProductModal from '@/src/components/catalog/ProductModal';
 import { fetchCatalog } from '@/src/lib/supabase';
 import { VenezuelaFlagIcon, ImportedGlobeIcon } from '@/src/components/shared/FlagIcons';
+import { getDefaultCatalogsForProduct } from '@/src/data/fabric-catalogs';
 
 interface CatalogBrowserProps {
   initialCategory?: string;
@@ -653,6 +654,34 @@ export default function CatalogBrowser({
                               {product.subtitle || (product.materials ? `${product.materials.slice(0, 60)}` : '')}
                             </p>
                           ) : null}
+
+                          {/* Mini-Swatches Row (Inspirado en Restoration Hardware Catálogo) */}
+                          {(() => {
+                            const realColorSwatches = (product.colorVariants || []).map((v) => ({ id: v.id, name: v.name, hexColor: v.hexColor }));
+                            const swatches = (realColorSwatches.length > 0 ? realColorSwatches : null) ||
+                              product.materialCatalogs?.[0]?.colors || 
+                              (['sofas', 'sofacamas', 'poltronas', 'sillas', 'taburete', 'dormitorios', 'box-spring'].includes(product.category) 
+                                ? getDefaultCatalogsForProduct(product.category)?.[0]?.colors 
+                                : []);
+                            if (!swatches || swatches.length === 0) return null;
+                            return (
+                              <div className="catalog-swatches-row" aria-label="Telas y acabados disponibles">
+                                {swatches.slice(0, 5).map((s) => (
+                                  <span
+                                    key={s.id}
+                                    className="catalog-swatch-mini"
+                                    style={{ backgroundColor: s.hexColor || '#C5A55A' }}
+                                    title={s.name}
+                                  />
+                                ))}
+                                {swatches.length > 5 && (
+                                  <span className="catalog-swatches-more-pill">
+                                    +{swatches.length - 5}
+                                  </span>
+                                )}
+                              </div>
+                            );
+                          })()}
                         </div>
                       </div>
                     </article>

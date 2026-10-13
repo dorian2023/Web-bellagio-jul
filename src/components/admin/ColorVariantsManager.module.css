@@ -1,0 +1,314 @@
+/* Gestor de colores con fotos reales — Panel /admin */
+
+.manager {
+  margin-bottom: var(--space-5);
+  padding: var(--space-4);
+  border: 1px solid rgba(197, 165, 90, 0.35);
+  border-radius: var(--radius-md);
+  background: rgba(197, 165, 90, 0.05);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.badge {
+  font-size: 0.68rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: rgba(197, 165, 90, 0.15);
+  color: var(--gold-500);
+}
+
+.hint {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.warning {
+  font-size: 0.75rem;
+  color: #b45309;
+  margin: 0;
+}
+
+.step {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.stepNumber {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--gold-400);
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stepBody {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stepTitle {
+  margin: 0;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.primaryRow,
+.variantHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.primaryRow :global(.form-input),
+.variantHeader :global(.form-input) {
+  flex: 1;
+  min-width: 0;
+}
+
+.variantCard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface-elevated);
+}
+
+.dot,
+.dotLarge {
+  display: inline-block;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.4);
+}
+
+.dot {
+  width: 14px;
+  height: 14px;
+}
+
+.dotLarge {
+  width: 28px;
+  height: 28px;
+}
+
+.colorInput {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background: none;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.uploadArea {
+  display: block;
+  text-align: center;
+  padding: 12px;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.uploadArea:hover {
+  border-color: var(--gold-400);
+  background: rgba(197, 165, 90, 0.08);
+}
+
+.thumbGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 8px;
+}
+
+.thumb {
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  background: #fff;
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: 76px;
+  object-fit: cover;
+}
+
+.thumbBadge,
+.thumbNew {
+  position: absolute;
+  top: 4px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+.thumbBadge {
+  left: 4px;
+  background: var(--gold-400);
+  color: #000;
+}
+
+.thumbNew {
+  right: 4px;
+  background: rgba(34, 197, 94, 0.9);
+  color: #fff;
+}
+
+.thumbControls {
+  display: flex;
+  justify-content: space-between;
+  gap: 2px;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.thumbControls button {
+  flex: 1;
+  border: none;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 0.68rem;
+  cursor: pointer;
+  padding: 2px 0;
+}
+
+.thumbControls button:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.thumbControls .thumbDelete {
+  background: rgba(239, 68, 68, 0.35);
+}
+
+.secondaryButton,
+.primaryButton,
+.dangerButton,
+.linkButton {
+  font-size: 0.8rem;
+  font-weight: 700;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+.secondaryButton {
+  align-self: flex-start;
+  padding: 8px 14px;
+  border: 1px solid rgba(197, 165, 90, 0.45);
+  background: rgba(197, 165, 90, 0.12);
+  color: var(--gold-500);
+}
+
+.secondaryButton:hover {
+  background: rgba(197, 165, 90, 0.22);
+}
+
+.primaryButton {
+  padding: 8px 14px;
+  border: none;
+  background: var(--gold-400);
+  color: #000;
+}
+
+.dangerButton {
+  padding: 6px 10px;
+  border: 1px solid rgba(239, 68, 68, 0.4);
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  flex-shrink: 0;
+}
+
+.linkButton {
+  border: none;
+  background: none;
+  color: var(--color-text-secondary);
+  text-decoration: underline;
+}
+
+.picker {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--gold-400);
+  background: var(--color-bg-surface-elevated);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.pickerHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+}
+
+.presetGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+}
+
+.presetChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-surface, #fff);
+  color: var(--color-text-primary);
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.presetChip:hover {
+  border-color: var(--gold-400);
+  transform: translateY(-1px);
+}
+
+.customRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px dashed var(--color-border);
+}

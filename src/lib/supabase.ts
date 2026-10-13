@@ -5,8 +5,10 @@
  */
 
 import { createClient } from '@supabase/supabase-js';
-import { Product, Category } from '@/src/types/catalog';
+import { Product, Category, ProductColorVariant } from '@/src/types/catalog';
 import { CATALOGS_DATA, CATEGORIES_DATA } from '@/src/data/catalogs';
+import { sanitizeHexColor } from '@/src/data/color-presets';
+import { optimizeImageForUpload } from '@/src/utils/image-optimizer';
 
 const OFFICIAL_SUPABASE_URL = 'https://vjtjwifynfzdjkdpruty.supabase.co';
 const OFFICIAL_SUPABASE_ANON_KEY = 'sb_publishable_J8wyvsMDU4uwf7tNXxZ9xQ_8CW4Dwue';
@@ -34,6 +36,24 @@ export const supabase = createClient(
     }
   }
 );
+
+/**
+ * Parsea y valida las variantes de color guardadas en JSONB.
+ * Descarta entradas corruptas para que un dato malo nunca rompa el catálogo público.
+ */
+export function normalizeColorVariants(raw: unknown): ProductColorVariant[] {
+  if (!Array.isArray(raw)) return [];
+  return raw
+    .filter((v): v is Record<string, unknown> => !!v && typeof v === 'object')
+    .map((v, idx) => ({
+      id: typeof v.id === 'string' && v.id ? v.id : `color-${idx}`,
+      name: typeof v.name === 'string' ? v.name.trim().slice(0, 60) : '',
+      hexColor: sanitizeHexColor(v.hexColor),
+      images: Array.isArray(v.images) ? v.images.filter((u): u is string => typeof u === 'string' && u.length > 0) : [],
+      usesMainGallery: v.usesMainGallery === true,
+    }))
+    .filter((v) => v.name.length > 0 && (v.usesMainGallery || v.images.length > 0));
+}
 
 /**
  * Normalizes a raw Supabase product row into the frontend Product interface
@@ -75,7 +95,9 @@ export function normalizeProduct(row: any): Product {
     youtubeUrl: row.youtube_url || row.youtubeUrl || row.video_url || row.videoUrl || '',
     galleryImages: Array.isArray(row.gallery_images) ? row.gallery_images : (Array.isArray(row.galleryImages) ? row.galleryImages : []),
     origin,
-    stockStatus: (row.stock_status === 'agotado') ? 'agotado' : 'disponible'
+    stockStatus: (row.stock_status === 'agotado') ? 'agotado' : 'disponible',
+    materialCatalogs: row.material_catalogs || row.materialCatalogs || undefined,
+    colorVariants: normalizeColorVariants(row.color_variants ?? row.colorVariants)
   };
 }
 
@@ -189,7 +211,21 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
     gallery_images: Array.isArray(productData.galleryImages) ? productData.galleryImages : [],
     origin: productData.origin || 'nacional',
     stock_status: productData.stockStatus || 'disponible',
-    published: !!productData.published
+    published: !!productData.published,
+    color_variants: Array.isArray(productData.colorVariants) ? productData.colorVariants : []
+  };
+
+  const hasColorVariants = payload.color_variants.length > 0;
+  const missingColorColumnError = new Error(
+    'La base de datos aún no tiene la columna "color_variants". Ejecuta en Supabase → SQL Editor: ' +
+    "ALTER TABLE public.products ADD COLUMN IF NOT EXISTS color_variants jsonb NOT NULL DEFAULT '[]'::jsonb;"
+  );
+
+  /** Quita columnas opcionales si el esquema remoto aún no las tiene. Nunca descarta fotos por color en silencio. */
+  const buildFallbackPayload = (errMsg: string) => {
+    if (errMsg.includes('color_variants') && hasColorVariants) throw missingColorColumnError;
+    const { origin: _o, stock_status: _s, color_variants: _c, ...rest } = payload;
+    return rest;
   };
 
   if (idToUpdate) {
@@ -205,7 +241,7 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
       console.warn('Error al actualizar en Supabase, intentando fallback de columnas:', error);
       const errMsg = (error.message || '').toLowerCase();
       if (errMsg.includes('origin') || errMsg.includes('stock_status') || errMsg.includes('column')) {
-        const { origin: _o, stock_status: _s, ...fallbackPayload } = payload;
+        const fallbackPayload = buildFallbackPayload(errMsg);
         const retryResult = await supabase
           .from('products')
           .update(fallbackPayload)
@@ -236,7 +272,7 @@ export async function saveProduct(productData: any, idToUpdate?: string | null):
       console.warn('Error al insertar en Supabase, intentando fallback de columnas:', error);
       const errMsg = (error.message || '').toLowerCase();
       if (errMsg.includes('origin') || errMsg.includes('stock_status') || errMsg.includes('column')) {
-        const { origin: _o, stock_status: _s, ...fallbackPayload } = payload;
+        const fallbackPayload = buildFallbackPayload(errMsg);
         const retryResult = await supabase
           .from('products')
           .insert(fallbackPayload)
@@ -273,15 +309,20 @@ export async function deleteProduct(productId: string): Promise<void> {
 
 /**
  * Admin: Upload product image to Supabase Storage bucket 'product-images'
+ * Comprime y convierte automáticamente a WebP HD antes de subir, reduciendo el tamaño en un 90-95%.
  */
 export async function uploadProductImage(file: File): Promise<string> {
-  const fileExt = file.name.split('.').pop() || 'webp';
-  const cleanName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_').toLowerCase();
-  const fileName = `products/${Date.now()}-${Math.random().toString(36).substring(2, 8)}-${cleanName}`;
+  const processedFile = (typeof window !== 'undefined')
+    ? await optimizeImageForUpload(file)
+    : file;
+
+  const cleanBaseName = processedFile.name.replace(/\.[^/.]+$/, '').replace(/[^a-zA-Z0-9_-]/g, '_').toLowerCase();
+  const fileName = `products/${Date.now()}-${Math.random().toString(36).substring(2, 8)}-${cleanBaseName}.webp`;
 
   const { error } = await supabase.storage
     .from('product-images')
-    .upload(fileName, file, {
+    .upload(fileName, processedFile, {
+      contentType: processedFile.type || 'image/webp',
       cacheControl: '31536000',
       upsert: false
     });

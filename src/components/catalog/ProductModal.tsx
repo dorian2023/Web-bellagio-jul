@@ -11,6 +11,7 @@ import { CATALOGS_DATA } from '@/src/data/catalogs';
 import FabricSwatchSelector from '@/src/components/catalog/FabricSwatchSelector';
 import ColorVariantSelector from '@/src/components/catalog/ColorVariantSelector';
 import { getDefaultCatalogsForProduct } from '@/src/data/fabric-catalogs';
+import { sanitizeHexColor } from '@/src/data/color-presets';
 
 function CategoryIcon({ categoryId }: { categoryId: string }) {
   switch (categoryId) {
@@ -1107,12 +1108,6 @@ export default function ProductModal({
             </div>
             
             <div className="fullscreen-hd-actions">
-              {allImages.length > 1 && (
-                <span className="fullscreen-counter-badge">
-                  {selectedImageIndex + 1} / {allImages.length}
-                </span>
-              )}
-
               <button
                 type="button"
                 className="fullscreen-zoom-btn"
@@ -1215,26 +1210,72 @@ export default function ProductModal({
             )}
           </div>
 
-          {/* Bottom Dock: Thumbnails & Keyboard Hint */}
-          {allImages.length > 1 && (
+          {/* Bottom Dock: Selector de Colores & Miniaturas de Ángulos */}
+          {(hasColorVariants || allImages.length > 1) && (
             <footer className="fullscreen-hd-dock" onClick={(e) => e.stopPropagation()}>
-              <div className="fullscreen-thumbnails-strip">
-                {allImages.map((imgUrl, idx) => (
-                  <button
-                    key={`fs-thumb-${idx}`}
-                    type="button"
-                    className={`fullscreen-thumb-item ${selectedImageIndex === idx ? 'active' : ''}`}
-                    onClick={() => {
-                      setFullscreenScale(1.0);
-                      setFullscreenPos({ x: 50, y: 50 });
-                      setSelectedImageIndex(idx);
-                    }}
-                    aria-label={`Ver ángulo ${idx + 1}`}
-                  >
-                    <img src={imgUrl} alt={`${product.title} miniatura ${idx + 1}`} />
-                  </button>
-                ))}
-              </div>
+              {/* Paleta interactiva de colores en pantalla completa */}
+              {hasColorVariants && (
+                <div className="fullscreen-color-palette-bar" role="radiogroup" aria-label="Colores disponibles">
+                  <div className="fullscreen-color-pills">
+                    {colorVariants.map((variant) => {
+                      const isActive = variant.id === selectedVariantId;
+                      const bg = sanitizeHexColor(variant.hexColor);
+                      return (
+                        <button
+                          key={`fs-color-${variant.id}`}
+                          type="button"
+                          role="radio"
+                          aria-checked={isActive}
+                          className={`fullscreen-color-circle-btn ${isActive ? 'is-active' : ''}`}
+                          onClick={() => {
+                            if (variant.id === selectedVariantId) return;
+                            setSelectedVariantId(variant.id);
+                            setSelectedImageIndex(0);
+                            setFullscreenScale(1.0);
+                            setFullscreenPos({ x: 50, y: 50 });
+                            setIsAngleLoading(true);
+                          }}
+                          title={variant.name}
+                          aria-label={`Ver en color ${variant.name}`}
+                        >
+                          <span
+                            className="fullscreen-color-circle-fill"
+                            style={{ backgroundColor: bg }}
+                          />
+                          {isActive && (
+                            <span className="fullscreen-color-check" aria-hidden="true">
+                              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                                <polyline points="20 6 9 17 4 12" />
+                              </svg>
+                            </span>
+                          )}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
+
+              {/* Tira de miniaturas de ángulos del color actual */}
+              {allImages.length > 1 && (
+                <div className="fullscreen-thumbnails-strip">
+                  {allImages.map((imgUrl, idx) => (
+                    <button
+                      key={`fs-thumb-${idx}`}
+                      type="button"
+                      className={`fullscreen-thumb-item ${selectedImageIndex === idx ? 'active' : ''}`}
+                      onClick={() => {
+                        setFullscreenScale(1.0);
+                        setFullscreenPos({ x: 50, y: 50 });
+                        setSelectedImageIndex(idx);
+                      }}
+                      aria-label={`Ver ángulo ${idx + 1}`}
+                    >
+                      <img src={imgUrl} alt={`${product.title} miniatura ${idx + 1}`} />
+                    </button>
+                  ))}
+                </div>
+              )}
             </footer>
           )}
         </div>

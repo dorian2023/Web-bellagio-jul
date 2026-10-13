@@ -42,7 +42,7 @@ export default function ColorVariantSelector({ variants, selectedId, onSelect }:
             <path d="m14.83 14.83 4.24 4.24" />
             <path d="m9.17 14.83-4.24 4.24" />
           </svg>
-          <span className="color-variant-selector-title">Colores Disponibles</span>
+          <span className="color-variant-selector-title">Colores</span>
         </div>
         <span className="color-variant-selector-count">
           {variants.length} {variants.length === 1 ? 'color' : 'colores'}

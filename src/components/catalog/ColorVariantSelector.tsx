@@ -2,8 +2,9 @@
 
 /**
  * @file ColorVariantSelector.tsx
- * @description Selector de colores reales del producto (definidos en /admin).
- * Al marcar un color, el modal muestra exclusivamente las fotos de ese color.
+ * @description Selector compacto y refinado de colores reales del producto (definidos en /admin).
+ * Diseñado con estética Quiet Luxury: tamaño optimizado para móvil, círculos puros sin texto invasivo,
+ * y área táctil cómoda (40px touch-hitbox) para máxima facilidad de uso con el pulgar.
  */
 
 import React from 'react';
@@ -20,15 +21,30 @@ export default function ColorVariantSelector({ variants, selectedId, onSelect }:
   if (variants.length === 0) return null;
 
   return (
-    <div className="atelier-swatch-configurator color-variant-selector" aria-label="Colores disponibles">
-      <div className="atelier-swatch-header">
-        <div className="atelier-swatch-title-wrap">
-          <span className="atelier-swatch-badge">
-            <span>Colores Disponibles</span>
-          </span>
-          <h4 className="atelier-swatch-heading">Elige tu Color</h4>
+    <div className="color-variant-selector-card" aria-label="Colores disponibles">
+      <div className="color-variant-selector-header">
+        <div className="color-variant-selector-label-group">
+          <svg 
+            width="13" 
+            height="13" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2.2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="color-variant-icon" 
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="m4.93 4.93 4.24 4.24" />
+            <path d="m14.83 9.17 4.24-4.24" />
+            <path d="m14.83 14.83 4.24 4.24" />
+            <path d="m9.17 14.83-4.24 4.24" />
+          </svg>
+          <span className="color-variant-selector-title">Colores Disponibles</span>
         </div>
-        <span className="atelier-swatch-count-pill">
+        <span className="color-variant-selector-count">
           {variants.length} {variants.length === 1 ? 'color' : 'colores'}
         </span>
       </div>
@@ -55,7 +71,7 @@ export default function ColorVariantSelector({ variants, selectedId, onSelect }:
               />
               {isActive && (
                 <span className="color-variant-check" aria-hidden="true">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20 6 9 17 4 12" />
                   </svg>
                 </span>

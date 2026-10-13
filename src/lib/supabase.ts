@@ -10,15 +10,11 @@ import { CATALOGS_DATA, CATEGORIES_DATA } from '@/src/data/catalogs';
 import { sanitizeHexColor } from '@/src/data/color-presets';
 import { optimizeImageForUpload } from '@/src/utils/image-optimizer';
 
-// Carga segura y estricta desde variables de entorno (.env.local o Vercel)
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY;
+const OFFICIAL_SUPABASE_URL = 'https://vjtjwifynfzdjkdpruty.supabase.co';
+const OFFICIAL_SUPABASE_ANON_KEY = 'sb_publishable_J8wyvsMDU4uwf7tNXxZ9xQ_8CW4Dwue';
 
-if (!supabaseUrl || !supabaseAnonKey) {
-  throw new Error(
-    'Configuración requerida: NEXT_PUBLIC_SUPABASE_URL y NEXT_PUBLIC_SUPABASE_ANON_KEY deben estar definidas en tu archivo .env.local'
-  );
-}
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || process.env.VITE_SUPABASE_URL || OFFICIAL_SUPABASE_URL;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || process.env.VITE_SUPABASE_PUBLISHABLE_KEY || OFFICIAL_SUPABASE_ANON_KEY;
 
 // Initialize Supabase client with robust connection handling
 export const supabase = createClient(

@@ -904,6 +904,20 @@ export default function ProductModal({
                 </div>
               )}
 
+              {/* Colores reales con fotos propias (Ubicado arriba de materiales, abajo del nombre) */}
+              {hasColorVariants && (
+                <ColorVariantSelector
+                  variants={colorVariants}
+                  selectedId={selectedVariantId}
+                  onSelect={(variant) => {
+                    if (variant.id === selectedVariantId) return;
+                    setSelectedVariantId(variant.id);
+                    setSelectedImageIndex(0);
+                    setIsAngleLoading(true);
+                  }}
+                />
+              )}
+
               {/* Technical Specifications & Atelier Details */}
               {((product.materials && product.materials.trim().length > 0) ||
                 (product.dimensions && product.dimensions.trim().length > 0)) && (
@@ -935,20 +949,6 @@ export default function ProductModal({
                     </div>
                   )}
                 </div>
-              )}
-
-              {/* Colores reales con fotos propias (definidos en /admin) */}
-              {hasColorVariants && (
-                <ColorVariantSelector
-                  variants={colorVariants}
-                  selectedId={selectedVariantId}
-                  onSelect={(variant) => {
-                    if (variant.id === selectedVariantId) return;
-                    setSelectedVariantId(variant.id);
-                    setSelectedImageIndex(0);
-                    setIsAngleLoading(true);
-                  }}
-                />
               )}
 
               {/* Acotación oficial de producto importado */}

@@ -907,8 +907,7 @@ export default function ProductModal({
 
               {/* Technical Specifications & Atelier Details */}
               {((product.materials && product.materials.trim().length > 0) ||
-                (product.dimensions && product.dimensions.trim().length > 0) ||
-                (product.availableColors && product.availableColors.length > 0)) && (
+                (product.dimensions && product.dimensions.trim().length > 0)) && (
                 <div className="vip-atelier-specs-card">
                   {product.materials && product.materials.trim().length > 0 && (
                     <div className="atelier-spec-row">
@@ -934,20 +933,6 @@ export default function ProductModal({
                         <span>Medidas / Dimensiones</span>
                       </div>
                       <p className="atelier-spec-value">{product.dimensions}</p>
-                    </div>
-                  )}
-
-                  {product.availableColors && product.availableColors.length > 0 && (
-                    <div className="atelier-spec-row">
-                      <div className="atelier-spec-label">
-                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                          <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"/>
-                        </svg>
-                        <span>Tonos & Acabados</span>
-                      </div>
-                      <p className="atelier-spec-value">
-                        {Array.isArray(product.availableColors) ? product.availableColors.join(', ') : product.availableColors}
-                      </p>
                     </div>
                   )}
                 </div>

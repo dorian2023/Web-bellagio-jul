@@ -603,55 +603,6 @@ export default function AdminPage() {
                 />
               </div>
 
-              <div className="form-group" style={{ marginBottom: 'var(--space-4)' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
-                  <label className="form-label" style={{ margin: 0 }}>Tonos & Catálogos de Telas/Maderas</label>
-                  <span style={{ fontSize: '0.72rem', color: 'var(--gold-400)', fontWeight: 600 }}>Atelier Swatches</span>
-                </div>
-                <input 
-                  type="text" 
-                  className="form-input" 
-                  value={formData.availableColors}
-                  onChange={(e) => setFormData({ ...formData, availableColors: e.target.value })}
-                  placeholder="Ej. Bella Velvet, Lino Toscano, Bouclé Milán, Roble Claro"
-                />
-                
-                {/* Quick Add Fabric & Wood Library Pills */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.7rem', color: 'var(--color-text-secondary)' }}>Añadir Catálogo Rápido:</span>
-                  {[
-                    { label: '+ Bella Velvet (20+ tonos)', val: 'Bella Velvet' },
-                    { label: '+ Lino Toscano', val: 'Lino Toscano' },
-                    { label: '+ Bouclé Milán', val: 'Bouclé Milán' },
-                    { label: '+ Maderas Nobles', val: 'Maderas Nobles' },
-                  ].map((catPill) => (
-                    <button
-                      key={catPill.val}
-                      type="button"
-                      onClick={() => {
-                        const current = formData.availableColors ? formData.availableColors.split(',').map(s => s.trim()).filter(Boolean) : [];
-                        if (!current.includes(catPill.val)) {
-                          const updated = [...current, catPill.val].join(', ');
-                          setFormData({ ...formData, availableColors: updated });
-                        }
-                      }}
-                      style={{
-                        fontSize: '0.68rem',
-                        fontWeight: 600,
-                        padding: '3px 8px',
-                        borderRadius: '6px',
-                        background: 'rgba(197, 165, 90, 0.12)',
-                        border: '1px solid rgba(197, 165, 90, 0.28)',
-                        color: 'var(--gold-500)',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      {catPill.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
               {/* Multi-Photo Gallery & Angles Manager */}
               <div className="form-group" style={{ marginBottom: 'var(--space-5)' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>

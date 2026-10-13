@@ -279,12 +279,36 @@ export default function ProductModal({
   const imageContainerRef = useRef<HTMLDivElement | null>(null);
   const fullscreenStageRef = useRef<HTMLDivElement | null>(null);
   const similarTrackRef = useRef<HTMLDivElement | null>(null);
+  const modalScrollRef = useRef<HTMLDivElement | null>(null);
   const isSimilarPausedRef = useRef<boolean>(false);
   const pauseTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [showMobileScrollCue, setShowMobileScrollCue] = useState<boolean>(true);
+
+  // Auto-hide mobile scroll cue as user scrolls down or reaches near bottom
+  const handleModalScroll = useCallback(() => {
+    if (!modalScrollRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = modalScrollRef.current;
+    const isNearBottom = scrollHeight - scrollTop - clientHeight < 55;
+    if (scrollTop > 36 || isNearBottom) {
+      setShowMobileScrollCue(false);
+    } else {
+      setShowMobileScrollCue(true);
+    }
+  }, []);
+
+  const handleScrollDown = useCallback(() => {
+    if (modalScrollRef.current) {
+      modalScrollRef.current.scrollBy({ top: 260, behavior: 'smooth' });
+    }
+  }, []);
 
   // Sync active product when initialProduct changes
   useEffect(() => {
     setActiveProduct(initialProduct);
+    setShowMobileScrollCue(true);
+    if (modalScrollRef.current) {
+      modalScrollRef.current.scrollTop = 0;
+    }
   }, [initialProduct]);
 
   // Load catalog items if not provided
@@ -707,7 +731,11 @@ export default function ProductModal({
             </svg>
           </button>
 
-          <div className="lightbox-content vip-modal-grid">
+          <div 
+            ref={modalScrollRef}
+            onScroll={handleModalScroll}
+            className="lightbox-content vip-modal-grid"
+          >
             {/* Left Column: Media Stage & Gallery */}
             <div className="lightbox-media-col vip-media-stage">
               {/* Media Switcher Pills (Visible when product has video) */}
@@ -1088,6 +1116,27 @@ export default function ProductModal({
               </div>
             </div>
           </div>
+
+          {/* Luxury Mobile Scroll Cue Indicator & Soft Scrim (Mobile-Only) */}
+          <div 
+            className={`mobile-modal-scroll-scrim ${!showMobileScrollCue ? 'is-hidden' : ''}`}
+            aria-hidden="true"
+          />
+
+          <button
+            type="button"
+            className={`mobile-modal-scroll-cue ${!showMobileScrollCue ? 'is-hidden' : ''}`}
+            onClick={handleScrollDown}
+            aria-label="Desplazar hacia abajo para ver más detalles y cotización"
+            title="Desliza para ver más"
+          >
+            <span className="mobile-scroll-cue-text">Desliza para ver más</span>
+            <span className="mobile-scroll-cue-arrow" aria-hidden="true">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M12 4v14M18 12l-6 6-6-6" />
+              </svg>
+            </span>
+          </button>
         </div>
       </div>
 

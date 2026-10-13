@@ -865,8 +865,26 @@ export default function AdminPage() {
                 )}
               </div>
 
-              {/* Colores con fotos reales propias */}
-              <ColorVariantsManager variants={colorVariants} onChange={setColorVariants} />
+              {/* Colores con fotos reales propias: Solo para fabricación nacional */}
+              {formData.origin === 'nacional' ? (
+                <ColorVariantsManager variants={colorVariants} onChange={setColorVariants} />
+              ) : (
+                <div style={{
+                  marginBottom: 'var(--space-5)',
+                  padding: 'var(--space-4)',
+                  border: '1px solid rgba(212, 175, 55, 0.35)',
+                  borderRadius: 'var(--radius-md)',
+                  background: 'rgba(212, 175, 55, 0.05)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}>
+                  <ImportedGlobeIcon width={20} height={20} />
+                  <span style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
+                    <strong style={{ color: 'var(--gold-400)' }}>Producto Importado:</strong> Los muebles importados se comercializan exclusivamente en su acabado único original de fábrica (no admiten cambio de color).
+                  </span>
+                </div>
+              )}
 
               <div className="form-group" style={{ marginBottom: 'var(--space-4)' }}>
                 <label className="form-label">Video de YouTube (Opcional)</label>

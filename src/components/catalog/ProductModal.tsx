@@ -307,9 +307,15 @@ export default function ProductModal({
   }, [allProducts]);
 
   const product = activeProduct;
+  const isImported = product?.origin === 'importado';
 
-  // Colores reales definidos en /admin (cada uno con sus propias fotos)
-  const colorVariants = useMemo(() => product?.colorVariants ?? [], [product]);
+  // Colores reales definidos en /admin (cada uno con sus propias fotos).
+  // En productos importados el color es único y exclusivo, tal cual la foto.
+  const colorVariants = useMemo(() => {
+    if (isImported) return [];
+    return product?.colorVariants ?? [];
+  }, [product, isImported]);
+
   const hasColorVariants = colorVariants.length > 0;
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
 
@@ -321,20 +327,16 @@ export default function ProductModal({
 
   const selectedVariant = colorVariants.find((v) => v.id === selectedVariantId) || null;
 
-  // Compute effective fabric & wood catalogs for customizer
+  // Catálogos de telas: SOLO si fueron asignados explícitamente en el producto.
+  // Ya NO se inventan muestrarios genéricos por defecto para que la ficha quede limpia (como Imagen 2).
   const effectiveCatalogs = useMemo(() => {
-    if (!product) return [];
-    // Los colores reales con foto tienen prioridad sobre los muestrarios genéricos
+    if (!product || isImported) return [];
     if (product.colorVariants && product.colorVariants.length > 0) return [];
     if (product.materialCatalogs && product.materialCatalogs.length > 0) {
       return product.materialCatalogs;
     }
-    // Flagship interactive experience: enable fabric/wood catalogs for relevant piece categories
-    if (['sofas', 'sofacamas', 'poltronas', 'sillas', 'taburete', 'dormitorios', 'box-spring', 'comedores'].includes(product.category)) {
-      return getDefaultCatalogsForProduct(product.category);
-    }
     return [];
-  }, [product]);
+  }, [product, isImported]);
 
   // Selected swatch state for real-time visualization
   const [selectedColorSwatch, setSelectedColorSwatch] = useState<FabricColorSwatch | null>(null);
@@ -951,8 +953,8 @@ export default function ProductModal({
                 </div>
               )}
 
-              {/* Colores reales con fotos propias (definidos en /admin) */}
-              {hasColorVariants && (
+              {/* Colores reales con fotos propias (definidos en /admin, exclusivo fabricación nacional) */}
+              {!isImported && hasColorVariants && (
                 <ColorVariantSelector
                   variants={colorVariants}
                   selectedId={selectedVariantId}
@@ -963,6 +965,25 @@ export default function ProductModal({
                     setIsAngleLoading(true);
                   }}
                 />
+              )}
+
+              {/* Nota de exclusividad para piezas importadas */}
+              {isImported && (
+                <div style={{
+                  marginTop: '16px',
+                  padding: '10px 14px',
+                  borderRadius: 'var(--radius-sm)',
+                  background: 'rgba(212, 175, 55, 0.08)',
+                  border: '1px solid rgba(212, 175, 55, 0.22)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}>
+                  <ImportedGlobeIcon width={16} height={16} />
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
+                    <strong style={{ color: 'var(--gold-400)' }}>Pieza Importada:</strong> Acabado y tonalidad única original de fábrica, tal como se aprecia en la fotografía.
+                  </span>
+                </div>
               )}
 
               {/* Atelier de Telas, Texturas & Acabados Interactivo (Nivel RH) */}

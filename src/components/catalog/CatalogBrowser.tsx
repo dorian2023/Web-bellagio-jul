@@ -655,14 +655,13 @@ export default function CatalogBrowser({
                             </p>
                           ) : null}
 
-                          {/* Mini-Swatches Row (Inspirado en Restoration Hardware Catálogo) */}
+                          {/* Mini-Swatches Row: Solo si tiene variantes reales agregadas en admin y no es importado */}
                           {(() => {
+                            if (product.origin === 'importado') return null;
                             const realColorSwatches = (product.colorVariants || []).map((v) => ({ id: v.id, name: v.name, hexColor: v.hexColor }));
-                            const swatches = (realColorSwatches.length > 0 ? realColorSwatches : null) ||
-                              product.materialCatalogs?.[0]?.colors || 
-                              (['sofas', 'sofacamas', 'poltronas', 'sillas', 'taburete', 'dormitorios', 'box-spring'].includes(product.category) 
-                                ? getDefaultCatalogsForProduct(product.category)?.[0]?.colors 
-                                : []);
+                            const swatches = realColorSwatches.length > 0 
+                              ? realColorSwatches 
+                              : (product.materialCatalogs?.[0]?.colors || []);
                             if (!swatches || swatches.length === 0) return null;
                             return (
                               <div className="catalog-swatches-row" aria-label="Telas y acabados disponibles">

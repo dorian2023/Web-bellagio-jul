@@ -645,42 +645,11 @@ export default function CatalogBrowser({
                       <div className="product-info">
                         <div className="product-copy product-copy-centered">
                           <h3 className="product-title product-title-centered">{product.title}</h3>
-                          {isOutOfStock ? (
+                          {isOutOfStock && (
                             <p className="product-subtitle product-subtitle-centered">
                               <span className="stock-subtitle-out">Temporalmente no disponible</span>
                             </p>
-                          ) : (product.subtitle || product.materials) ? (
-                            <p className="product-subtitle product-subtitle-centered">
-                              {product.subtitle || (product.materials ? `${product.materials.slice(0, 60)}` : '')}
-                            </p>
-                          ) : null}
-
-                          {/* Mini-Swatches Row: Solo si tiene variantes reales agregadas en admin y no es importado */}
-                          {(() => {
-                            if (product.origin === 'importado') return null;
-                            const realColorSwatches = (product.colorVariants || []).map((v) => ({ id: v.id, name: v.name, hexColor: v.hexColor }));
-                            const swatches = realColorSwatches.length > 0 
-                              ? realColorSwatches 
-                              : (product.materialCatalogs?.[0]?.colors || []);
-                            if (!swatches || swatches.length === 0) return null;
-                            return (
-                              <div className="catalog-swatches-row" aria-label="Telas y acabados disponibles">
-                                {swatches.slice(0, 5).map((s) => (
-                                  <span
-                                    key={s.id}
-                                    className="catalog-swatch-mini"
-                                    style={{ backgroundColor: s.hexColor || '#C5A55A' }}
-                                    title={s.name}
-                                  />
-                                ))}
-                                {swatches.length > 5 && (
-                                  <span className="catalog-swatches-more-pill">
-                                    +{swatches.length - 5}
-                                  </span>
-                                )}
-                              </div>
-                            );
-                          })()}
+                          )}
                         </div>
                       </div>
                     </article>

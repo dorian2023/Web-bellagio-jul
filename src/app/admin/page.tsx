@@ -816,13 +816,13 @@ export default function AdminPage() {
                 )}
               </div>
 
-              {/* Colores con fotos reales propias: Solo para fabricación nacional */}
-              {formData.origin === 'nacional' ? (
-                <ColorVariantsManager variants={colorVariants} onChange={setColorVariants} />
-              ) : (
+              {/* Colores con fotos reales propias: Disponible para fabricación nacional e importados */}
+              <ColorVariantsManager variants={colorVariants} onChange={setColorVariants} />
+
+              {formData.origin === 'importado' && (
                 <div style={{
-                  marginBottom: 'var(--space-5)',
-                  padding: 'var(--space-4)',
+                  marginBottom: 'var(--space-4)',
+                  padding: 'var(--space-3) var(--space-4)',
                   border: '1px solid rgba(212, 175, 55, 0.35)',
                   borderRadius: 'var(--radius-md)',
                   background: 'rgba(212, 175, 55, 0.05)',
@@ -830,9 +830,9 @@ export default function AdminPage() {
                   alignItems: 'center',
                   gap: '10px'
                 }}>
-                  <ImportedGlobeIcon width={20} height={20} />
-                  <span style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
-                    <strong style={{ color: 'var(--gold-400)' }}>Producto Importado:</strong> Los muebles importados se comercializan exclusivamente en su acabado único original de fábrica (no admiten cambio de color).
+                  <ImportedGlobeIcon width={18} height={18} />
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
+                    <strong style={{ color: 'var(--gold-400)' }}>Producto Importado:</strong> Si este modelo viene de fábrica en varios colores (ej. negro, beige, marrón), puedes asignarle a cada color sus fotos reales aquí arriba.
                   </span>
                 </div>
               )}

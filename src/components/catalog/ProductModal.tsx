@@ -310,11 +310,10 @@ export default function ProductModal({
   const isImported = product?.origin === 'importado';
 
   // Colores reales definidos en /admin (cada uno con sus propias fotos).
-  // En productos importados el color es único y exclusivo, tal cual la foto.
+  // Aplica tanto a fabricación nacional como a modelos importados con colores de fábrica.
   const colorVariants = useMemo(() => {
-    if (isImported) return [];
     return product?.colorVariants ?? [];
-  }, [product, isImported]);
+  }, [product]);
 
   const hasColorVariants = colorVariants.length > 0;
   const [selectedVariantId, setSelectedVariantId] = useState<string | null>(null);
@@ -938,8 +937,8 @@ export default function ProductModal({
                 </div>
               )}
 
-              {/* Colores reales con fotos propias (definidos en /admin, exclusivo fabricación nacional) */}
-              {!isImported && hasColorVariants && (
+              {/* Colores reales con fotos propias (definidos en /admin) */}
+              {hasColorVariants && (
                 <ColorVariantSelector
                   variants={colorVariants}
                   selectedId={selectedVariantId}
@@ -952,21 +951,23 @@ export default function ProductModal({
                 />
               )}
 
-              {/* Nota de exclusividad para piezas importadas */}
+              {/* Acotación oficial de producto importado */}
               {isImported && (
                 <div style={{
                   marginTop: '16px',
-                  padding: '10px 14px',
+                  padding: '12px 14px',
                   borderRadius: 'var(--radius-sm)',
                   background: 'rgba(212, 175, 55, 0.08)',
                   border: '1px solid rgba(212, 175, 55, 0.22)',
                   display: 'flex',
-                  alignItems: 'center',
+                  alignItems: 'flex-start',
                   gap: '10px'
                 }}>
-                  <ImportedGlobeIcon width={16} height={16} />
-                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.4 }}>
-                    <strong style={{ color: 'var(--gold-400)' }}>Pieza Importada:</strong> Acabado y tonalidad única original de fábrica, tal como se aprecia en la fotografía.
+                  <div style={{ marginTop: '2px', flexShrink: 0 }}>
+                    <ImportedGlobeIcon width={16} height={16} />
+                  </div>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', lineHeight: 1.45 }}>
+                    <strong style={{ color: 'var(--gold-400)' }}>Producto Importado:</strong> Los muebles importados se comercializan exclusivamente en su acabado único original de fábrica (no admiten cambio de color).
                   </span>
                 </div>
               )}
